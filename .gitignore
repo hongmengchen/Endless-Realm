@@ -1,0 +1,55 @@
+### 后端 ###
+# 忽略 Spring 项目的 target 目录
+/backend/target/
+# 忽略编译后的 classes 目录
+/classes/
+# 忽略编译后的 out 目录
+/out/
+# 保留 Maven Wrapper 文件
+!.mvn/wrapper/maven-wrapper.jar
+
+### 前端 ###
+# 忽略 Vue 项目的 node_modules 目录
+/frontend/node_modules/
+# Node.js
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+### IntelliJ IDEA ###
+# 忽略 IntelliJ IDEA 的配置文件和目录
+.idea/
+*.iws
+*.iml
+*.ipr
+# 忽略 Maven Wrapper 的相关文件
+.mvn
+mvnw
+mvnw.cmd
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### NetBeans ###
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# 忽略压缩文件
+*.zip
+# 忽略 Word 文档
+*.docx
+# 忽略 PDF 文件
+*.pdf
+# 忽略文本文件
+*.txt
