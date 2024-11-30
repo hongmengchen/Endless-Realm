@@ -14,13 +14,13 @@
     <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-context</artifactId>
-        <version>6.1.14</version>
+        <version>5.2.8.RELEASE</version>
     </dependency>
     <!--Spring MVC-->
     <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-webmvc</artifactId>
-        <version>6.1.13</version>
+        <version>5.2.8.RELEASE</version>
     </dependency>
     <!-- servlet -->
     <dependency>
