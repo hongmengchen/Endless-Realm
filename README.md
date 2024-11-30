@@ -1,3 +1,6 @@
+根据你的要求，我已经更新了 `README.md` 文件，使其适应前后端在同一个仓库、后端使用 Tomcat 部署的情况。以下是更新后的文件：
+
+```
 # 无垠之界 (Endless Realm)
 
 **Endless Realm (ER)** 是一个基于 Java EE - SSM 技术栈开发的社交平台，旨在打造一个开放、智能、未来感的社交空间。平台提供无界限的社交互动空间，支持多设备、跨平台访问，连接全球用户，带来更加多元化、智能化的社交体验。
@@ -96,40 +99,40 @@
 
 ## 安装与使用
 
-### 前端部署
+### 前后端部署（同一仓库）
 
-1. 克隆仓库并进入前端目录：
+1. 克隆仓库并进入项目目录：
    ```bash
    git clone git@github.com:hongmengchen/Endless-Realm.git
-   cd frontend
+   cd Endless-Realm
    ```
 
-2. 安装依赖：
+2. 进入前端目录并安装依赖：
    ```bash
+   cd frontend
    npm install
    ```
 
-3. 启动开发服务器：
+3. 启动前端开发服务器：
    ```bash
    npm run serve
    ```
 
 ### 后端部署
 
-1. 克隆仓库并进入后端目录：
+1. 进入后端目录：
    ```bash
-   git clone git@github.com:hongmengchen/Endless-Realm.git
    cd backend
    ```
 
 2. 配置数据库连接：
    - 编辑数据库配置文件，设置 MySQL 连接信息。
 
-3. 启动后端服务：
-   - 使用 Java EE 进行部署，选择适合的应用服务器（如 Tomcat）。
+3. 使用 Tomcat 部署后端应用：
+   - 将 `backend` 目录下的 WAR 文件部署到 Tomcat 服务器，或者直接在 Tomcat 中配置该项目。
 
 4. 访问平台：
-   - 后端服务启动后，前端页面通过接口访问后端提供的 API。
+   - 后端服务启动后，前端页面会通过接口访问后端提供的 RESTful API。
 
 ---
 
@@ -156,3 +159,4 @@
 ---
 
 希望这个 README 文件能够帮助开发者快速了解项目架构、技术栈和部署流程。如果有任何问题或建议，欢迎提出！
+
