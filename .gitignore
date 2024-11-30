@@ -2,9 +2,9 @@
 # 忽略 Java EE - SSM 项目的编译目录
 /backend/target/
 # 忽略编译后的 classes 目录
-/classes/
+/backend/classes/
 # 忽略编译后的 out 目录
-/out/
+/backend/out/
 
 # 忽略 Maven Wrapper 的相关文件
 .mvn/
