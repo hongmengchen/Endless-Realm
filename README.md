@@ -100,7 +100,7 @@
 
 1. 克隆仓库并进入前端目录：
    ```bash
-   git clone https://github.com/yourusername/Endless-Realm.git
+   git clone git@github.com:hongmengchen/Endless-Realm.git
    cd frontend
    ```
 
@@ -118,7 +118,7 @@
 
 1. 克隆仓库并进入后端目录：
    ```bash
-   git clone https://github.com/yourusername/Endless-Realm.git
+   git clone git@github.com:hongmengchen/Endless-Realm.git
    cd backend
    ```
 
