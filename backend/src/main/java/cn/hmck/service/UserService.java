@@ -1,4 +1,7 @@
 package cn.hmck.service;
 
-public interface UserService {
+import cn.hmck.entity.User;
+import com.baomidou.mybatisplus.extension.service.IService;
+
+public interface UserService extends IService<User> {
 }
