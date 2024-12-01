@@ -3,6 +3,7 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
+
   <display-name>Endless Realm</display-name>
   <!-- 配置 Spring MVC 的前端控制器 -->
   <servlet>
@@ -24,4 +25,6 @@
     <servlet-name>DispatcherServlet</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
+
+
 </web-app>
