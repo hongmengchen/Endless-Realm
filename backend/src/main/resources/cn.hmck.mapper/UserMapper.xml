@@ -5,9 +5,14 @@
 
 <mapper namespace="cn.hmck.mapper.UserMapper">
 
-    <insert id="insert" parameterType="User">
+    <!-- 添加用户 -->
+    <insert id="addUser" parameterType="User">
         INSERT INTO er_user (username, email, password, phone, status)
         VALUES (#{username}, #{email}, #{password}, #{phone}, #{status})
     </insert>
+    <!-- 根据用户名查询用户 -->
+    <select id="selectByUsername" parameterType="String" resultType="User">
+        SELECT * FROM er_user WHERE username = #{username}
+    </select>
 
 </mapper>

@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
-    // 添加新用户
-    int insert(User user);
+    // 添加用户
+    int addUser(User user);
+    // 根据用户名查询用户
+    User selectByUsername(String username);
 }
