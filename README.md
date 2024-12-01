@@ -99,7 +99,7 @@
 
 ### 后端开发
 
-- 使用 Spring 和 Spring MVC 搭建后端，集成 MyBatis 进行数据操作
+- 使用 Spring 和 Spring MVC 搭建后端，集成 MyBatis（MyBatis-Plus） 进行数据操作
 - 使用 RESTful API 规范进行前后端交互
 - 配置 Java EE 中的安全机制进行用户权限管理
 
