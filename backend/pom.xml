@@ -40,19 +40,17 @@
             <artifactId>spring-webmvc</artifactId>
             <version>5.2.8.RELEASE</version>
         </dependency>
-        <!-- servlet -->
+        <!-- Spring jdbc包 -->
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
-            <scope>provided</scope>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>5.2.10.RELEASE</version>
         </dependency>
-        <!--JSP-->
+        <!-- spring aspects 处理面向切面编程 -->
         <dependency>
-            <groupId>javax.servlet.jsp</groupId>
-            <artifactId>jsp-api</artifactId>
-            <version>2.1</version>
-            <scope>provided</scope>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+            <version>5.2.10.RELEASE</version>
         </dependency>
 
         <!-- MyBatis-Plus -->
@@ -69,16 +67,19 @@
             <version>2.0.5</version>
         </dependency>
 
-        <!-- jdbc包 -->
+        <!-- servlet -->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-            <version>5.2.10.RELEASE</version>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
         </dependency>
+        <!--JSP-->
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-dbcp2</artifactId>
-            <version>2.9.0</version>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>2.1</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- MySQL数据库驱动 -->
@@ -86,6 +87,13 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.28</version>
+        </dependency>
+
+        <!-- 配置druid连接池 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.2.6</version>
         </dependency>
 
         <!-- Lombok -->
