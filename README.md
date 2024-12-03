@@ -13,7 +13,7 @@
 ## 技术栈
 
 - **后端**：Java EE（Spring、Spring MVC、MyBatis）
-- **前端**：Vue.js + Element UI
+- **前端**：Vue.js + Element UI(ElementPlus)
 - **数据库**：MySQL
 - **API 工具**：Apifox
 - **版本管理**：Git + GitHub
