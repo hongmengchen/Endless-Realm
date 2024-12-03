@@ -9,10 +9,12 @@
 
     <!--    1. 扫描 cn.hmck 包
             2. context:exclude-filter 配置说明 不扫描控制器 -->
-    <context:component-scan base-package="cn.hmck" use-default-filters="false">
-    <!-- 只扫描 @Service  -->
+    <!--<context:component-scan base-package="cn.hmck" use-default-filters="false">
+    &lt;!&ndash; 只扫描 @Service  &ndash;&gt;
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
-    </context:component-scan>
+    </context:component-scan>-->
+
+    <context:component-scan base-package="cn.hmck.service" />
 
 
     <!-- 配置数据源 -->
