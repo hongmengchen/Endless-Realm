@@ -44,7 +44,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
-            <version>5.2.8.RELEASE</version>
+            <version>6.1.14</version>
         </dependency>
         <!-- spring aspects 处理面向切面编程 -->
         <dependency>
