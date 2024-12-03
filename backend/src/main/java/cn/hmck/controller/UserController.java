@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/user")
@@ -27,10 +28,10 @@ public class UserController {
 
     // 用户注册
     @PostMapping("/register")
-    public String register(@RequestBody User user) {
-        // 调用 UserService 的 register 方法进行用户注册
+    public String register(User user) {
+        System.out.println(user);
         boolean result = userService.register(user);
-        // 根据注册结果返回不同的页面
-        return result ? "redirect:/login" : "redirect:/register";
+        System.out.println(result);
+        return result ? "success" : "fail";
     }
 }
