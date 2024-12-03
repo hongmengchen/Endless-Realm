@@ -15,4 +15,10 @@ public class TestController {
         //设定具体跳转的页面
         return "success";
     }
+
+    @RequestMapping("/hi")
+    public String hi(){
+        System.out.println("TestController hi()");
+        return "hi";
+    }
 }
