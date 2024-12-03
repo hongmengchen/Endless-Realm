@@ -7,17 +7,26 @@
     http://www.springframework.org/schema/tx
     http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
+    <!--    1. 扫描 cn.hmck 包
+            2. context:exclude-filter 配置说明 不扫描控制器 -->
+    <context:component-scan base-package="cn.hmck" use-default-filters="false">
+    <!-- 只扫描 @Service  -->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+    </context:component-scan>
+
+
     <!-- 配置数据源 -->
-    <bean id="dataSource"
-          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <!-- 数据源配置 引入外部配置文件 : db.properties 放在 resources 下 -->
+    <context:property-placeholder location="classpath:db.properties"/>
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
         <!--数据库驱动 -->
-        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+        <property name="driverClassName" value="${mysql.driver}" />
         <!--连接数据库的url -->
-        <property name="url" value="jdbc:mysql://localhost/endless_realm?useUnicode=true&amp;characterEncoding=utf-8&amp;serverTimezone=Asia/Shanghai" />
+        <property name="url" value="${mysql.url}" />
         <!--连接数据库的用户名 -->
-        <property name="username" value="root" />
+        <property name="username" value="${mysql.username}" />
         <!--连接数据库的密码 -->
-        <property name="password" value="CX1994cl2004all@" />
+        <property name="password" value="${mysql.password}" />
     </bean>
 
     <!-- 配置 MyBatis 的 SqlSessionFactory -->
