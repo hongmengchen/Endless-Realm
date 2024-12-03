@@ -156,12 +156,6 @@
 
 ---
 
-## 许可证
-
-该项目使用 [MIT 许可证](LICENSE)。
-
----
-
 ## 学习资源
 
 - [Spring 官方文档](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html)
