@@ -2,6 +2,7 @@ package cn.hmck.controller;
 
 import cn.hmck.entity.User;
 import cn.hmck.service.UserService;
+import cn.hmck.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,17 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/user")
 public class UserController {
 
-    /*// 注入 UserService
+    // 注入 UserService
     private final UserService userService;
 
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
-    }*/
-
-    @RequestMapping("/test")
-    public String test() {
-        return "test";
     }
 
 /*
