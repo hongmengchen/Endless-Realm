@@ -2,16 +2,9 @@ package cn.hmck.controller;
 
 import cn.hmck.entity.User;
 import cn.hmck.service.UserService;
-import cn.hmck.service.impl.UserServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/user")
@@ -27,8 +20,9 @@ public class UserController {
     }
 
     // 用户注册
+    @CrossOrigin(origins = "http://localhost:8081", methods = {RequestMethod.POST})
     @PostMapping("/register")
-    public String register(User user) {
+    public String register(@RequestBody User user) {
         System.out.println(user);
         boolean result = userService.register(user);
         System.out.println(result);
