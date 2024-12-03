@@ -8,20 +8,23 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+import javax.annotation.Resource;
+
+@RestController
 @RequestMapping("/user")
 public class UserController {
 
     // 注入 UserService
-    private final UserService userService;
+    @Resource(name = "userService")
+    private UserService userService;
 
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    @RequestMapping("/login")
+    public void login() {
+        System.out.println("UserController login");
     }
 
-/*
     // 用户注册
     @PostMapping("/register")
     public String register(@RequestBody User user) {
@@ -29,5 +32,5 @@ public class UserController {
         boolean result = userService.register(user);
         // 根据注册结果返回不同的页面
         return result ? "redirect:/login" : "redirect:/register";
-    }*/
+    }
 }
