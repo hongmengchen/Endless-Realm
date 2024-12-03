@@ -29,14 +29,20 @@
         <property name="password" value="${mysql.password}" />
     </bean>
 
+    <!-- 配置与 mybatis 的整合-->
     <!-- 配置 MyBatis 的 SqlSessionFactory -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
+        <!-- 指定 mybatis 全局配置文件的位置-->
         <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <!-- 指定数据源-->
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 1. 指定 mybatis 的 mapper 的文件位置，扫描 mapper 下的所有 xml 文件
+             2. 在类路径(resources 目录)下创建 mapper 目录，后面的 mapper 文件，就放在这里-->
         <property name="mapperLocations" value="classpath:cn.hmck.mapper/*.xml"/>
     </bean>
-    <!-- 配置 MyBatis 的 Mapper 扫描器 -->
+    <!-- 配置 MyBatis 的 Mapper 扫描器，将 mybatis 接口的实现加入到 ioc 容器中 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--  扫描所有的 mapper 接口的实现，加入到 ioc 容器中 -->
         <property name="basePackage" value="cn.hmck.mapper"/>
     </bean>
 <!--
