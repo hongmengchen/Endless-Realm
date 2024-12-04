@@ -10,7 +10,7 @@ import router from './router'
 // 引入babel-polyfill
 import 'babel-polyfill';
 // 引入axios
-import api from './api'
+import api from './api/index.js'
 
 // 创建 Vue 实例
 const app = createApp(App)

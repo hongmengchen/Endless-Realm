@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div>
         <router-view></router-view>
     </div>
 </template>
@@ -9,5 +9,5 @@
         background-color: #f6f6f6;
     }
 </style>
-<script setup lang="js">
+<script setup lang="ts">
 </script>
