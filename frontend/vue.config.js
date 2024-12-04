@@ -9,3 +9,15 @@ module.exports = {
     proxy: 'http://localhost:8080',  // 后端服务器地址
   },
 };
+
+const path = require('path')
+
+module.exports = {
+  configureWebpack: {
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, 'src')
+      }
+    }
+  }
+}
