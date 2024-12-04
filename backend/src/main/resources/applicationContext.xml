@@ -64,5 +64,4 @@
     &lt;!&ndash; 5.注册事务管理器驱动 &ndash;&gt;
     <tx:annotation-driven transaction-manager="transactionManager"/>
 -->
-<!--    <context:component-scan base-package="cn.hmck.service"/>-->
 </beans>

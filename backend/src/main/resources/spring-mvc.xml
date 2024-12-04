@@ -8,6 +8,9 @@
     <!-- 导入业务逻辑配置 -->
     <import resource="classpath:applicationContext.xml"/>
 
+    <!-- 扫描配置类 -->
+    <context:component-scan base-package="cn.hmck.config" />
+
     <!-- 配置扫描的包 -->
     <!--<context:component-scan base-package="cn.hmck" use-default-filters="false">
     &lt;!&ndash; 只扫描 @Controller &ndash;&gt;
