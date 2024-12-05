@@ -1,25 +1,19 @@
-//  引入vue-router
-import {createRouter, createWebHashHistory} from 'vue-router';
-//  引入组件
-import Home from '../components/page/index.vue';
-import LoginPage from '../components/page/login.vue';
+import { createRouter, createWebHistory } from "vue-router";
 
-//  定义路由
-const routes = [
-  {
-      path: "/", component: Home
-  },
-  {
-    path: "/login",
-    name: "login",
-    component: LoginPage
-  },
-]
+import baseRouters from "./modules/base";
 
-//  创建路由
+const routes = [...baseRouters];
+
 const router = createRouter({
-  history: createWebHashHistory(),
-  routes: routes,
-})
-//  导出路由----去main.js导入
-export default router
+  history: createWebHistory(process.env.BASE_URL),
+  routes,
+  scrollBehavior() {
+    return {
+      el: "#app",
+      top: 0,
+      behavior: "smooth",
+    };
+  },
+});
+
+export default router;
