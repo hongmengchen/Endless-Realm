@@ -15,4 +15,8 @@ public interface UserMapper extends BaseMapper<User> {
     User selectByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
     // 根据id查询用户
     User selectById(@Param("id") Integer id);
+    // 更新用户信息
+    int updateUser(User user);
+    // 删除用户
+    int deleteById(@Param("id") Integer id);
 }

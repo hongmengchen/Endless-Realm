@@ -2,8 +2,20 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
+<!-- 用户持久层 -->
 <mapper namespace="cn.hmck.mapper.UserMapper">
+    <!-- 定义结果映射 -->
+    <resultMap id="userResultMap" type="cn.hmck.entity.User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="email" column="email"/>
+        <result property="password" column="password"/>
+        <result property="phone" column="phone"/>
+        <result property="avatar" column="avatar"/>
+        <result property="status" column="status"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
 
     <!-- 添加用户 -->
     <insert id="addUser" parameterType="User">
@@ -11,16 +23,38 @@
         VALUES (#{username}, #{email}, #{password}, #{phone}, #{status})
     </insert>
     <!-- 根据用户名查询用户 -->
-    <select id="selectByUsername" parameterType="String" resultType="User">
-        SELECT * FROM er_user WHERE username = #{username}
+    <select id="selectByUsername" resultMap="userResultMap" parameterType="String" resultType="cn.hmck.entity.User">
+        SELECT *
+        FROM er_user
+        WHERE username = #{username}
     </select>
     <!-- 根据用户名和密码查询用户 -->
-    <select id="selectByUsernameAndPassword" parameterType="User" resultType="User">
-        SELECT * FROM er_user WHERE username = #{username} AND password = #{password}
+    <select id="selectByUsernameAndPassword" resultMap="userResultMap" parameterType="User" resultType="cn.hmck.entity.User">
+        SELECT *
+        FROM er_user
+        WHERE username = #{username}
+          AND password = #{password}
     </select>
-    <!-- 根据 id 查询用户 -->
-    <select id="selectById" parameterType="Integer" resultType="User">
-        SELECT * FROM er_user WHERE id = #{id}
+    <!-- 根据id查询用户 -->
+    <select id="selectById" resultMap="userResultMap" parameterType="Integer" resultType="cn.hmck.entity.User">
+        SELECT *
+        FROM er_user
+        WHERE id = #{id}
     </select>
+    <!--更新用户信息-->
+    <update id="updateUser" parameterType="User">
+        UPDATE er_user
+        SET username = #{username},
+            email    = #{email},
+            phone    = #{phone},
+            status   = #{status}
+        WHERE id = #{id}
+    </update>
+    <!--删除用户-->
+    <delete id="deleteById" parameterType="Integer">
+        DELETE
+        FROM er_user
+        WHERE id = #{id}
+    </delete>
 
 </mapper>
