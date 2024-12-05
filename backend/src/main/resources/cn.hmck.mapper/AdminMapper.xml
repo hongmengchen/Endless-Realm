@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 管理员持久层 -->
+<mapper namespace="cn.hmck.mapper.AdminMapper">
+    <!-- 定义结果映射 -->
+    <resultMap id="adminResultMap" type="cn.hmck.entity.Admin">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="role" column="role"/>
+        <result property="createdAt" column="created_at"/>
+    </resultMap>
+
+    <!--根据用户名和密码查找管理员-->
+    <select id="selectByUsernameAndPassword" parameterType="cn.hmck.entity.Admin" resultMap="adminResultMap"
+              resultType="cn.hmck.entity.Admin">
+        SELECT *
+        FROM er_admin
+        WHERE username = #{username}
+          AND password = #{password}
+    </select>
+    <!-- 查找所有用户 -->
+    <select id="selectAllUser" resultMap="adminResultMap" resultType="cn.hmck.entity.Admin">
+        SELECT *
+        FROM er_admin
+    </select>
+</mapper>
