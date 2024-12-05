@@ -1,12 +1,18 @@
  <template>
    <div>
+     <app-head></app-head>
      首页！！
    </div>
  </template>
 
  <script>
+import AppHead from '../common/AppHeader.vue';
+
  export default {
    name: 'HomeIndex',
+   components: {
+            AppHead
+        },
    data() {
      return {
        // 数据
