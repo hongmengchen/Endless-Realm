@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- Post持久层 -->
+<mapper namespace="cn.hmck.mapper.PostMapper">
+    <!-- 定义结果映射 -->
+    <resultMap id="postResultMap" type="cn.hmck.entity.Post">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="content" column="content"/>
+        <result property="mediaUrl" column="media_url"/>
+        <result property="likeCount" column="like_count"/>
+        <result property="commentCount" column="comment_count"/>
+        <result property="status" column="status"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <!--添加动态-->
+    <insert id="addPost" parameterType="Post">
+        INSERT INTO er_post (user_id, content, media_url, like_count, comment_count, status)
+        VALUES (#{userId}, #{content}, #{mediaUrl}, #{likeCount}, #{commentCount}, #{status})
+    </insert>
+    <!--根据用户id查询动态-->
+    <select id="selectPostByUserId" parameterType="Integer" resultMap="postResultMap">
+        SELECT *
+        FROM er_post
+        WHERE user_id = #{userId}
+    </select>
+    <!--更新动态内容-->
+    <update id="updatePostContent" parameterType="Post">
+        UPDATE er_post
+        SET content = #{content}
+        WHERE id = #{id}
+    </update>
+    <!--更新动态点赞-->
+    <update id="updatePostLikeCount" parameterType="Post">
+        UPDATE er_post
+        SET like_count = #{likeCount}
+        WHERE id = #{id}
+    </update>
+    <!--更新动态评论-->
+    <update id="updatePostCommentCount" parameterType="Post">
+        UPDATE er_post
+        SET comment_count = #{commentCount}
+        WHERE id = #{id}
+    </update>
+    <!--更新动态状态-->
+    <update id="updatePostStatus" parameterType="Post">
+        UPDATE er_post
+        SET status = #{status}
+        WHERE id = #{id}
+    </update>
+    <!--删除动态-->
+    <delete id="deleteById" parameterType="Integer">
+        DELETE
+        FROM er_post
+        WHERE id = #{id}
+    </delete>
+</mapper>
