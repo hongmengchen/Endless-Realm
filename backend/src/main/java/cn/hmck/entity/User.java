@@ -19,6 +19,8 @@ public class User {
 
     private String phone;  // 手机号
 
+    private String avatar;  // 头像
+
     private Integer status; // 0: 禁用, 1: 启用
 
     @TableField(fill = FieldFill.INSERT)
