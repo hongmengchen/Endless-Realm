@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- Comment持久层 -->
+<mapper namespace="cn.hmck.mapper.CommentMapper">
+    <!-- 定义结果映射 -->
+    <resultMap id="commentResultMap" type="cn.hmck.entity.Comment">
+        <id property="id" column="id"/>
+        <result property="postId" column="post_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="type" column="type"/>
+        <result property="content" column="content"/>
+        <result property="createdAt" column="created_at"/>
+    </resultMap>
+
+    <!--添加评论或者点赞-->
+    <insert id="addComment" parameterType="Comment">
+        INSERT INTO er_comment (post_id, user_id, type, content)
+        VALUES (#{postId}, #{userId}, #{type}, #{content})
+    </insert>
+    <!--根据动态id查询评论-->
+    <select id="selectCommentByPostId" parameterType="Integer" resultMap="commentResultMap">
+        SELECT *
+        FROM er_comment
+        WHERE post_id = #{postId}
+    </select>
+    <!--修改评论内容-->
+    <update id="updateCommentContent" parameterType="Comment">
+        UPDATE er_comment
+        SET content = #{content}
+        WHERE id = #{id}
+    </update>
+    <!--删除评论或者点赞-->
+    <delete id="deleteById" parameterType="Integer">
+        DELETE
+        FROM er_comment
+        WHERE id = #{id}
+    </delete>
+
+</mapper>
