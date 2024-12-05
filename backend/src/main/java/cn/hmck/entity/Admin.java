@@ -3,11 +3,13 @@ package cn.hmck.entity;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
 @TableName("er_admin")
-public class Admin {
+public class Admin implements Serializable {
     @TableId(type = IdType.AUTO)
     private Long id;  // 管理员ID
 
@@ -19,4 +21,8 @@ public class Admin {
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;  // 创建时间
+
+    // 序列化版本号
+    @Serial
+    private static final long serialVersionUID = 1L;
 }
