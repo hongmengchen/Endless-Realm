@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service("userService")
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
-    // 注入 UserMapper
+    // 注入持久层
     private final UserMapper userMapper;
 
     @Autowired
