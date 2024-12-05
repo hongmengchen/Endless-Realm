@@ -4,7 +4,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 //引入 ElementPlus
 import ElementPlus from "element-plus";
-// import 'element-plus/theme-chalk/index.css'
+// import "element-plus/dist/index.css";
 // 引入路由
 import router from "./router";
 // 引入状态管理

@@ -1,29 +1,43 @@
 <template>
-  <div>
-    <app-head></app-head>
-    首页！！
+  <div class="app-container">
+    <el-aside class="container-aside" width="collapse">
+      <!-- 侧边栏 -->
+      <AppSideBar />
+    </el-aside>
+
+    <el-main class="container-main">
+      <!-- 显示当前路由页面 -->
+      <router-view></router-view>
+    </el-main>
   </div>
 </template>
 
 <script>
-import AppHead from "@/components/AppHeader.vue";
+import AppSideBar from "@/components/AppSideBar.vue";
 
 export default {
   name: "HomeIndex",
+
+  // 引入组件
   components: {
-    AppHead,
-  },
-  data() {
-    return {
-      // 数据
-    };
-  },
-  methods: {
-    // 方法
+    AppSideBar,
   },
 };
 </script>
 
 <style scoped>
-/* 样式 */
+.app-container {
+  display: flex;
+  height: 100vh; /* 使容器占满整个视口高度 */
+}
+
+.container-aside {
+  padding: 20px; /* 可选：设置内边距 */
+  background-color: #ded8d8;
+}
+
+.container-main {
+  flex-grow: 1; /* 使主要内容区域占据剩余空间 */
+  padding: 20px; /* 可选：设置内边距 */
+}
 </style>

@@ -9,4 +9,9 @@ export default [
     name: "login",
     component: () => import("@/views/login.vue"),
   },
+  {
+    path: "/profile",
+    name: "profile",
+    component: () => import("@/views/profile.vue"),
+  },
 ];

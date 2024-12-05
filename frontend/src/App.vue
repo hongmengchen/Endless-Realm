@@ -3,6 +3,9 @@
     <router-view></router-view>
   </div>
 </template>
+
+<script setup lang="js"></script>
+
 <style>
 html,
 body,
@@ -11,4 +14,3 @@ body,
   background-color: #f6f6f6;
 }
 </style>
-<script setup lang="ts"></script>
