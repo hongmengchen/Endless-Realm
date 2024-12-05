@@ -14,5 +14,13 @@
     <select id="selectByUsername" parameterType="String" resultType="User">
         SELECT * FROM er_user WHERE username = #{username}
     </select>
+    <!-- 根据用户名和密码查询用户 -->
+    <select id="selectByUsernameAndPassword" parameterType="User" resultType="User">
+        SELECT * FROM er_user WHERE username = #{username} AND password = #{password}
+    </select>
+    <!-- 根据 id 查询用户 -->
+    <select id="selectById" parameterType="Integer" resultType="User">
+        SELECT * FROM er_user WHERE id = #{id}
+    </select>
 
 </mapper>

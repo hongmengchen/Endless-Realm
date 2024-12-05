@@ -21,11 +21,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     // 用户注册
     @Transactional
     @Override
-    public boolean register(User user) {
+    public boolean userSignIn(User user) {
         if(userMapper.selectByUsername(user.getUsername()) != null){
             return false;
         }else{
             return userMapper.addUser(user) > 0;
         }
+    }
+
+    // 用户登录
+    @Override
+    public User userLogin(String username, String password) {
+        return userMapper.selectByUsernameAndPassword(username, password);
     }
 }
