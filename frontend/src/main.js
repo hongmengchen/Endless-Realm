@@ -2,9 +2,9 @@
 import { createApp } from "vue";
 // 引入 App.vue
 import App from "./App.vue";
-//引入 ElementPlus
+// 引入 ElementPlus
 import ElementPlus from "element-plus";
-// import "element-plus/dist/index.css";
+import "element-plus/dist/index.css";
 // 引入路由
 import router from "./router";
 // 引入状态管理
