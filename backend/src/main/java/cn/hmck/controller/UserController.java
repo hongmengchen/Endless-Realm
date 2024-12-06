@@ -12,6 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+/**
+ * 用户控制器
+ *
+ * @author 陈亮
+ * @since 2024-11-30
+*/
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
