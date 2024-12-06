@@ -50,6 +50,13 @@
             status   = #{status}
         WHERE id = #{id}
     </update>
+    <!--修改用户密码-->
+    <update id="updateUserPassword" parameterType="User">
+        UPDATE er_user
+        SET password = #{newPassword}
+        WHERE id = #{id}
+          AND password = #{oldPassword}
+    </update>
     <!--删除用户-->
     <delete id="deleteById" parameterType="Integer">
         DELETE
