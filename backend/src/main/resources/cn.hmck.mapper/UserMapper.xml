@@ -4,6 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- 用户持久层 -->
 <mapper namespace="cn.hmck.mapper.UserMapper">
+
     <!-- 定义结果映射 -->
     <resultMap id="userResultMap" type="cn.hmck.entity.User">
         <id property="id" column="id"/>
@@ -17,50 +18,49 @@
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
-    <!-- 添加用户 -->
-    <insert id="addUser" parameterType="User">
+    <!-- 插入用户 -->
+    <insert id="insertUser" parameterType="cn.hmck.entity.User">
         INSERT INTO er_user (username, email, password, phone, status)
         VALUES (#{username}, #{email}, #{password}, #{phone}, #{status})
     </insert>
     <!-- 根据用户名查询用户 -->
-    <select id="selectByUsername" resultMap="userResultMap" parameterType="String" resultType="cn.hmck.entity.User">
+    <select id="selectByUsername" parameterType="String" resultMap="userResultMap">
         SELECT *
         FROM er_user
         WHERE username = #{username}
     </select>
     <!-- 根据用户名和密码查询用户 -->
-    <select id="selectByUsernameAndPassword" resultMap="userResultMap" parameterType="User" resultType="cn.hmck.entity.User">
+    <select id="selectByUsernameAndPassword" parameterType="cn.hmck.entity.User" resultMap="userResultMap">
         SELECT *
         FROM er_user
         WHERE username = #{username}
           AND password = #{password}
     </select>
-    <!-- 根据id查询用户 -->
-    <select id="selectById" resultMap="userResultMap" parameterType="Integer" resultType="cn.hmck.entity.User">
+    <!-- 根据ID查询用户 -->
+    <select id="selectById" parameterType="Integer" resultMap="userResultMap">
         SELECT *
         FROM er_user
         WHERE id = #{id}
     </select>
-    <!--更新用户信息-->
-    <update id="updateUser" parameterType="User">
+    <!-- 更新用户信息 -->
+    <update id="updateUser" parameterType="cn.hmck.entity.User">
         UPDATE er_user
         SET username = #{username},
-            email    = #{email},
-            phone    = #{phone},
-            status   = #{status}
+            email = #{email},
+            phone = #{phone},
+            status = #{status}
         WHERE id = #{id}
     </update>
-    <!--修改用户密码-->
-    <update id="updateUserPassword" parameterType="User">
+    <!-- 修改用户密码 -->
+    <update id="updateUserPassword" parameterType="cn.hmck.entity.User">
         UPDATE er_user
         SET password = #{newPassword}
         WHERE id = #{id}
           AND password = #{oldPassword}
     </update>
-    <!--删除用户-->
+    <!-- 删除用户 -->
     <delete id="deleteById" parameterType="Integer">
-        DELETE
-        FROM er_user
+        DELETE FROM er_user
         WHERE id = #{id}
     </delete>
 
