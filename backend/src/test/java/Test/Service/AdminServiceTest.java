@@ -13,13 +13,4 @@ public class AdminServiceTest {
     @Resource(name = "adminService")
     private AdminService adminService;
 
-    // 查找所有用户
-    @Test
-    public void selectAllUser() {
-        Map<String, Object> userList = adminService.getAllUser();
-        for (String key : userList.keySet()){
-            System.out.println(key + ":" + userList.get(key));
-        }
-    }
-
 }
