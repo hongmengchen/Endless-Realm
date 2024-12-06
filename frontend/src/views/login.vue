@@ -45,8 +45,8 @@ export default {
   data() {
     return {
       form: {
-        username: "",
-        password: "",
+        username: "张三",
+        password: "123456",
       },
       loading: false,
       usernameRules: [
@@ -61,10 +61,12 @@ export default {
     async login() {
       const res = await User.login(this.form.username, this.form.password);
       console.log(res);
-      if (res.data === "success") {
+      if (res.data.status_code == 1) {
+        console.log("登录成功");
         this.$router.push("/");
       } else {
-        this.$message.error("用户名或密码错误");
+        console.log("登录失败");
+        this.$router.push("/login");
       }
     },
   },
