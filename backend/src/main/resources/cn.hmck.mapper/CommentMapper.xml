@@ -14,27 +14,26 @@
         <result property="createdAt" column="created_at"/>
     </resultMap>
 
-    <!--添加评论或者点赞-->
-    <insert id="addComment" parameterType="Comment">
+    <!-- 插入评论或点赞 -->
+    <insert id="insertComment" parameterType="cn.hmck.entity.Comment">
         INSERT INTO er_comment (post_id, user_id, type, content)
         VALUES (#{postId}, #{userId}, #{type}, #{content})
     </insert>
-    <!--根据动态id查询评论-->
-    <select id="selectCommentByPostId" parameterType="Integer" resultMap="commentResultMap">
-        SELECT *
+    <!-- 根据动态ID查询评论 -->
+    <select id="selectCommentsByPostId" parameterType="Integer" resultMap="commentResultMap">
+        SELECT id, post_id, user_id, type, content, created_at
         FROM er_comment
         WHERE post_id = #{postId}
     </select>
-    <!--修改评论内容-->
-    <update id="updateCommentContent" parameterType="Comment">
+    <!-- 修改评论内容 -->
+    <update id="updateCommentContent" parameterType="cn.hmck.entity.Comment">
         UPDATE er_comment
         SET content = #{content}
         WHERE id = #{id}
     </update>
-    <!--删除评论或者点赞-->
-    <delete id="deleteById" parameterType="Integer">
-        DELETE
-        FROM er_comment
+    <!-- 删除评论或点赞 -->
+    <delete id="deleteCommentById" parameterType="Integer">
+        DELETE FROM er_comment
         WHERE id = #{id}
     </delete>
 
