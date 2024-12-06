@@ -4,6 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- Post持久层 -->
 <mapper namespace="cn.hmck.mapper.PostMapper">
+
     <!-- 定义结果映射 -->
     <resultMap id="postResultMap" type="cn.hmck.entity.Post">
         <id property="id" column="id"/>
