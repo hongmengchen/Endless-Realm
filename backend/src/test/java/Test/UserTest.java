@@ -18,7 +18,7 @@ public class UserTest {
         user.setEmail("hmck@qq.com");
         user.setPhone("12345678901");
         user.setStatus(1);
-        userMapper.addUser(user);
+        userMapper.insertUser(user);
     }
 }
 
