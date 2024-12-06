@@ -3,6 +3,8 @@ package cn.hmck.service;
 import cn.hmck.entity.Admin;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.Map;
+
 /**
  * 管理员服务层
  *
@@ -11,4 +13,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 
 public interface AdminService extends IService<Admin> {
+    // 管理员登录
+    Admin adminLogin(String username, String password);
+    // 查找所有用户
+    Map<String, Object> getAllUser();
 }
