@@ -4,8 +4,6 @@ import axios from "axios";
 const instance = axios.create({
   // 指定请求基础路径
   baseURL: "/backend_war_exploded",
-  // 指定请求超时的毫秒数
-  timeout: 1000,
   // 表示跨域请求时是否需要使用凭证
   withCredentials: false,
 });
