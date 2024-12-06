@@ -5,10 +5,11 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * 动态持久层
+ * 提供与 Post 实体相关的数据库操作
  *
  * @author 陈亮
  * @since 2024-12-6
@@ -16,18 +17,31 @@ import java.util.Map;
 
 @Mapper
 public interface PostMapper extends BaseMapper<Post> {
-    // 添加动态
-    int addPost(Post post);
-    // 根据用户id查询动态
-    Map<String, Object> selectPostByUserId(@Param("userId") Integer userId);
-    // 更新动态内容
-    int updatePostContent(Post post);
-    // 更新动态点赞
-    int updatePostLikeCount(Post post);
-    // 更新动态评论
-    int updatePostCommentCount(Post post);
-    // 更新动态状态
-    int updatePostStatus(Post post);
-    // 删除动态
-    int deleteById(@Param("id") Integer id);
+    /**
+     * 添加动态
+     * @param post 动态对象
+     * @return 受影响的行数
+     */
+    int insertPost(@Param("post") Post post);
+
+    /**
+     * 根据用户ID查询动态列表
+     * @param userId 用户ID
+     * @return 动态列表
+     */
+    List<Post> findPostsByUserId(@Param("userId") Integer userId);
+
+    /**
+     * 动态更新动态的字段
+     * @param post 动态对象
+     * @return 受影响的行数
+     */
+    int updatePost(@Param("post") Post post);
+
+    /**
+     * 根据动态ID删除动态
+     * @param id 动态ID
+     * @return 受影响的行数
+     */
+    int deletePostById(@Param("id") Integer id);
 }

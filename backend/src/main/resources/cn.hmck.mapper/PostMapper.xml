@@ -17,45 +17,31 @@
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
-    <!--添加动态-->
-    <insert id="addPost" parameterType="Post">
+    <!-- 插入动态 -->
+    <insert id="insertPost" parameterType="Post">
         INSERT INTO er_post (user_id, content, media_url, like_count, comment_count, status)
         VALUES (#{userId}, #{content}, #{mediaUrl}, #{likeCount}, #{commentCount}, #{status})
     </insert>
-    <!--根据用户id查询动态-->
-    <select id="selectPostByUserId" parameterType="Integer" resultMap="postResultMap">
+    <!-- 根据用户ID查询动态 -->
+    <select id="findPostsByUserId" parameterType="Integer" resultMap="postResultMap">
         SELECT *
         FROM er_post
         WHERE user_id = #{userId}
     </select>
-    <!--更新动态内容-->
-    <update id="updatePostContent" parameterType="Post">
+    <!-- 更新动态 -->
+    <update id="updatePost">
         UPDATE er_post
-        SET content = #{content}
+        <set>
+            <if test="content != null">content = #{content},</if>
+            <if test="mediaUrl != null">media_url = #{mediaUrl},</if>
+            <if test="likeCount != null">like_count = #{likeCount},</if>
+            <if test="commentCount != null">comment_count = #{commentCount},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
         WHERE id = #{id}
     </update>
-    <!--更新动态点赞-->
-    <update id="updatePostLikeCount" parameterType="Post">
-        UPDATE er_post
-        SET like_count = #{likeCount}
-        WHERE id = #{id}
-    </update>
-    <!--更新动态评论-->
-    <update id="updatePostCommentCount" parameterType="Post">
-        UPDATE er_post
-        SET comment_count = #{commentCount}
-        WHERE id = #{id}
-    </update>
-    <!--更新动态状态-->
-    <update id="updatePostStatus" parameterType="Post">
-        UPDATE er_post
-        SET status = #{status}
-        WHERE id = #{id}
-    </update>
-    <!--删除动态-->
-    <delete id="deleteById" parameterType="Integer">
-        DELETE
-        FROM er_post
-        WHERE id = #{id}
+    <!-- 根据动态ID删除动态 -->
+    <delete id="deletePostById" parameterType="Integer">
+        DELETE FROM er_post WHERE id = #{id}
     </delete>
 </mapper>
