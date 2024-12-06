@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * 管理员服务实现类
@@ -34,7 +34,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
 
     // 查找所有用户
     @Override
-    public Map<String, Object> getAllUser() {
+    public List<Admin> getAllUser() {
         return adminMapper.selectAllUser();
     }
 }

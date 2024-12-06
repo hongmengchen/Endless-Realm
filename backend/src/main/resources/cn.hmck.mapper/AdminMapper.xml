@@ -26,4 +26,10 @@
         SELECT *
         FROM er_admin
     </select>
+    <!-- 根据用户名查询管理员 -->
+    <select id="selectByUsername" parameterType="String" resultMap="adminResultMap">
+        SELECT *
+        FROM er_admin
+        WHERE username = #{username}
+    </select>
 </mapper>
