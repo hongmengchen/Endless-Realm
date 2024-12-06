@@ -2,11 +2,15 @@ package cn.hmck.controller;
 
 import cn.hmck.entity.User;
 import cn.hmck.service.UserService;
+import cn.hmck.util.ErrorMsg;
+import cn.hmck.util.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping("/user")
@@ -29,14 +33,10 @@ public class UserController {
     // 用户登录
     @CrossOrigin(origins = "http://localhost:8081", methods = {RequestMethod.POST, RequestMethod.GET})
     @RequestMapping("/login")
-    public String login(@RequestParam("username") String username,
-                        @RequestParam("password") String password,
-                        HttpServletResponse response) {
+    public Result<User> login(@RequestParam("username") @NotEmpty @NotNull String username,
+                              @RequestParam("password") @NotEmpty @NotNull String password,
+                              HttpServletResponse response) {
         User user = userService.userLogin(username, password);
-
-        if (user == null) {
-            return "fail";
-        }
 
         System.out.println("登录：" + user);
 
@@ -44,13 +44,21 @@ public class UserController {
         System.out.println(username + "   " + password);
         System.out.println("===================================");
 
+        if (user == null) {
+            return Result.fail(ErrorMsg.EMAIL_LOGIN_ERROR);
+        }
+
+        // 用户名或者密码为空
+        if(username.isEmpty() || password.isEmpty()){
+            return Result.fail(ErrorMsg.EMAIL_LOGIN_ERROR);
+        }
+
         Cookie cookie = new Cookie("shUserId", String.valueOf(user.getId()));
-        cookie.setMaxAge(60);
+        cookie.setMaxAge(60*60);
         cookie.setPath("/");
         cookie.setHttpOnly(false);
         response.addCookie(cookie);
 
-        // 登录成功，返回成功信息或重定向到主页
-        return "success";
+        return Result.success(user);
     }
 }
