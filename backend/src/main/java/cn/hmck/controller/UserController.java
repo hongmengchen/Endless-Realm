@@ -45,7 +45,7 @@ public class UserController {
                               HttpServletResponse response) {
         User user = userService.userLogin(username, password);
 
-        System.out.println("登录：" + user);
+        System.out.println("用户登录：" + user);
 
         System.out.println("===================================");
         System.out.println(username + "   " + password);
