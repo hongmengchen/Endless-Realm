@@ -1,6 +1,6 @@
 import { get } from "@/utils/request";
 
-export default class User {
+export default class userAPI {
   /**
    * 登录
    * @param {String} username 用户名
