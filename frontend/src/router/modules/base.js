@@ -1,22 +1,8 @@
+// 导出一个默认的数组，数组中包含一个对象
 export default [
   {
     path: "/",
     name: "home",
     component: () => import("@/views/index.vue"),
-  },
-  {
-    path: "/login",
-    name: "login",
-    component: () => import("@/views/login.vue"),
-  },
-  {
-    path: "/register",
-    name: "register",
-    component: () => import("@/views/userRegister.vue"),
-  },
-  {
-    path: "/profile",
-    name: "profile",
-    component: () => import("@/views/profile.vue"),
   },
 ];
