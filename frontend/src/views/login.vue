@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import UserAPI from "@/api/user";
+import UserAPI from "@/api/userAPI";
 import { Lock, User } from "@element-plus/icons-vue";
 
 export default {
@@ -62,11 +62,12 @@ export default {
         this.userForm.password
       );
       console.log(res);
-      if (res.data.status_code == 1) {
+      if (res.data.status_code === 1) {
         console.log("登录成功");
         this.$router.push("/");
       } else {
-        this.$message.error(res.msg);
+        console.log(res.data.msg);
+        this.$message.error(res.data.msg);
       }
     },
     // 跳转首页
