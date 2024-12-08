@@ -143,7 +143,7 @@ export default {
 
 /* 左侧侧边栏样式 */
 .profile-aside {
-  padding: 20px;
+  padding: 10px;
   border-right: 1px solid #ddd; /* 分隔线 */
 }
 
