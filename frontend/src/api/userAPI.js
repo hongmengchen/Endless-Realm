@@ -15,12 +15,12 @@ export default class userAPI {
   }
   /**
    * 获取用户信息
-   * @param {String} token
+   * @param {String} id
    * @returns
    */
-  static async getUserInfo(token) {
+  static async getUserInfo(id) {
     return get("/user/getUserInfo", {
-      token: token,
+      id: id,
     });
   }
 }
