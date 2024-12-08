@@ -1,4 +1,5 @@
 import { get } from "@/utils/request";
+import { post } from "@/utils/request";
 
 export default class userAPI {
   /**
@@ -22,5 +23,9 @@ export default class userAPI {
     return get("/user/getUserInfo", {
       id: id,
     });
+  }
+  /*注册用户*/
+  static async register(user) {
+    return post("/user/register", user);
   }
 }
