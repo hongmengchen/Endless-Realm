@@ -4,5 +4,6 @@ export default [
     path: "/",
     name: "home",
     component: () => import("@/views/index.vue"),
+    meta: { title: "Endless Realm · 无垠之界" },
   },
 ];
