@@ -13,4 +13,14 @@ export default class userAPI {
       password: password,
     });
   }
+  /**
+   * 获取用户信息
+   * @param {String} token
+   * @returns
+   */
+  static async getUserInfo(token) {
+    return get("/user/getUserInfo", {
+      token: token,
+    });
+  }
 }
