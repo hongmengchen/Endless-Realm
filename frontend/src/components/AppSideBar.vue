@@ -105,7 +105,7 @@ export default {
     const isCollapse = ref(false);
 
     // 动态计算图标大小
-    const iconSize = computed(() => (isCollapse.value ? "40px" : "20px"));
+    const iconSize = computed(() => (isCollapse.value ? "25px" : "20px"));
 
     // 切换收缩/扩展状态
     const toggleCollapse = (collapseState) => {
