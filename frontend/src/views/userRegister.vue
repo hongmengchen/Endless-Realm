@@ -6,7 +6,7 @@
         <el-input
           placeholder="请输入账号..."
           maxlength="30"
-          v-model="userInfo.username"
+          v-model="userForm.username"
           class="sign-in-input"
           clearable
         >
@@ -17,7 +17,7 @@
         <el-input
           placeholder="请输入手机号..."
           maxlength="11"
-          v-model="userInfo.phone"
+          v-model="userForm.phone"
           class="sign-in-input"
           clearable
         >
@@ -29,7 +29,7 @@
           placeholder="请输入密码..."
           show-password
           maxlength="32"
-          v-model="userInfo.password"
+          v-model="userForm.password"
           class="sign-in-input"
           clearable
         >
@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import UserAPI from "@/api/userAPI";
 import { Lock, Phone, User } from "@element-plus/icons-vue";
 
 export default {
@@ -70,7 +71,7 @@ export default {
   data() {
     return {
       password2: "",
-      userInfo: {
+      userForm: {
         username: "",
         password: "",
         phone: "",
@@ -87,27 +88,19 @@ export default {
     },
     // 用户注册
     signIn() {
-      if (this.userInfo.username && this.userInfo.password) {
-        if (this.userInfo.password !== this.password2) {
+      if (this.userForm.username && this.userForm.password) {
+        if (this.userForm.password !== this.password2) {
           this.$message.error("两次输入的密码不相同！");
         } else {
-          this.$api
-            .signIn(this.userInfo)
-            .then((res) => {
-              if (res.status_code === 1) {
-                this.$message({
-                  message: "注册成功！",
-                  type: "success",
-                });
-                this.$router.replace({ path: "/login" });
-              } else {
-                this.$message.error("注册失败，用户已存！");
-              }
-            })
-            .catch((e) => {
-              console.log(e);
-              this.$message.error("注册失败，网络异常！");
-            });
+          console.log("发送的请求数据：", this.userForm);
+          UserAPI.register(this.userForm).then((res) => {
+            if (res.data.status_code === 1) {
+              this.$message.success("注册成功！");
+              this.$router.replace({ path: "/login" });
+            } else {
+              this.$message.error(res.data.msg);
+            }
+          });
         }
       } else {
         this.$message.error("注册信息未填写完整！");
