@@ -1,7 +1,12 @@
-import { createPinia } from "pinia";
+import { createStore, createLogger } from "vuex";
+import userStore from "./modules/userStore";
 
-const store = createPinia();
+const debug = process.env.NODE_ENV !== "production";
 
-export default store;
-
-export * from "./modules/counter";
+export default createStore({
+  modules: {
+    user: userStore, // 注册用户模块
+  },
+  strict: debug,
+  plugins: debug ? [createLogger()] : [],
+});
