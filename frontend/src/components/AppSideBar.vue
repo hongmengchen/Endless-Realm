@@ -1,5 +1,6 @@
 <template>
   <div class="sidebar-container">
+    <!-- Logo 部分 -->
     <div class="sidebar-container-logo">
       <img src="../assets/logo.png" alt="logo" class="logo" />
       <span class="title">Endless Realm</span>
@@ -20,9 +21,9 @@
         @open="handleOpen"
         @close="handleClose"
         @select="handleSelect"
-        background-color="#2c3e50"
-        text-color="#ecf0f1"
-        active-text-color="#f39c12"
+        background-color="#3a7bd5"
+        text-color="#fff"
+        active-text-color="#1abc9c"
       >
         <el-menu-item index="1">
           <el-icon :style="{ fontSize: iconSize }"><House /></el-icon>
@@ -164,38 +165,53 @@ export default {
 
 <style scoped>
 /* 主容器布局 */
+.sidebar-container {
+  width: 200px;
+  background: linear-gradient(to bottom, #3a7bd5, #00d2ff); /* 蓝白渐变背景 */
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+}
+/* Logo 部分 */
 .sidebar-container-logo {
   display: flex;
   flex-direction: column; /* 垂直排列子元素 */
-  justify-content: center; /* 垂直居中 */
   align-items: center; /* 水平居中 */
-  height: 100%; /* 确保容器高度占满父容器 */
   margin-bottom: 20px;
 }
 .logo {
-  width: 120px;
+  width: 100px;
+  height: auto;
+  margin-bottom: 10px;
 }
 .title {
-  margin-top: 10px; /* 可选：调整 logo 和文字之间的间距 */
-  font-size: 20px; /* 可选：调整文字大小 */
-  font-family: "华文仿宋", "Orbitron", sans-serif; /* 应用引入的字体 */
-}
-.sidebar-container-menu {
-  display: flex; /* 使用Flexbox布局 */
-  flex-direction: column;
-  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 1px;
 }
 /* 收缩/扩展按钮 */
 .sidebar-container-collapse {
-  display: flex;
   margin-bottom: 20px;
 }
-/* 为图标添加过渡效果 */
-.el-icon {
-  transition: font-size 0.3s ease;
+/* 菜单样式 */
+.el-menu {
+  width: 100%;
+}
+.el-menu-item {
+  border-radius: 5px; /* 菜单项圆角 */
+}
+.el-menu-item:hover {
+  background: rgba(255, 255, 255, 0.2); /* 鼠标悬停效果 */
+}
+.el-menu-item .el-icon {
+  font-size: 18px;
 }
 .el-dropdown-link {
-  color: #f1f1f1;
+  color: #fff;
   outline: none; /* 取消悬浮时的轮廓线 */
 }
 </style>
