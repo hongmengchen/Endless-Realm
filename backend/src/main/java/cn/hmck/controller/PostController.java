@@ -25,8 +25,8 @@ public class PostController {
     private PostService postService;
 
     // 获取当前用户所有动态
-    @RequestMapping("/getPostsByUserId")
-    public Result<List<Post>> getPostsByUserId(@RequestParam("userId") Integer userId) {
+    @RequestMapping("/getPostByUserId")
+    public Result<List<Post>> getPostByUserId(@RequestParam("userId") Integer userId) {
         return Result.success(postService.getPostsByUserId(userId));
     }
 }
