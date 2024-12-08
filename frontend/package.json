@@ -18,7 +18,8 @@
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-vue-devtools": "^7.6.7",
     "vue": "^3.2.13",
-    "vue-router": "^4.5.0"
+    "vue-router": "^4.5.0",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
