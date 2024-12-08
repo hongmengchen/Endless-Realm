@@ -125,11 +125,11 @@ export default {
       if (index === "1") {
         router.push("/"); // 首页
       } else if (index === "2") {
-        router.push("/friend"); // 搜索
+        router.push("/search"); // 搜索
       } else if (index === "3") {
-        router.push("/dynamic"); // 动态
+        router.push("/post"); // 动态
       } else if (index === "4") {
-        router.push("/message"); // 消息
+        router.push("/messages"); // 消息
       } else if (index === "5") {
         router.push("/notification"); // 通知
       } else if (index === "6") {
