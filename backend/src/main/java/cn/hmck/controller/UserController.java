@@ -30,11 +30,14 @@ public class UserController {
     // 用户注册
     @CrossOrigin(origins = "http://localhost:8081", methods = {RequestMethod.POST})
     @PostMapping("/register")
-    public String signIn(@RequestBody User user) {
-        System.out.println(user);
-        boolean result = userService.userSignIn(user);
-        System.out.println(result);
-        return result ? "success" : "fail";
+    public Result<User> signIn(@RequestBody User user) {
+        System.out.println("===================================");
+        System.out.println("用户注册：" + user);
+        System.out.println("===================================");
+        if (userService.userSignIn(user)) {
+            return Result.success(user);
+        }
+        return Result.fail(ErrorMsg.REGISTER_ERROR);
     }
 
     // 用户登录
