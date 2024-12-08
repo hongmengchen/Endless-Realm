@@ -72,7 +72,7 @@ public class UserController {
     // 获取用户信息
     @CrossOrigin(origins = "http://localhost:8081", methods = {RequestMethod.GET})
     @RequestMapping("/getUserInfo")
-    public Result<User> getUserInfo(@RequestParam("id") Integer id) {
+    public Result<User> getUserInfo(@RequestParam("token") Integer id) {
         User user = userService.getUserInfo(id);
         return Result.success(user);
     }
