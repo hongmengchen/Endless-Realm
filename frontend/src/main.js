@@ -6,9 +6,9 @@ import App from "./App.vue";
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 // 引入路由
-import router from "./router";
+import Router from "./router";
 // 引入状态管理
-import store from "./store";
+import Store from "./store";
 // 引入babel-polyfill
 import "babel-polyfill";
 
@@ -16,4 +16,4 @@ import "babel-polyfill";
 const app = createApp(App);
 
 // 挂载 App.vue
-app.use(router).use(store).use(ElementPlus).mount("#app");
+app.use(Router).use(Store).use(ElementPlus).mount("#app");
