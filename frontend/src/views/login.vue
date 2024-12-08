@@ -74,7 +74,7 @@ export default {
         console.log("登录成功");
         // 更新用户信息到 Vuex
         this.updateUserInfo(res.data.data);
-        console.log("当前登录用户姓名：" + this.userInfo.username); // 打印更新后的用户信息
+        console.log("login-登录：" + this.userInfo.username); // 打印更新后的用户信息
         // 跳转到首页
         this.$router.push("/");
       } else {

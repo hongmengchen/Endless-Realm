@@ -7,7 +7,9 @@
 
     <!-- 右侧内容 -->
     <el-main class="profile-body">
-      用户名：{{ userInfo.username || "未登录" }}
+      <div v-if="userInfo && userInfo.username">
+        用户名：{{ userInfo.username || "未登录" }}
+      </div>
     </el-main>
   </div>
 </template>
@@ -31,6 +33,7 @@ export default {
     if (!this.userInfo) {
       this.loadUserInfo();
     }
+    this.loadUserInfo();
   },
   methods: {
     ...mapActions("user", ["updateUserInfo"]), // 从 Vuex 注册 actions
@@ -44,6 +47,11 @@ export default {
         // 使用获取到的 shUserId 发送请求获取用户信息
         const res = await UserAPI.getUserInfo(shUserId);
         console.log(res);
+        if (res.data.status_code === 1) {
+          // 更新用户信息到 Vuex
+          this.updateUserInfo(res.data.data);
+          console.log("profile-获取cookie：" + this.userInfo.username); // 打印更新后的用户信息
+        }
       } catch (error) {
         console.error("Error loading user info:", error);
       }
