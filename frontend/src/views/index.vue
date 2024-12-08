@@ -28,16 +28,13 @@ export default {
 <style scoped>
 .app-container {
   display: flex;
-  height: 100vh; /* 使容器占满整个视口高度 */
 }
 
 .container-aside {
-  padding: 20px; /* 可选：设置内边距 */
-  background-color: #ded8d8;
+  padding: 10px; /* 可选：设置内边距 */
 }
 
 .container-main {
-  flex-grow: 1; /* 使主要内容区域占据剩余空间 */
   padding: 20px; /* 可选：设置内边距 */
 }
 </style>
