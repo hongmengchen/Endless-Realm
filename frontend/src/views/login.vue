@@ -41,11 +41,15 @@
 
 <script>
 import UserAPI from "@/api/userAPI";
+import { mapActions, mapState } from "vuex";
 import { Lock, User } from "@element-plus/icons-vue";
 
 export default {
   name: "userLoginPage",
   components: { Lock, User },
+  computed: {
+    ...mapState("user", ["userInfo"]), // 映射 user 模块的 userInfo 状态
+  },
   data() {
     return {
       userForm: {
@@ -55,15 +59,23 @@ export default {
     };
   },
   methods: {
+    ...mapActions("user", ["updateUserInfo"]), // 映射 user 模块的 updateUserInfo 方法
+
     // 用户登录
     async login() {
+      // 调用登录接口
       const res = await UserAPI.login(
         this.userForm.username,
         this.userForm.password
       );
       console.log(res);
+      // 判断是否登录成功
       if (res.data.status_code === 1) {
         console.log("登录成功");
+        // 更新用户信息到 Vuex
+        this.updateUserInfo(res.data.data);
+        console.log("当前登录用户姓名：" + this.userInfo.username); // 打印更新后的用户信息
+        // 跳转到首页
         this.$router.push("/");
       } else {
         console.log(res.data.msg);
