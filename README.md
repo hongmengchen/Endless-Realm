@@ -4,21 +4,38 @@
 
 ---
 
-## 项目背景
+## 1. 项目背景
 
 无垠之界（Endless Realm）以“开放、智能、未来、无限”为核心价值，致力于通过社交互动打破地域和时间的限制，提供创新、智能化的社交体验。平台支持多种社交功能，包括动态发布、即时通讯、好友推荐、智能推荐等，旨在为用户提供无缝连接人与人、人与信息的体验。
 
 ---
 
-## 技术栈
+## 2. 技术栈
 
-- **后端**：Java EE（Spring、Spring MVC、MyBatis）
-- **前端**：Vue.js + Element UI(ElementPlus)
-- **数据库**：MySQL
+### 前端：Vue
+
+- **Vue3**
+- **Element Plus**
+- **Axios**
+- **Router**
+- **Vuex**
+
+### 后端：Java EE
+
+- **Spring**
+- **Spring MVC**
+- **MyBatis **（在实际使用时，我运用了 [MyBatis-Plus](https://baomidou.com/)）
+
+### 数据库：MySQL
+
+---
+
+## 3. 开发工具
+
 - **API 工具**：Apifox
 - **版本管理**：Git + GitHub
-- **开发工具**：
-  - 后端：IntelliJ IDEA 2024
+- **编译环境**：
+  - 后端：IntelliJ IDEA
   - 前端：WebStorm
 
 ---
@@ -87,83 +104,3 @@
 - `resources/`: 资源文件，如图片、视频等
 - `sql/`：数据库脚本，用于初始化数据库
 
----
-
-## 开发与调试
-
-### 前端开发
-
-- 使用 Vue.js 和 Element UI 实现响应式页面设计
-- 使用 Axios 调用后端 RESTful API，动态展示数据
-- WebSocket 用于实现实时聊天功能
-
-### 后端开发
-
-- 使用 Spring 和 Spring MVC 搭建后端，集成 MyBatis（MyBatis-Plus） 进行数据操作
-- 使用 RESTful API 规范进行前后端交互
-- 配置 Java EE 中的安全机制进行用户权限管理
-
-### 开发工具
-
-- **IDE**：使用 IntelliJ IDEA 开发后端，WebStorm 开发前端
-- **调试**：利用 IDE 的调试工具快速发现并解决问题
-- **版本管理**：通过 Git 管理代码，使用 GitHub 进行代码托管
-
----
-
-## 安装与使用
-
-### 前后端部署（同一仓库）
-
-1. 克隆仓库并进入项目目录：
-   ```bash
-   git clone git@github.com:hongmengchen/Endless-Realm.git
-   cd Endless-Realm
-   ```
-
-2. 进入前端目录并安装依赖：
-   ```bash
-   cd frontend
-   npm install
-   ```
-
-3. 启动前端开发服务器：
-   ```bash
-   npm run serve
-   ```
-
-### 后端部署
-
-1. 进入后端目录：
-   ```bash
-   cd backend
-   ```
-
-2. 配置数据库连接：
-   - 编辑数据库配置文件，设置 MySQL 连接信息。
-
-3. 使用 Tomcat 部署后端应用：
-   - 将 `backend` 目录下的 WAR 文件部署到 Tomcat 服务器，或者直接在 Tomcat 中配置该项目。
-
-4. 访问平台：
-   - 后端服务启动后，前端页面会通过接口访问后端提供的 RESTful API。
-
----
-
-## 贡献
-
-我们欢迎开源社区的贡献！如果你有改进意见或功能建议，欢迎提交 **Issue** 或 **Pull Request**。
-
----
-
-## 学习资源
-
-- [Spring 官方文档](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html)
-- [MyBatis 官方文档](https://mybatis.org)
-- [Vue.js 官方文档](https://vuejs.org)
-- [Element UI 官方文档](https://element.eleme.io)
-- [Apifox 官方文档](https://www.apifox.cn)
-
----
-
-希望这个 README 文件能够帮助开发者快速了解项目架构、技术栈和部署流程。如果有任何问题或建议，欢迎提出！
