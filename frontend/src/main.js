@@ -12,6 +12,9 @@ import Store from "./store";
 // 引入babel-polyfill
 import "babel-polyfill";
 
+// // 引入样式
+import "@/common/css/container.css";
+
 // 创建 Vue 实例
 const app = createApp(App);
 
