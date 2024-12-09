@@ -17,17 +17,21 @@
         />
       </div>
       <div class="post-meta">
-        <el-button type="text" size="small" class="post-like">
+        <el-button link size="small" class="post-like" @click="likePost">
           点赞：{{ post.likeCount }}
         </el-button>
-        <el-button type="text" size="small" class="post-comment">
+        <el-button
+          link
+          size="small"
+          class="post-comment"
+          @click="toggleCommentForm"
+        >
           评论：{{ post.commentCount }}
         </el-button>
       </div>
     </el-card>
 
     <!-- 显示评论列表 -->
-    <el-divider></el-divider>
     <div v-if="comments.length > 0">
       <h3>评论</h3>
       <el-card
@@ -44,6 +48,18 @@
     <div v-else>
       <p>暂无评论</p>
     </div>
+
+    <!-- 评论表单 -->
+    <div v-if="showCommentForm" class="comment-form">
+      <el-input
+        type="textarea"
+        v-model="newComment.content"
+        placeholder="请输入评论内容"
+        rows="4"
+      ></el-input>
+      <el-button type="primary" @click="submitComment">提交评论</el-button>
+      <el-button @click="cancelComment">取消</el-button>
+    </div>
   </div>
 </template>
 
@@ -57,6 +73,13 @@ export default {
     return {
       post: null,
       comments: [], // 存储评论列表
+      showCommentForm: false, // 控制评论表单的显示
+      newComment: {
+        content: "",
+        postId: this.$route.params.postId, // 动态ID
+        userId: null,
+        type: 0,
+      },
     };
   },
   async created() {
@@ -86,12 +109,71 @@ export default {
     goHome() {
       this.$router.push("/"); // 跳转到主页
     },
+
+    // 点赞
+    async likePost() {
+      try {
+        // 检查 userInfo 是否存在
+        if (!this.$store.state.user || !this.$store.state.user.userInfo) {
+          this.$message.error("用户信息未加载，请登录后再试！");
+          return;
+        }
+        this.newComment.userId = this.$store.state.user.userInfo.id;
+        this.newComment.type = 2;
+        const res = await commentAPI.likeComment(this.newComment);
+        if (res.data.status_code === 1) {
+          console.log("点赞成功！");
+        } else {
+          this.$message.error("点赞失败！");
+        }
+      } catch (error) {
+        this.$message.error("网络错误，请稍后再试！");
+      }
+    },
+
+    // 切换评论表单的显示与隐藏
+    toggleCommentForm() {
+      this.showCommentForm = !this.showCommentForm;
+    },
+
+    // 提交评论
+    async submitComment() {
+      if (!this.newComment.content.trim()) {
+        this.$message.warning("评论内容不能为空！");
+        return;
+      }
+      try {
+        // 检查 userInfo 是否存在
+        if (!this.$store.state.user || !this.$store.state.user.userInfo) {
+          this.$message.error("用户信息未加载，请登录后再试！");
+          return;
+        }
+
+        this.newComment.userId = this.$store.state.user.userInfo.id;
+        this.newComment.type = 1;
+        const res = await commentAPI.likeComment(this.newComment);
+        if (res.data.status_code === 1) {
+          this.showCommentForm = false; // 隐藏评论表单
+          this.newComment.content = ""; // 清空评论内容
+        } else {
+          this.$message.error("评论提交失败！");
+        }
+      } catch (error) {
+        this.$message.error("网络错误，请稍后再试！");
+        console.error(error); // 打印错误信息
+      }
+    },
+
+    // 取消评论
+    cancelComment() {
+      this.showCommentForm = false;
+      this.newComment.content = ""; // 清空评论内容
+    },
   },
 };
 </script>
 
 <style scoped>
-/* 页面容器样式 */
 .post-detail {
   padding: 20px;
 }
@@ -150,5 +232,10 @@ export default {
   font-size: 12px;
   color: #888;
   margin-top: 5px;
+}
+
+/* 评论表单样式 */
+.comment-form {
+  margin-top: 20px;
 }
 </style>
