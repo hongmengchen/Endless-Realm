@@ -19,7 +19,7 @@ public interface CommentService extends IService<Comment> {
      * @param comment 评论或点赞实体
      * @return 是否成功
      */
-    boolean publishComment(Comment comment);
+    Comment publishComment(Comment comment);
 
     /**
      * 修改评论内容
