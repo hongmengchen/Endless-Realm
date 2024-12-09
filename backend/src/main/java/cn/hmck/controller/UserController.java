@@ -28,7 +28,7 @@ public class UserController {
     private UserService userService;
 
     // 用户注册
-    @CrossOrigin(origins = "http://localhost:8081", methods = {RequestMethod.POST})
+    /*@CrossOrigin(origins = "http://localhost:8081", methods = {RequestMethod.POST})*/
     @PostMapping("/register")
     public Result<User> signIn(@RequestBody User user) {
         System.out.println("===================================");
@@ -41,8 +41,7 @@ public class UserController {
     }
 
     // 用户登录
-    @CrossOrigin(origins = "http://localhost:8081", methods = {RequestMethod.POST, RequestMethod.GET})
-    @RequestMapping("/login")
+    @GetMapping("/login")
     public Result<User> login(@RequestParam("username") @NotEmpty @NotNull String username,
                               @RequestParam("password") @NotEmpty @NotNull String password,
                               HttpServletResponse response) {
@@ -73,8 +72,7 @@ public class UserController {
     }
 
     // 获取用户信息
-    @CrossOrigin(origins = "http://localhost:8081", methods = {RequestMethod.GET})
-    @RequestMapping("/getUserInfo")
+    @GetMapping("/getUserInfo")
     public Result<User> getUserInfo(@RequestParam("id") Integer id) {
         User user = userService.getUserInfo(id);
         return Result.success(user);
