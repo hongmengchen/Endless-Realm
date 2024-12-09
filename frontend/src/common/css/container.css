@@ -1,0 +1,19 @@
+/* 容器 */
+.container {
+  display: flex; /* 使用 Flexbox 布局 */
+  background-color: #f9f9f9; /* 背景色 */
+  height: 100vh; /* 全屏高度 */
+}
+/* 左侧侧边栏样式 */
+.container-aside {
+  padding: 10px;
+  border-right: 1px solid #ddd; /* 分隔线 */
+}
+/* 主内容区域样式 */
+.container-body {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
