@@ -1,11 +1,24 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import baseRouters from "./modules/base";
-import adminRoute from "./modules/adminRoute";
-import userRoute from "./modules/userRoute";
-import postRoute from "./modules/postRoute";
+import baseRouters from "@/router/modules/base";
+import adminRoute from "@/router/modules/adminRoute";
+import userRoute from "@/router/modules/userRoute";
+import postRoute from "@/router/modules/postRoute";
+import searchRoute from "@/router/modules/searchRoute";
+import messageRoute from "@/router/modules/messageRoute";
+import notificationRoute from "@/router/modules/notificationRoute";
+import settingRoute from "@/router/modules/settingRoute";
 
-const routes = [...baseRouters, ...adminRoute, ...userRoute, ...postRoute];
+const routes = [
+  ...baseRouters,
+  ...adminRoute,
+  ...userRoute,
+  ...postRoute,
+  ...searchRoute,
+  ...messageRoute,
+  ...notificationRoute,
+  ...settingRoute,
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
