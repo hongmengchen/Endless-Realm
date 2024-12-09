@@ -2,6 +2,7 @@ package cn.hmck.controller;
 
 import cn.hmck.entity.Post;
 import cn.hmck.service.PostService;
+import cn.hmck.util.ErrorMsg;
 import cn.hmck.util.Result;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,10 +36,15 @@ public class PostController {
     }
 
     // 发布动态
-    @PostMapping
-    public Result<Boolean> publishPost(@RequestParam("title") String title,
-                                       @RequestParam("content") String content,
-                                       @RequestParam("userId") Integer userId) {
-        return null;
+    @PostMapping("/publishPost")
+    public Result<Post> publishPost(@RequestBody Post post) {
+        System.out.println("===================================");
+        System.out.println("发布动态：" + post);
+        System.out.println("===================================");
+        if (postService.publishPost(post)) {
+            return Result.success(post);
+        }else {
+            return Result.fail(ErrorMsg.PUBLISH_POST_ERROR);
+        }
     }
 }
