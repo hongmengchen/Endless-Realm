@@ -29,4 +29,10 @@ public class PostController {
     public Result<List<Post>> getPostByUserId(@RequestParam("id") Integer userId) {
         return Result.success(postService.getPostsByUserId(userId));
     }
+
+    // 获取所有动态
+    @RequestMapping("/getAllPost")
+    public Result<List<Post>> getAllPost() {
+        return Result.success(postService.getAllPost());
+    }
 }

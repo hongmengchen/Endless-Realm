@@ -44,4 +44,7 @@ public interface PostMapper extends BaseMapper<Post> {
      * @return 受影响的行数
      */
     int deletePostById(@Param("id") Integer id);
+
+    // 获取所有动态
+    List<Post> getAllPost();
 }

@@ -71,4 +71,10 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     public List<Post> getPostsByUserId(Integer userId) {
         return postMapper.findPostsByUserId(userId);
     }
+
+    // 获取所有动态
+    @Override
+    public List<Post> getAllPost() {
+        return postMapper.getAllPost();
+    }
 }

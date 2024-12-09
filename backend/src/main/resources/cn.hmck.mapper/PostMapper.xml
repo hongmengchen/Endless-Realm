@@ -45,4 +45,8 @@
     <delete id="deletePostById" parameterType="Integer">
         DELETE FROM er_post WHERE id = #{id}
     </delete>
+    <!--获取所有动态-->
+    <select id="getAllPost" resultMap="postResultMap">
+        SELECT * FROM er_post
+    </select>
 </mapper>

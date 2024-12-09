@@ -45,4 +45,7 @@ public interface PostService extends IService<Post> {
      * @return 动态列表
      */
     List<Post> getPostsByUserId(Integer userId);
+
+    // 获取所有动态
+    List<Post> getAllPost();
 }
