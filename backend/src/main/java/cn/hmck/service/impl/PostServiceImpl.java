@@ -77,4 +77,9 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     public List<Post> getAllPost() {
         return postMapper.getAllPost();
     }
+
+    @Override
+    public Post getPostById(Integer id) {
+        return postMapper.getPostById(id);
+    }
 }
