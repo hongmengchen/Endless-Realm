@@ -22,8 +22,8 @@
         WHERE username = #{username}
           AND password = #{password}
     </select>
-    <!-- 查找所有用户 -->
-    <select id="selectAllUser" resultMap="adminResultMap" resultType="cn.hmck.entity.Admin">
+    <!-- 查找所有管理员 -->
+    <select id="selectAllAdmin" resultMap="adminResultMap" resultType="cn.hmck.entity.Admin">
         SELECT *
         FROM er_admin
     </select>

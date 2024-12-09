@@ -30,7 +30,7 @@ public interface AdminMapper extends BaseMapper<Admin> {
      *
      * @return 所有管理员列表
      */
-    List<Admin> selectAllUser();
+    List<Admin> selectAllAdmin();
 
     /**
      * 根据用户名查询管理员

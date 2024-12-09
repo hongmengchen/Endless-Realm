@@ -35,6 +35,6 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     // 查找所有用户
     @Override
     public List<Admin> getAllUser() {
-        return adminMapper.selectAllUser();
+        return adminMapper.selectAllAdmin();
     }
 }
