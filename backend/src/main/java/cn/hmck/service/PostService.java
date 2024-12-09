@@ -48,4 +48,7 @@ public interface PostService extends IService<Post> {
 
     // 获取所有动态
     List<Post> getAllPost();
+
+    // 获取动态详情
+    Post getPostById(Integer id);
 }
