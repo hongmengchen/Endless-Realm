@@ -1,12 +1,12 @@
 <template>
-  <div class="profile">
+  <div class="container">
     <!-- 左侧侧边栏 -->
-    <el-aside class="profile-aside">
+    <el-aside class="container-aside">
       <AppSideBar />
     </el-aside>
 
     <!-- 右侧内容 -->
-    <el-main class="profile-body">
+    <el-main class="container-body">
       <!-- 用户信息展示 -->
       <div v-if="userInfo && userInfo.username" class="profile-container">
         <!-- 头像 -->
@@ -134,27 +134,6 @@ export default {
 </script>
 
 <style scoped>
-/* 父容器：定义为水平布局 */
-.profile {
-  display: flex; /* 使用 Flexbox 布局 */
-  background-color: #f9f9f9; /* 背景色 */
-  height: 100vh; /* 全屏高度 */
-}
-
-/* 左侧侧边栏样式 */
-.profile-aside {
-  padding: 10px;
-  border-right: 1px solid #ddd; /* 分隔线 */
-}
-
-/* 主内容区域样式 */
-.profile-body {
-  flex: 1;
-  padding: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 .profile-container {
   display: flex;
   flex-direction: column;
