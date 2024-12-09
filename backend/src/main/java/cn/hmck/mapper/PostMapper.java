@@ -22,7 +22,7 @@ public interface PostMapper extends BaseMapper<Post> {
      * @param post 动态对象
      * @return 受影响的行数
      */
-    int insertPost(@Param("post") Post post);
+    int insertPost(Post post);
 
     /**
      * 根据用户ID查询动态列表
