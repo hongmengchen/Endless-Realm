@@ -22,7 +22,7 @@
     </insert>
     <!-- 根据动态ID查询评论 -->
     <select id="selectCommentsByPostId" parameterType="Integer" resultMap="commentResultMap">
-        SELECT id, post_id, user_id, type, content, created_at
+        SELECT *
         FROM er_comment
         WHERE post_id = #{postId}
     </select>

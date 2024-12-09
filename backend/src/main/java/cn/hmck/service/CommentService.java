@@ -30,7 +30,7 @@ public interface CommentService extends IService<Comment> {
     boolean updateCommentContent(Comment comment);
 
     /**
-     * 查询指定动态的所有评论
+     * 根据动态ID查询评论列表
      *
      * @param postId 动态ID
      * @return 评论列表
