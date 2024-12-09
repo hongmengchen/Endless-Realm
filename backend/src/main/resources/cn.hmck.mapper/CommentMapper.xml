@@ -21,10 +21,10 @@
         VALUES (#{postId}, #{userId}, #{type}, #{content})
     </insert>
     <!-- 根据动态ID查询评论 -->
-    <select id="selectCommentsByPostId" parameterType="Integer" resultMap="commentResultMap">
+    <select id="selectCommentsByPostId" parameterType="java.lang.Long" resultMap="commentResultMap">
         SELECT *
         FROM er_comment
-        WHERE post_id = #{postId}
+        WHERE post_id = #{postId} AND type = 1
     </select>
     <!-- 修改评论内容 -->
     <update id="updateCommentContent" parameterType="cn.hmck.entity.Comment">
@@ -33,7 +33,7 @@
         WHERE id = #{id}
     </update>
     <!-- 删除评论或点赞 -->
-    <delete id="deleteCommentById" parameterType="Integer">
+    <delete id="deleteCommentById" parameterType="java.lang.Long">
         DELETE FROM er_comment
         WHERE id = #{id}
     </delete>
