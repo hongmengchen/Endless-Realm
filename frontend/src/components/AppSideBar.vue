@@ -129,7 +129,7 @@ export default {
       } else if (index === "3") {
         router.push("/post"); // 动态
       } else if (index === "4") {
-        router.push("/messages"); // 消息
+        router.push("/message"); // 消息
       } else if (index === "5") {
         router.push("/notification"); // 通知
       } else if (index === "6") {
@@ -146,7 +146,10 @@ export default {
       } else if (command === "register") {
         router.push("/register"); // 跳转到注册页面
       } else if (command === "logout") {
-        router.push("/logout"); // 跳转到注销页面
+        console.log("退出登录");
+        document.cookie =
+          "shUserId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        location.reload();
       }
     };
 
