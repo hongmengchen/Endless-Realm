@@ -1,12 +1,30 @@
 <template>
   <div class="post-detail">
+    <!-- 返回主页按钮 -->
+    <el-button type="primary" @click="goHome" class="back-button">
+      返回主页
+    </el-button>
+
     <!-- 显示动态内容 -->
-    <div v-if="post">
-      <p>内容：{{ post.content }}</p>
-      <img v-if="post.mediaUrl" :src="post.mediaUrl" alt="动态图片" />
-      <p>点赞数：{{ post.likeCount }}</p>
-      <p>评论数：{{ post.commentCount }}</p>
-    </div>
+    <el-card v-if="post" class="post-card">
+      <div class="post-content">
+        <p class="post-text">{{ post.content }}</p>
+        <img
+          v-if="post.mediaUrl"
+          :src="post.mediaUrl"
+          alt="动态图片"
+          class="post-image"
+        />
+      </div>
+      <div class="post-meta">
+        <el-button type="text" size="small" class="post-like">
+          点赞：{{ post.likeCount }}
+        </el-button>
+        <el-button type="text" size="small" class="post-comment">
+          评论：{{ post.commentCount }}
+        </el-button>
+      </div>
+    </el-card>
 
     <!-- 显示评论列表 -->
     <el-divider></el-divider>
@@ -63,17 +81,74 @@ export default {
 
       return `${year} 年 ${month} 月 ${day} 日 ${hour}:${minute}:${second}`;
     },
+
+    // 返回主页
+    goHome() {
+      this.$router.push("/"); // 跳转到主页
+    },
   },
 };
 </script>
 
 <style scoped>
-.comment-card {
-  margin-bottom: 15px;
+/* 页面容器样式 */
+.post-detail {
+  padding: 20px;
 }
 
+/* 返回主页按钮 */
+.back-button {
+  margin-bottom: 20px;
+}
+
+/* 动态卡片样式 */
+.post-card {
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 动态文本样式 */
+.post-text {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+/* 图片样式 */
+.post-image {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+/* 动态元信息样式 */
+.post-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.post-like,
+.post-comment {
+  font-size: 14px;
+  color: #666;
+}
+
+/* 评论卡片样式 */
+.comment-card {
+  margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* 评论时间样式 */
 .comment-time {
   font-size: 12px;
   color: #888;
+  margin-top: 5px;
 }
 </style>
