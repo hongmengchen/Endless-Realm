@@ -10,6 +10,27 @@
       <!-- 顶部导航栏 -->
       <div class="post-header">
         <h2>我的动态</h2>
+        <el-button type="primary" @click="togglePostForm">发布动态</el-button>
+        <el-card v-if="showPostForm" class="post-form">
+          <el-form :model="newPost">
+            <el-form-item label="动态内容">
+              <el-input
+                v-model="newPost.content"
+                type="textarea"
+                placeholder="请输入动态内容"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="上传图片">
+              <el-upload action="上传图片的后端地址" list-type="picture-card">
+                <el-button>上传图片</el-button>
+              </el-upload>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="publishPost">发布</el-button>
+              <el-button @click="togglePostForm">取消</el-button>
+            </el-form-item>
+          </el-form>
+        </el-card>
       </div>
 
       <!-- 动态列表 -->
@@ -58,7 +79,20 @@ export default {
   computed: {
     ...mapState("user", ["userInfo"]), // 映射 Vuex 的 userInfo 状态
   },
-
+  data() {
+    return {
+      posts: [], // 动态列表
+      showPostForm: false, // 控制表单显示与隐藏
+      newPost: {
+        userId: null, // 用户 ID
+        content: "", // 动态内容
+        mediaUrl: "", // 上传成功后的图片地址
+        likeCount: 0, // 点赞数
+        commentCount: 0, // 评论数
+        status: 1, // 状态（默认为 1: 公开）
+      },
+    };
+  },
   created() {
     // 如果用户信息不存在，则尝试加载
     if (!this.userInfo) {
@@ -101,6 +135,33 @@ export default {
       }
     },
 
+    // 显示/隐藏发布动态表单
+    togglePostForm() {
+      this.showPostForm = !this.showPostForm;
+    },
+    // 发布动态
+    async publishPost() {
+      if (!this.newPost.content) {
+        this.$message.error("动态内容不能为空！");
+        return;
+      }
+      try {
+        this.newPost.userId = this.userInfo.id;
+        const res = await PostAPI.addPost(this.newPost);
+        if (res.data.status_code === 1) {
+          this.$message.success("动态发布成功！");
+          this.showPostForm = false;
+          this.newPost = { content: "", mediaUrl: "" }; // 重置表单
+          this.loadPosts(); // 重新加载动态
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      } catch (error) {
+        console.error("动态发布失败:", error);
+        this.$message.error("动态发布失败，请稍后再试！");
+      }
+    },
+
     // 获取 Cookie 的方法
     getCookie(name) {
       const value = `; ${document.cookie}`;
@@ -128,12 +189,6 @@ export default {
     viewComments(postId) {
       window.location.href = `/post/${postId}/comments`;
     },
-  },
-
-  data() {
-    return {
-      posts: [], // 动态列表
-    };
   },
 };
 </script>
