@@ -29,12 +29,16 @@
               <el-button type="text" size="small">
                 点赞：{{ post.likeCount }}
               </el-button>
-              <el-button
-                type="text"
-                size="small"
-                @click="viewComments(post.id)"
-              >
+              <el-button type="text" size="small">
                 评论：{{ post.commentCount }}
+              </el-button>
+              <!-- 新增跳转详情页面的按钮 -->
+              <el-button
+                type="primary"
+                size="small"
+                @click="viewPostDetail(post.id)"
+              >
+                查看详情
               </el-button>
             </div>
             <div class="post-date">
@@ -107,6 +111,12 @@ export default {
       }
     },
 
+    // 查看详情
+    viewPostDetail(postId) {
+      // 使用 Vue Router 跳转到动态详情页面
+      this.$router.push(`/post/${postId}`);
+    },
+
     // 获取 Cookie 的方法
     getCookie(name) {
       const value = `; ${document.cookie}`;
@@ -128,11 +138,6 @@ export default {
 
       // 拼接成标准格式
       return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
-    },
-
-    // 查看评论
-    viewComments(postId) {
-      window.location.href = `/post/${postId}/comments`;
     },
   },
 };
