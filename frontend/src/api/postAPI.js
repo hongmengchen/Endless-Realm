@@ -16,4 +16,10 @@ export default class postAPI {
   static async addPost(userPost) {
     return post("/post/publishPost", userPost);
   }
+  // 获取动态详情
+  static async getPostDetail(id) {
+    return get("/post/getPostById", {
+      id: id,
+    });
+  }
 }
