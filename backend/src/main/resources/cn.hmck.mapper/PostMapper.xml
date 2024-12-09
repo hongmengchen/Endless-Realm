@@ -19,7 +19,7 @@
     </resultMap>
 
     <!-- 插入动态 -->
-    <insert id="insertPost" parameterType="Post">
+    <insert id="insertPost" parameterType="cn.hmck.entity.Post" >
         INSERT INTO er_post (user_id, content, media_url, like_count, comment_count, status)
         VALUES (#{userId}, #{content}, #{mediaUrl}, #{likeCount}, #{commentCount}, #{status})
     </insert>
