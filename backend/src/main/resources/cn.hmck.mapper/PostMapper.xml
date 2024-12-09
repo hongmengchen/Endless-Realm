@@ -49,4 +49,8 @@
     <select id="getAllPost" resultMap="postResultMap">
         SELECT * FROM er_post
     </select>
+    <!--获取动态详情-->
+    <select id="getPostById" parameterType="Integer" resultMap="postResultMap">
+        SELECT * FROM er_post WHERE id = #{id}
+    </select>
 </mapper>
