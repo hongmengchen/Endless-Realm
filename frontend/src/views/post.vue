@@ -48,9 +48,9 @@
 </template>
 <script>
 import AppSideBar from "@/components/AppSideBar.vue";
+import UserAPI from "@/api/userAPI";
 import PostAPI from "@/api/postAPI";
 import { mapActions, mapState } from "vuex";
-import UserAPI from "@/api/userAPI";
 
 export default {
   name: "userPostPage",
