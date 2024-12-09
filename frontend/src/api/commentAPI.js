@@ -5,4 +5,9 @@ export default class commentAPI {
   static async getAllComment(id) {
     return get("/comment/getCommentByPostId", { id: id });
   }
+
+  // 点赞评论当前动态
+  static async likeComment(comment) {
+    return get("/comment/likeComment", comment);
+  }
 }
