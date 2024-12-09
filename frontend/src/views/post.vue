@@ -1,12 +1,12 @@
 <template>
-  <div class="post">
+  <div class="container">
     <!-- 左侧侧边栏 -->
-    <el-aside class="post-aside">
+    <el-aside class="container-aside">
       <AppSideBar />
     </el-aside>
 
     <!-- 右侧内容 -->
-    <el-main class="post-body">
+    <el-main class="container-body">
       <!-- 顶部导航栏 -->
       <div class="post-header">
         <h2>我的动态</h2>
@@ -194,24 +194,6 @@ export default {
 </script>
 
 <style scoped>
-.post {
-  display: flex; /* 使用 Flexbox 布局 */
-  background-color: #f9f9f9; /* 背景色 */
-  height: 100vh; /* 全屏高度 */
-}
-/* 左侧侧边栏样式 */
-.post-aside {
-  padding: 10px;
-  border-right: 1px solid #ddd; /* 分隔线 */
-}
-/* 主内容区域样式 */
-.post-body {
-  flex: 1;
-  padding: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 /* 动态列表样式 */
 .post-list {
   width: 100%;
