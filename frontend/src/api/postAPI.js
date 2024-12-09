@@ -10,13 +10,16 @@ export default class postAPI {
       search: search,
     });
   }
-
+  // 获取用户动态
   static async getPostByUserId(id) {
     return get("/post/getPostByUserId", {
       id: id,
     });
   }
-
+  // 获取所有动态
+  static async getAllPost() {
+    return get("/post/getAllPost");
+  }
   // 修改动态
   static async updatePost(id, title, content, cover, tags, status) {
     return get("/post/updatePost", {
