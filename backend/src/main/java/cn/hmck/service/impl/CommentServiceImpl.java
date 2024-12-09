@@ -34,8 +34,12 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
      * @return 是否成功
      */
     @Override
-    public boolean publishComment(Comment comment) {
-        return commentMapper.insertComment(comment) > 0;
+    public Comment publishComment(Comment comment) {
+        int rowsAffected = commentMapper.insertComment(comment);  // 插入评论
+        if (rowsAffected > 0) {
+            return comment;  // 返回插入后的 Comment 对象，主键应该已被填充
+        }
+        return null;
     }
 
     /**
