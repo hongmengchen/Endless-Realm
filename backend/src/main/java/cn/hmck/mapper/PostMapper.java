@@ -47,4 +47,7 @@ public interface PostMapper extends BaseMapper<Post> {
 
     // 获取所有动态
     List<Post> getAllPost();
+
+    // 获取动态详情
+    Post getPostById(@Param("id") Integer id);
 }
