@@ -34,11 +34,21 @@ public class CommentController {
      */
     @GetMapping("/getCommentByPostId")
     public Result<List<Comment>> getCommentsByPostId(@RequestParam("id") Long postId) {
+        System.out.println("===================================");
         System.out.println("获取评论列表：" + postId);
         System.out.println("===================================");
         if(postId == null){
             return Result.fail(ErrorMsg.PARAM_ERROR);
         }
         return Result.success(commentService.getCommentsByPostId(postId));
+    }
+
+    // 点赞/评论
+    @GetMapping("/likeComment")
+    public Result<Comment> like(Comment comment) {
+        System.out.println("===================================");
+        System.out.println("点赞/评论：" + comment);
+        System.out.println("===================================");
+        return Result.success(commentService.publishComment(comment));
     }
 }
