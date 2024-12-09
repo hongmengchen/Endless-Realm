@@ -12,7 +12,7 @@ import Store from "./store";
 // 引入babel-polyfill
 import "babel-polyfill";
 
-// // 引入样式
+// 引入容器样式
 import "@/common/css/container.css";
 
 // 创建 Vue 实例
