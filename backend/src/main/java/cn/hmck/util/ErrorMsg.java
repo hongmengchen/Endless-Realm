@@ -35,7 +35,8 @@ public enum ErrorMsg {
     REPEAT_COMMIT_ERROR("请勿重复提交"),
     COMMIT_FAIL_ERROR("提交失败"),
     FAVORITE_EXIT("收藏已存在"),
-    NOT_FOUND("未找到");
+    NOT_FOUND("未找到"),
+    PUBLISH_POST_ERROR("动态发布失败");
 
     private final String msg;
 
