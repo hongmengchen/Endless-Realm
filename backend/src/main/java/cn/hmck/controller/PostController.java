@@ -47,4 +47,9 @@ public class PostController {
             return Result.fail(ErrorMsg.PUBLISH_POST_ERROR);
         }
     }
+    // 获取动态详情
+    @GetMapping("/getPostById")
+    public Result<Post> getPostById(@RequestParam("id") Integer id) {
+        return Result.success(postService.getPostById(id));
+    }
 }
