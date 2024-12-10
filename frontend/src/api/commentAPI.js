@@ -1,4 +1,5 @@
 import { get } from "@/utils/request";
+import { post } from "@/utils/request";
 
 export default class commentAPI {
   // 获取当前动态的所有评论
@@ -8,6 +9,6 @@ export default class commentAPI {
 
   // 点赞评论当前动态
   static async likeComment(comment) {
-    return get("/comment/likeComment", comment);
+    return post("/comment/likeComment", comment);
   }
 }
