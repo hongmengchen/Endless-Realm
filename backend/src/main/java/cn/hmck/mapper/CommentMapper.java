@@ -48,4 +48,7 @@ public interface CommentMapper extends BaseMapper<Comment> {
      * @return 删除的行数
      */
     int deleteCommentById(@Param("id") Long id);
+
+    // 统计点赞/评论数
+    int countCommentsByPostIdAndType(@Param("postId") Long postId, @Param("type") Integer type);
 }
