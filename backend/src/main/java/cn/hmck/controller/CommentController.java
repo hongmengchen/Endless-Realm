@@ -2,12 +2,10 @@ package cn.hmck.controller;
 
 import cn.hmck.entity.Comment;
 import cn.hmck.service.CommentService;
+import cn.hmck.service.PostService;
 import cn.hmck.util.ErrorMsg;
 import cn.hmck.util.Result;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -25,6 +23,9 @@ public class CommentController {
     // 注入 CommentService
     @Resource(name = "commentService")
     private CommentService commentService;
+
+    @Resource(name = "postService")
+    private PostService postService;
 
     /**
      * 获取评论列表
@@ -44,11 +45,18 @@ public class CommentController {
     }
 
     // 点赞/评论
-    @GetMapping("/likeComment")
-    public Result<Comment> like(Comment comment) {
+    @PostMapping("/likeComment")
+    public Result<Comment> like(@RequestBody Comment comment) {
         System.out.println("===================================");
         System.out.println("点赞/评论：" + comment);
         System.out.println("===================================");
-        return Result.success(commentService.publishComment(comment));
+        if(comment == null){
+            return Result.fail(ErrorMsg.PARAM_ERROR);
+        }else {
+            Comment newComment = commentService.publishComment(comment);
+            // 更新动态统计数据
+            postService.updatePostStatistics(comment.getPostId());
+            return Result.success(newComment);
+        }
     }
 }
