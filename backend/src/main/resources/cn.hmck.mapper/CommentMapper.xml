@@ -37,5 +37,11 @@
         DELETE FROM er_comment
         WHERE id = #{id}
     </delete>
+    <!--统计点赞/评论数-->
+    <select id="countCommentsByPostIdAndType" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM er_comment
+        WHERE post_id = #{postId} AND type = #{type}
+    </select>
 
 </mapper>
