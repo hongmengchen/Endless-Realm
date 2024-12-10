@@ -36,7 +36,7 @@ public interface PostMapper extends BaseMapper<Post> {
      * @param post 动态对象
      * @return 受影响的行数
      */
-    int updatePost(@Param("post") Post post);
+    int updatePost(Post post);
 
     /**
      * 根据动态ID删除动态
