@@ -1,6 +1,7 @@
 package cn.hmck.service.impl;
 
 import cn.hmck.entity.Post;
+import cn.hmck.mapper.CommentMapper;
 import cn.hmck.mapper.PostMapper;
 import cn.hmck.service.PostService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -21,10 +22,12 @@ import java.util.List;
 public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements PostService {
     // 注入持久层
     private final PostMapper postMapper;
+    private final CommentMapper commentMapper;
 
     @Autowired
-    public PostServiceImpl(PostMapper postMapper) {
+    public PostServiceImpl(PostMapper postMapper, CommentMapper commentMapper) {
         this.postMapper = postMapper;
+        this.commentMapper = commentMapper;
     }
 
     /**
@@ -81,5 +84,21 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     @Override
     public Post getPostById(Integer id) {
         return postMapper.getPostById(id);
+    }
+
+    // 更新动态统计信息
+    @Override
+    public void updatePostStatistics(Long postId) {
+        // 统计点赞数和评论数
+        int likeCount = commentMapper.countCommentsByPostIdAndType(postId, 2);  // 获取点赞数，type = 2
+        int commentCount = commentMapper.countCommentsByPostIdAndType(postId, 1);  // 获取评论数，type = 1
+
+        // 更新 post 表的 likeCount 和 commentCount
+        Post post = postMapper.getPostById(Math.toIntExact(postId));
+        if (post != null) {
+            post.setLikeCount(likeCount);
+            post.setCommentCount(commentCount);
+            postMapper.updatePost(post);
+        }
     }
 }
