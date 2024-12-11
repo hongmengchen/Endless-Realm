@@ -106,6 +106,29 @@ export default {
       try {
         const res = await PostAPI.getAllPost();
         this.posts = res.data.data || [];
+
+        // 按照 createdAt 排序，最新的动态排在最前面
+        this.posts.sort((a, b) => {
+          // 手动构造 Date 对象
+          const dateA = new Date(
+            a.createdAt.year,
+            a.createdAt.monthValue - 1, // 月份从 0 开始
+            a.createdAt.dayOfMonth,
+            a.createdAt.hour,
+            a.createdAt.minute,
+            a.createdAt.second
+          );
+
+          const dateB = new Date(
+            b.createdAt.year,
+            b.createdAt.monthValue - 1, // 月份从 0 开始
+            b.createdAt.dayOfMonth,
+            b.createdAt.hour,
+            b.createdAt.minute,
+            b.createdAt.second
+          );
+          return dateB - dateA; // 降序排列，最新的在前
+        });
       } catch (error) {
         console.error("加载动态失败:", error);
       }
