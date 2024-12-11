@@ -20,6 +20,13 @@ import userAPI from "@/api/userAPI";
 // 创建 Vue 实例
 const app = createApp(App);
 
+// 辅助函数：从 Cookie 中读取指定名称的值
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(";").shift();
+}
+
 // 添加路由守卫
 Router.beforeEach((to, from, next) => {
   document.title = `${to.meta.title || "默认标题"}`; // 设置页面标题
@@ -35,8 +42,10 @@ Router.beforeEach((to, from, next) => {
       to.path === "/post" ||
       to.path === "/post-detail")
   ) {
+    const shUserId = getCookie("shUserId"); // 从 Cookie 中读取 shUserId
+
     userAPI
-      .getUserInfo()
+      .getUserInfo(shUserId)
       .then((res) => {
         console.log("getUserInfo:", res);
         if (res.status_code !== 1) {
