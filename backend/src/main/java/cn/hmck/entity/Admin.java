@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @TableName("er_admin")
 public class Admin implements Serializable {
     @TableId(type = IdType.AUTO)
-    private Long id;  // 管理员ID
+    private Integer id;  // 管理员ID
 
     private String username;  // 管理员用户名
 
