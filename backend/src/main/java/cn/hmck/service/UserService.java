@@ -53,6 +53,9 @@ public interface UserService extends IService<User> {
      */
     boolean updateUserPassword(Integer id, String oldPassword, String newPassword);
 
+    // 修改用户状态
+    boolean updateUserStatus(Integer id, Integer status);
+
     // 根据账号状态获取所有用户
     List<User> getAllUserByStatus(Integer status);
 }
