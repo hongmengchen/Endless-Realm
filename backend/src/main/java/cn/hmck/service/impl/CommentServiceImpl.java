@@ -60,7 +60,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
      * @return 评论列表
      */
     @Override
-    public List<Comment> getCommentsByPostId(Long postId) {
+    public List<Comment> getCommentsByPostId(Integer postId) {
         return commentMapper.selectCommentsByPostId(postId);
     }
 
@@ -71,7 +71,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
      * @return 是否成功
      */
     @Override
-    public boolean deleteCommentById(Long id) {
+    public boolean deleteCommentById(Integer id) {
         return commentMapper.deleteCommentById(id) > 0;
     }
 }
