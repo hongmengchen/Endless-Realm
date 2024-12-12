@@ -68,6 +68,8 @@ public interface UserMapper extends BaseMapper<User> {
      */
     int updateUserPassword(@Param("id") Integer id, @Param("oldPassword") String oldPassword, @Param("newPassword") String newPassword);
 
+    // 修改用户状态
+    int updateUserStatus(@Param("id") Integer id, @Param("status") Integer status);
     /**
      * 删除用户
      *
