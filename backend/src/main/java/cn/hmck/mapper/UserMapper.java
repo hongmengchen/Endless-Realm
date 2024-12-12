@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 用户持久层
  * 提供与 User 实体相关的数据库操作
@@ -73,4 +75,7 @@ public interface UserMapper extends BaseMapper<User> {
      * @return 影响行数
      */
     int deleteById(Integer id);
+
+    // 根据账号状态获取所有用户
+    List<User> getAllUserByStatus(Integer status);
 }
