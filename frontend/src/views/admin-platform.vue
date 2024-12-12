@@ -4,7 +4,7 @@
       <el-header>
         <div class="header">
           <div class="app-name">
-            <router-link to="/platform-admin">后台管理</router-link>
+            <router-link to="/admin-platform">后台管理</router-link>
           </div>
           <span class="app-title">管理员：{{ adminInfo.username }}</span>
           <div class="app-logOut">
