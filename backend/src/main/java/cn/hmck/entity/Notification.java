@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 @TableName("er_notification")
 public class Notification implements Serializable {
     @TableId(type = IdType.AUTO)
-    private Long id;  // 主键
+    private Integer id;  // 主键
 
-    private Long userId;  // 用户ID
+    private Integer userId;  // 用户ID
 
     private String message;  // 通知内容
 
