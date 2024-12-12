@@ -11,11 +11,11 @@ import java.time.LocalDateTime;
 @TableName("er_friendship")
 public class Friendship implements Serializable {
     @TableId(type = IdType.AUTO)
-    private Long id;  // 朋友关系ID
+    private Integer id;  // 朋友关系ID
 
-    private Long userId;  // 用户ID
+    private Integer userId;  // 用户ID
 
-    private Long friendId;  // 朋友ID
+    private Integer friendId;  // 朋友ID
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;  // 创建时间
