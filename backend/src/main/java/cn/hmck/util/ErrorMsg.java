@@ -36,7 +36,8 @@ public enum ErrorMsg {
     COMMIT_FAIL_ERROR("提交失败"),
     FAVORITE_EXIT("收藏已存在"),
     NOT_FOUND("未找到"),
-    PUBLISH_POST_ERROR("动态发布失败");
+    PUBLISH_POST_ERROR("动态发布失败"),
+    GET_USER_LIST_ERROR("获取用户列表失败");
 
     private final String msg;
 
