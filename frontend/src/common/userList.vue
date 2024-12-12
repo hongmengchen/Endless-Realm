@@ -249,41 +249,30 @@ export default {
       }
     },
     // 封号
-    sealUser(i) {
-      console.log(this.userData[i].id);
-      this.$api
-        .updateUserStatus({
-          id: this.userData[i].id,
-          status: 2,
-        })
-        .then((res) => {
-          if (res.status_code == 1) {
-            this.getUserData();
-          } else {
-            this.$message.error(res.msg);
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+    async sealUser(i) {
+      console.log("封号:" + this.userData[i].id);
+      const res = await AdminAPI.updateUserStatus({
+        id: this.userData[i].id,
+        status: 0,
+      });
+      if (res.data.status_code === 1) {
+        await this.getUserData();
+      } else {
+        this.$message.error(res.msg);
+      }
     },
     // 解封
-    unsealUser(i) {
-      this.$api
-        .updateUserStatus({
-          id: this.badUserData[i].id,
-          status: 1,
-        })
-        .then((res) => {
-          if (res.status_code == 1) {
-            this.getBadUserData();
-          } else {
-            this.$message.error(res.msg);
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+    async unsealUser(i) {
+      console.log("解封:" + this.badUserData[i].id);
+      const res = await AdminAPI.updateUserStatus({
+        id: this.badUserData[i].id,
+        status: 1,
+      });
+      if (res.data.status_code === 1) {
+        await this.getBadUserData();
+      } else {
+        this.$message.error(res.msg);
+      }
     },
     // 格式化日期
     formatDate(date) {
