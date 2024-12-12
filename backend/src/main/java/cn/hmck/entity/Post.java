@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 @TableName("er_post")
 public class Post implements Serializable {
     @TableId(type = IdType.AUTO)
-    private Long id;  // 动态ID
+    private Integer id;  // 动态ID
 
-    private Long userId;  // 发布动态的用户ID
+    private Integer userId;  // 发布动态的用户ID
 
     private String content;  // 动态内容
 
