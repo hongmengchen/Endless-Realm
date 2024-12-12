@@ -91,6 +91,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return userMapper.updateUserPassword(id, oldPassword, newPassword) > 0;
     }
 
+    // 修改用户状态
+    @Override
+    public boolean updateUserStatus(Integer id, Integer status) {
+        return userMapper.updateUserStatus(id, status) > 0;
+    }
+
     // 根据账号状态获取所有用户
     @Override
     public List<User> getAllUserByStatus(Integer status) {
