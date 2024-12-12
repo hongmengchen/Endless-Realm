@@ -88,7 +88,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     // 更新动态统计信息
     @Override
-    public void updatePostStatistics(Long postId) {
+    public void updatePostStatistics(Integer postId) {
         // 统计点赞数和评论数
         int likeCount = commentMapper.countCommentsByPostIdAndType(postId, 2);  // 获取点赞数，type = 2
         int commentCount = commentMapper.countCommentsByPostIdAndType(postId, 1);  // 获取评论数，type = 1
