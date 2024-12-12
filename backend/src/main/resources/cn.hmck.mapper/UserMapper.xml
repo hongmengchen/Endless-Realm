@@ -63,5 +63,10 @@
         DELETE FROM er_user
         WHERE id = #{id}
     </delete>
-
+    <!--根据账号状态获取所有用户-->
+    <select id="getAllUserByStatus" parameterType="Integer" resultMap="userResultMap">
+        SELECT *
+        FROM er_user
+        WHERE status = #{status}
+    </select>
 </mapper>
