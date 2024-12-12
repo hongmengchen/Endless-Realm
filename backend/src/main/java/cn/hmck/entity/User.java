@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @TableName("er_user")
 public class User implements Serializable {
     @TableId(type = IdType.AUTO)
-    private Long id;  // 用户ID
+    private Integer id;  // 用户ID
 
     private String username;  // 用户名
 
