@@ -3,6 +3,8 @@ package cn.hmck.service;
 import cn.hmck.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * 用户服务层
  * 定义用户相关的业务接口
@@ -50,4 +52,7 @@ public interface UserService extends IService<User> {
      * @return 修改是否成功
      */
     boolean updateUserPassword(Integer id, String oldPassword, String newPassword);
+
+    // 根据账号状态获取所有用户
+    List<User> getAllUserByStatus(Integer status);
 }
