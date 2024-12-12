@@ -2,7 +2,7 @@
 export default {
   namespaced: true, // 命名空间模块
   state: {
-    adminInfo: null, // 用户信息
+    adminInfo: {}, // 用户信息
   },
   mutations: {
     // 更新管理员信息
