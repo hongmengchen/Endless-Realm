@@ -1,4 +1,5 @@
 import { get } from "@/utils/request";
+import { post } from "@/utils/request";
 
 export default class AdminAPI {
   // 管理员登录
@@ -17,5 +18,9 @@ export default class AdminAPI {
     return get("/admin/getAllUserByStatus", {
       status: status,
     });
+  }
+  // 修改用户状态
+  static async updateUserStatus(id, status) {
+    return post("/admin/updateUserStatus", id, status);
   }
 }
