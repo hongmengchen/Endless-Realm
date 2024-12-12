@@ -53,5 +53,5 @@ public interface PostService extends IService<Post> {
     Post getPostById(Integer id);
 
     // 更新动态的点赞数和评论数
-    void updatePostStatistics(Long postId);
+    void updatePostStatistics(Integer postId);
 }
