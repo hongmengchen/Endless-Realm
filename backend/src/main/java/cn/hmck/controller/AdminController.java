@@ -68,6 +68,9 @@ public class AdminController {
     @GetMapping("/getAllUserByStatus")
     public Result<List<User>> getAllUserByStatus(@RequestParam("status") @NotEmpty @NotNull Integer status) {
         System.out.println("获取用户列表：" + status);
+        if(status == null){
+            return Result.fail(ErrorMsg.PARAM_ERROR);
+        }
         return Result.success(userService.getAllUserByStatus(status));
     }
 
