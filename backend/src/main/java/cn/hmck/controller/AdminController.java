@@ -14,13 +14,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 管理员控制器
  *
  * @author 陈亮
  * @since 2024-12-8
-*/
+ */
 
 @RestController
 @RequestMapping("/admin")
@@ -56,7 +57,7 @@ public class AdminController {
         }
 
         Cookie cookie = new Cookie("shAdminId", String.valueOf(admin.getId()));
-        cookie.setMaxAge(60*60);
+        cookie.setMaxAge(60 * 60);
         cookie.setPath("/");
         cookie.setHttpOnly(false);
         response.addCookie(cookie);
@@ -68,7 +69,7 @@ public class AdminController {
     @GetMapping("/getAllUserByStatus")
     public Result<List<User>> getAllUserByStatus(@RequestParam("status") @NotEmpty @NotNull Integer status) {
         System.out.println("获取用户列表：" + status);
-        if(status == null){
+        if (status == null) {
             return Result.fail(ErrorMsg.PARAM_ERROR);
         }
         return Result.success(userService.getAllUserByStatus(status));
@@ -79,5 +80,22 @@ public class AdminController {
     public Result<List<Admin>> getAllAdmin() {
         System.out.println("获取所有管理员");
         return Result.success(adminService.getAllAdmin());
+    }
+
+    // 修改用户状态
+    @PostMapping("/updateUserStatus")
+    public Result<?> updateUserStatus(@RequestBody Map<String, Object> map) {
+        Integer id = (Integer) map.get("id");
+        Integer status = (Integer) map.get("status");
+
+        System.out.println("修改用户状态：" + id + "   " + status);
+
+        if (id == null || status == null) {
+            return Result.fail(ErrorMsg.PARAM_ERROR);
+        }
+        if (userService.updateUserStatus(id, status)) {
+            return Result.success();
+        }
+        return Result.fail(ErrorMsg.UPDATE_ERROR);
     }
 }
