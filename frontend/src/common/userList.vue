@@ -6,15 +6,6 @@
       mode="horizontal"
       @select="handleSelect"
     >
-      <span v-show="this.mode != 3" class="app-title">
-        <el-input
-          placeholder="用户账号..."
-          v-model="searchValue"
-          @keyup.enter="searchUser"
-        >
-          <el-button icon="el-icon-search" @click="searchUser"></el-button>
-        </el-input>
-      </span>
       <el-menu-item index="1">正常用户</el-menu-item>
       <el-menu-item index="2">违规用户</el-menu-item>
       <el-menu-item index="3">管理员</el-menu-item>
@@ -117,6 +108,9 @@
         show-overflow-tooltip
         width="200"
       >
+        <template v-slot="scope">
+          {{ formatDate(scope.row.createdAt) || "未知" }}
+        </template>
       </el-table-column>
       <el-table-column label="操作">
         <template v-slot="scope">
@@ -144,7 +138,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="accountNumber"
+        prop="username"
         label="用户账号"
         show-overflow-tooltip
         min-width="150"
@@ -173,6 +167,9 @@
         show-overflow-tooltip
         width="200"
       >
+        <template v-slot="scope">
+          {{ formatDate(scope.row.createdAt) || "未知" }}
+        </template>
       </el-table-column>
       <el-table-column label="操作">
         <template v-slot="scope">
@@ -215,6 +212,7 @@
 
 <script>
 import AdminAPI from "@/api/adminAPI";
+import { formatTime } from "element-plus/es/components/countdown/src/utils";
 
 export default {
   name: "userList",
@@ -233,19 +231,7 @@ export default {
     this.getUserData();
   },
   methods: {
-    // 分页切换
-    handleCurrentChange(val) {
-      this.nowPage = val;
-      if (this.mode == 1) {
-        this.getUserData();
-      }
-      if (this.mode == 2) {
-        this.getBadUserData();
-      }
-      if (this.mode == 3) {
-        this.getUserManage();
-      }
-    },
+    formatTime,
     // 菜单切换
     handleSelect(val) {
       if (this.mode !== val) {
@@ -264,32 +250,36 @@ export default {
         }
       }
     },
+    // 分页切换
+    handleCurrentChange(val) {
+      this.nowPage = val;
+      if (this.mode == 1) {
+        this.getUserData();
+      }
+      if (this.mode == 2) {
+        this.getBadUserData();
+      }
+      if (this.mode == 3) {
+        this.getUserManage();
+      }
+    },
     // 获取用户数据--正常用户
     async getUserData() {
       const res = await AdminAPI.getAllUser(1);
       if (res.data.status_code === 1) {
         this.userData = res.data.data;
+      } else {
+        this.$message.error(res.msg);
       }
     },
     // 获取用户数据--违规用户
-    getBadUserData() {
-      this.$api
-        .getUserData({
-          page: this.nowPage,
-          nums: 8,
-          status: 2,
-        })
-        .then((res) => {
-          if (res.status_code == 1) {
-            this.badUserData = res.data.userList;
-            this.total = res.data.total;
-          } else {
-            this.$message.error(res.msg);
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+    async getBadUserData() {
+      const res = await AdminAPI.getAllUser(0);
+      if (res.data.status_code === 1) {
+        this.badUserData = res.data.data;
+      } else {
+        this.$message.error(res.msg);
+      }
     },
     // 获取管理员数据
     getUserManage() {
@@ -375,32 +365,18 @@ export default {
         this.$message.error("两次输入的密码不一致");
       }
     },
-    // 搜索用户
-    searchUser() {
-      this.$api
-        .queryUser({
-          searchValue: this.searchValue,
-          mode: this.mode,
-          page: this.nowPage,
-          nums: 8,
-        })
-        .then((res) => {
-          if (res.status_code == 1) {
-            if (this.mode == 1) {
-              this.userData = res.data.userList;
-              this.total = res.data.total;
-            } else {
-              this.badUserData = res.data.userList;
-              this.total = res.data.total;
-            }
-          } else {
-            this.$message.error(res.msg);
-          }
-        })
-        .catch((e) => {
-          console.error("查询用户失败:", e);
-          this.$message.error("请求失败，请稍后再试");
-        });
+    // 格式化日期
+    formatDate(date) {
+      // 提取日期时间信息
+      const year = date.year;
+      const month = String(date.monthValue).padStart(2, "0"); // 补全两位
+      const day = String(date.dayOfMonth).padStart(2, "0");
+      const hour = String(date.hour).padStart(2, "0");
+      const minute = String(date.minute).padStart(2, "0");
+      const second = String(date.second).padStart(2, "0");
+
+      // 拼接成标准格式
+      return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
     },
   },
 };
