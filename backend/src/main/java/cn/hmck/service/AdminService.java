@@ -15,6 +15,6 @@ import java.util.List;
 public interface AdminService extends IService<Admin> {
     // 管理员登录
     Admin adminLogin(String username, String password);
-    // 查找所有用户
-    List<Admin> getAllUser();
+    // 查找所有管理员
+    List<Admin> getAllAdmin();
 }
