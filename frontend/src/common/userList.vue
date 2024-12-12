@@ -9,62 +9,11 @@
       <el-menu-item index="1">正常用户</el-menu-item>
       <el-menu-item index="2">违规用户</el-menu-item>
       <el-menu-item index="3">管理员</el-menu-item>
-      <div v-show="this.mode === 3" class="addAdminButton">
-        <el-button type="success" @click="adminRegVisible = true"
-          >添加管理员</el-button
-        >
-        <el-dialog
-          title="添加管理员"
-          v-model:visible="adminRegVisible"
-          width="25%"
-        >
-          <span style="margin-left: 10px">新增管理员名称</span>
-          <el-input
-            v-model="adminName"
-            maxlength="8"
-            placeholder="请输入管理员名称"
-            style="padding: 10px 0"
-            clearable
-            required
-          ></el-input>
-          <span style="margin-left: 10px">新增管理员账户</span>
-          <el-input
-            v-model="adminAccount"
-            minlength="8"
-            maxlength="10"
-            placeholder="请输入管理员账户"
-            style="padding: 10px 0"
-            clearable
-            required
-          ></el-input>
-          <span style="margin-left: 10px">新增管理员密码</span>
-          <el-input
-            v-model="adminPassword"
-            minlength="8"
-            placeholder="请输入管理员密码"
-            style="padding: 10px 0"
-            show-password
-            required
-          ></el-input>
-          <span style="margin-left: 10px">确认管理员密码</span>
-          <el-input
-            v-model="adminRePassword"
-            minlength="10"
-            placeholder="请再次输入管理员密码"
-            style="padding: 10px 0"
-            show-password
-            required
-          ></el-input>
-          <span class="dialog-footer">
-            <el-button type="primary" @click="regAdmin">添加</el-button>
-          </span>
-        </el-dialog>
-      </div>
     </el-menu>
 
     <!-- 正常用户列表 -->
     <el-table
-      v-show="this.mode == 1"
+      v-if="mode == 1"
       :data="userData"
       stripe
       style="width: 100%; color: #5a5c61"
@@ -123,7 +72,7 @@
 
     <!-- 违规用户列表 -->
     <el-table
-      v-show="this.mode == 2"
+      v-if="mode == 2"
       :data="badUserData"
       stripe
       style="width: 100%; color: #5a5c61"
@@ -179,30 +128,33 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <!-- 管理员列表 -->
     <el-table
-      v-show="this.mode == 3"
-      :data="userManage"
+      v-if="mode == 3"
+      :data="adminData"
       stripe
       style="width: 100%; color: #5a5c61"
     >
       <el-table-column
-        prop="accountNumber"
+        prop="username"
         label="管理员账号"
         show-overflow-tooltip
         width="200"
       >
       </el-table-column>
-      <el-table-column prop="name" label="管理名称"> </el-table-column>
-      <el-table-column prop="createdAt" label="创建时间"> </el-table-column>
+      <el-table-column prop="createdAt" label="创建时间">
+        <template v-slot="scope">
+          {{ formatDate(scope.row.createdAt) || "未知" }}
+        </template></el-table-column
+      >
     </el-table>
     <div class="block">
       <el-pagination
         @current-change="handleCurrentChange"
         :modelValue="nowPage"
-        :page-size="7"
         background
         layout="prev, pager, next,jumper"
-        :total="total"
         @update:modelValue="nowPage = $event"
       >
       </el-pagination>
@@ -212,7 +164,6 @@
 
 <script>
 import AdminAPI from "@/api/adminAPI";
-import { formatTime } from "element-plus/es/components/countdown/src/utils";
 
 export default {
   name: "userList",
@@ -223,15 +174,13 @@ export default {
       adminRegVisible: false, // 是否显示注册对话框
       userData: [], // 正常用户数据
       badUserData: [], // 违规用户数据
-      userManage: [], // 管理员数据
-      searchValue: "",
+      adminData: [], // 管理员数据
     };
   },
   created() {
     this.getUserData();
   },
   methods: {
-    formatTime,
     // 菜单切换
     handleSelect(val) {
       if (this.mode !== val) {
@@ -246,7 +195,7 @@ export default {
         }
         if (val == 3) {
           this.nowPage = 1;
-          this.getUserManage();
+          this.getAdminData();
         }
       }
     },
@@ -260,7 +209,7 @@ export default {
         this.getBadUserData();
       }
       if (this.mode == 3) {
-        this.getUserManage();
+        this.getAdminData();
       }
     },
     // 获取用户数据--正常用户
@@ -268,6 +217,9 @@ export default {
       const res = await AdminAPI.getAllUser(1);
       if (res.data.status_code === 1) {
         this.userData = res.data.data;
+        this.$nextTick(() => {
+          // 确保 DOM 更新已完成
+        });
       } else {
         this.$message.error(res.msg);
       }
@@ -277,28 +229,24 @@ export default {
       const res = await AdminAPI.getAllUser(0);
       if (res.data.status_code === 1) {
         this.badUserData = res.data.data;
+        this.$nextTick(() => {
+          // 确保 DOM 更新已完成
+        });
       } else {
         this.$message.error(res.msg);
       }
     },
     // 获取管理员数据
-    getUserManage() {
-      this.$api
-        .getUserManage({
-          page: this.nowPage,
-          nums: 8,
-        })
-        .then((res) => {
-          if (res.status_code === 1) {
-            this.userManage = res.data.adminList;
-            this.total = res.data.count;
-          } else {
-            this.$message.error(res.msg);
-          }
-        })
-        .catch((e) => {
-          console.log(e);
+    async getAdminData() {
+      const res = await AdminAPI.getAllAdmin();
+      if (res.data.status_code === 1) {
+        this.adminData = res.data.data;
+        this.$nextTick(() => {
+          // 确保 DOM 更新已完成
         });
+      } else {
+        this.$message.error(res.msg);
+      }
     },
     // 封号
     sealUser(i) {
@@ -336,34 +284,6 @@ export default {
         .catch((e) => {
           console.log(e);
         });
-    },
-    // 添加管理员
-    regAdmin() {
-      if (this.adminPassword === this.adminRePassword) {
-        this.$api
-          .regAdministrator({
-            name: this.adminName,
-            accountNumber: this.adminAccount,
-            password: this.adminPassword,
-          })
-          .then((res) => {
-            if (res.status_code == 1) {
-              this.total = this.total + 1;
-              this.nowPage = Math.ceil(this.total / 8);
-              console.log(this.nowPage);
-              this.getUserManage();
-            } else {
-              this.$message.error(res.msg);
-            }
-          })
-          .catch((e) => {
-            console.log(e);
-            this.$message.error("添加失败，账号重复或网络异常");
-          });
-        this.adminRegVisible = false;
-      } else {
-        this.$message.error("两次输入的密码不一致");
-      }
     },
     // 格式化日期
     formatDate(date) {
