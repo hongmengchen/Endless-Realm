@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 用户服务实现类
  * 实现用户相关的业务逻辑
@@ -87,5 +89,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public boolean updateUserPassword(Integer id, String oldPassword, String newPassword) {
         // 确保用户存在并且旧密码正确
         return userMapper.updateUserPassword(id, oldPassword, newPassword) > 0;
+    }
+
+    // 根据账号状态获取所有用户
+    @Override
+    public List<User> getAllUserByStatus(Integer status) {
+        return userMapper.getAllUserByStatus(status);
     }
 }
