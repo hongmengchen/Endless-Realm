@@ -124,7 +124,8 @@ export default {
         if (res.data.status_code === 1) {
           console.log("点赞成功！");
           // 点赞成功后刷新页面
-          this.$router.go(0); // 使用Vue Router重新加载当前页面
+          // this.$router.go(0);
+          // location.reload();
         } else {
           this.$message.error("点赞失败！");
         }
@@ -159,7 +160,7 @@ export default {
           this.newComment.content = ""; // 清空评论内容
           console.log("评论成功！");
           // 评论成功后刷新页面
-          this.$router.go(0); // 使用Vue Router重新加载当前页面
+          // this.$router.go(0); // 使用Vue Router重新加载当前页面
         } else {
           this.$message.error("评论提交失败！");
         }
