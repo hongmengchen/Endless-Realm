@@ -35,7 +35,7 @@ public interface CommentService extends IService<Comment> {
      * @param postId 动态ID
      * @return 评论列表
      */
-    List<Comment> getCommentsByPostId(Long postId);
+    List<Comment> getCommentsByPostId(Integer postId);
 
     /**
      * 删除评论或取消点赞
@@ -43,5 +43,5 @@ public interface CommentService extends IService<Comment> {
      * @param id 评论或点赞的ID
      * @return 是否成功
      */
-    boolean deleteCommentById(Long id);
+    boolean deleteCommentById(Integer id);
 }
