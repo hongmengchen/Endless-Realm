@@ -34,7 +34,7 @@ public class CommentController {
      * @return 评论列表
      */
     @GetMapping("/getCommentByPostId")
-    public Result<List<Comment>> getCommentsByPostId(@RequestParam("id") Long postId) {
+    public Result<List<Comment>> getCommentsByPostId(@RequestParam("id") Integer postId) {
         System.out.println("===================================");
         System.out.println("获取评论列表：" + postId);
         System.out.println("===================================");
