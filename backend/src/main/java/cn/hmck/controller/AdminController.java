@@ -74,4 +74,10 @@ public class AdminController {
         return Result.success(userService.getAllUserByStatus(status));
     }
 
+    // 获取所有管理员
+    @GetMapping("/getAllAdmin")
+    public Result<List<Admin>> getAllAdmin() {
+        System.out.println("获取所有管理员");
+        return Result.success(adminService.getAllAdmin());
+    }
 }
