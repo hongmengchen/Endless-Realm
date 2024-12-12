@@ -71,10 +71,10 @@ export default {
       console.log(res);
       // 判断是否登录成功
       if (res.data.status_code === 1) {
-        console.log("登录成功");
+        console.log("用户登录成功");
         // 更新用户信息到 Vuex
         this.updateUserInfo(res.data.data);
-        console.log("login-登录：" + this.userInfo.username); // 打印更新后的用户信息
+        console.log("login-用户登录：" + this.userInfo.username); // 打印更新后的用户信息
         // 跳转到首页
         this.$router.push("/");
       } else {
