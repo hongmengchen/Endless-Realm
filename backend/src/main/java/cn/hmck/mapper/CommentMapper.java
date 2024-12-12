@@ -31,7 +31,7 @@ public interface CommentMapper extends BaseMapper<Comment> {
      * @param postId 动态ID
      * @return 评论列表
      */
-    List<Comment> selectCommentsByPostId(@Param("postId") Long postId);
+    List<Comment> selectCommentsByPostId(@Param("postId") Integer postId);
 
     /**
      * 修改评论内容
@@ -47,8 +47,8 @@ public interface CommentMapper extends BaseMapper<Comment> {
      * @param id 评论ID
      * @return 删除的行数
      */
-    int deleteCommentById(@Param("id") Long id);
+    int deleteCommentById(@Param("id") Integer id);
 
     // 统计点赞/评论数
-    int countCommentsByPostIdAndType(@Param("postId") Long postId, @Param("type") Integer type);
+    int countCommentsByPostIdAndType(@Param("postId") Integer postId, @Param("type") Integer type);
 }
