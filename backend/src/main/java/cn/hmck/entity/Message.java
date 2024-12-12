@@ -11,11 +11,11 @@ import java.time.LocalDateTime;
 @TableName("er_message")
 public class Message implements Serializable {
     @TableId(type = IdType.AUTO)
-    private Long id;  // 消息ID
+    private Integer id;  // 消息ID
 
-    private Long senderId;  // 发送者ID
+    private Integer senderId;  // 发送者ID
 
-    private Long receiverId;  // 接收者ID
+    private Integer receiverId;  // 接收者ID
 
     private String content;  // 消息内容
 
