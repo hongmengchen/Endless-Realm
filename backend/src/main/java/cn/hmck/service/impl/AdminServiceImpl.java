@@ -32,9 +32,9 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         return adminMapper.selectByUsernameAndPassword(username, password);
     }
 
-    // 查找所有用户
+    // 查找所有管理员
     @Override
-    public List<Admin> getAllUser() {
+    public List<Admin> getAllAdmin() {
         return adminMapper.selectAllAdmin();
     }
 }
