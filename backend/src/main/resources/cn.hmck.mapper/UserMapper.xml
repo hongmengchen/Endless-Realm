@@ -46,9 +46,8 @@
     <update id="updateUser" parameterType="cn.hmck.entity.User">
         UPDATE er_user
         SET username = #{username},
-            email = #{email},
-            phone = #{phone},
-            status = #{status}
+            email    = #{email},
+            phone    = #{phone}
         WHERE id = #{id}
     </update>
     <!-- 修改用户密码 -->
@@ -58,9 +57,16 @@
         WHERE id = #{id}
           AND password = #{oldPassword}
     </update>
+    <!--修改用户状态-->
+    <update id="updateUserStatus" parameterType="cn.hmck.entity.User">
+        UPDATE er_user
+        SET status = #{status}
+        WHERE id = #{id}
+    </update>
     <!-- 删除用户 -->
     <delete id="deleteById" parameterType="Integer">
-        DELETE FROM er_user
+        DELETE
+        FROM er_user
         WHERE id = #{id}
     </delete>
     <!--根据账号状态获取所有用户-->
