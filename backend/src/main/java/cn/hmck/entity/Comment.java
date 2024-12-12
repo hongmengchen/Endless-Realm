@@ -11,11 +11,11 @@ import java.time.LocalDateTime;
 @TableName("er_comment")
 public class Comment implements Serializable {
     @TableId(type = IdType.AUTO)
-    private Long id;  // 评论ID
+    private Integer id;  // 评论ID
 
-    private Long postId;  // 动态ID
+    private Integer postId;  // 动态ID
 
-    private Long userId;  // 发布评论的用户ID
+    private Integer userId;  // 发布评论的用户ID
 
     private Integer type;  // 评论类型，1为评论，2为点赞
 
