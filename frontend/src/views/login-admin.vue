@@ -38,11 +38,15 @@
 
 <script>
 import adminAPI from "@/api/adminAPI";
+import { mapActions, mapState } from "vuex";
 import { Lock, User } from "@element-plus/icons-vue";
 
 export default {
   name: "adminLoginPage",
   components: { Lock, User },
+  computed: {
+    ...mapState("admin", ["adminInfo"]), // 映射 admin 模块的 adminInfo 状态
+  },
   data() {
     return {
       adminForm: {
@@ -52,6 +56,8 @@ export default {
     };
   },
   methods: {
+    ...mapActions("admin", ["updateAdminInfo"]), // 映射 admin 模块的 updateAdminInfo 方法
+
     // 管理员登录
     async login() {
       const res = await adminAPI.login(
@@ -59,8 +65,14 @@ export default {
         this.adminForm.password
       );
       if (res.data.status_code === 1) {
-        console.log(res);
+        console.log("管理员登录成功");
+        // 更新管理员信息到 Vuex
+        this.updateAdminInfo(res.data.data);
+        console.log("login-管理员登录：" + this.adminInfo.username);
+        // 跳转到后台管理页面
+        this.$router.push("/admin-platform");
       } else {
+        console.log(res.data.msg);
         this.$message.error(res.data.msg);
       }
     },
