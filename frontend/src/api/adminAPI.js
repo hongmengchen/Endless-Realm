@@ -8,6 +8,10 @@ export default class AdminAPI {
       password: password,
     });
   }
+  // 获取所有管理员
+  static async getAllAdmin() {
+    return get("/admin/getAllAdmin");
+  }
   // 根据账号状态获取所有用户
   static async getAllUser(status) {
     return get("/admin/getAllUserByStatus", {
