@@ -8,7 +8,10 @@
           </div>
           <span class="app-title">管理员：{{ adminInfo.username }}</span>
           <div class="app-logOut">
-            <el-button style="margin-right: 100px" type="danger" @click="logout"
+            <el-button
+              style="margin-right: 20px; padding: 10px 20px; font-size: 14px"
+              type="danger"
+              @click="logout"
               >退出登录</el-button
             >
           </div>
@@ -16,24 +19,23 @@
       </el-header>
       <el-container>
         <div class="mainBody">
-          <el-aside>
-            <el-col :span="24">
-              <el-menu
-                default-active="1"
-                class="el-menu-vertical-demo"
-                @select="handleSelect"
-                background-color="#ffffff"
-                text-color="#303133"
-                active-text-color="#409EFF"
-              >
-                <el-menu-item index="1">
-                  <template #title>用户管理</template>
-                </el-menu-item>
-                <el-menu-item index="2">
-                  <template #title>动态管理</template>
-                </el-menu-item>
-              </el-menu>
-            </el-col>
+          <el-aside width="250px">
+            <el-menu
+              default-active="1"
+              class="el-menu-vertical-demo"
+              @select="handleSelect"
+              background-color="#f4f4f4"
+              text-color="#333"
+              active-text-color="#409EFF"
+              :collapse="false"
+            >
+              <el-menu-item index="1">
+                <template #title>用户管理</template>
+              </el-menu-item>
+              <el-menu-item index="2">
+                <template #title>动态管理</template>
+              </el-menu-item>
+            </el-menu>
           </el-aside>
           <el-main>
             <userList v-if="mode == 1"></userList>
@@ -92,12 +94,12 @@ export default {
   left: 0;
   right: 0;
   min-width: 100vw;
-  height: 58px;
+  height: 70px;
   background: #ffffff;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: #eeeeee solid 2px;
+  border-bottom: 1px solid #eeeeee;
   z-index: 1000;
 }
 
@@ -113,8 +115,8 @@ export default {
 
 .app-name a {
   color: #409eff;
-  font-size: 18px;
-  font-weight: 800;
+  font-size: 20px;
+  font-weight: bold;
   text-decoration: none;
   padding: 0 20px;
 }
@@ -123,7 +125,8 @@ export default {
   display: flex;
   justify-content: center;
   flex: 8;
-  width: 100px;
+  font-size: 16px;
+  color: #333;
 }
 
 .app-logOut {
@@ -136,20 +139,35 @@ export default {
 .mainBody {
   display: flex;
   width: 100%;
+  margin-top: 80px; /* 为了给 header 留出空间 */
 }
 
-aside {
-  flex: 1;
-  box-sizing: content-box;
-  min-width: 10vw;
+el-aside {
+  background-color: #fafafa;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   min-height: calc(100vh - 120px);
-  background-color: rgb(255, 255, 255);
-  border-bottom: 1px solid #e5e5e5;
-  border-right: 1px solid #e5e5e5;
 }
 
-main {
+el-main {
   flex: 9;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+el-menu-item {
+  font-size: 16px;
+  padding: 10px;
+}
+
+el-menu {
+  border-radius: 5px;
+}
+
+el-menu-item:hover {
+  background-color: #409eff;
+  color: white;
 }
 
 .foot {
