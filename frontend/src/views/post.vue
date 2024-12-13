@@ -10,52 +10,60 @@
       <!-- 顶部导航栏 -->
       <div class="post-header">
         <h2>我的动态</h2>
-        <el-button type="primary" @click="togglePostForm">发布动态</el-button>
-        <el-card v-if="showPostForm" class="post-form">
-          <el-form :model="newPost">
-            <el-form-item label="动态内容">
-              <el-input
-                v-model="newPost.content"
-                type="textarea"
-                placeholder="请输入动态内容"
-              ></el-input>
-            </el-form-item>
-            <el-form-item label="上传图片">
-              <el-upload action="上传图片的后端地址" list-type="picture-card">
-                <el-button>上传图片</el-button>
-              </el-upload>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="publishPost">发布</el-button>
-              <el-button @click="togglePostForm">取消</el-button>
-            </el-form-item>
-          </el-form>
-        </el-card>
       </div>
+
+      <el-button type="primary" @click="togglePostForm">发布动态</el-button>
+      <el-card v-if="showPostForm" class="post-form">
+        <el-form :model="newPost">
+          <el-form-item label="动态内容">
+            <el-input
+              v-model="newPost.content"
+              type="textarea"
+              placeholder="请输入动态内容"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="上传图片">
+            <el-upload action="上传图片的后端地址" list-type="picture-card">
+              <el-button>上传图片</el-button>
+            </el-upload>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="publishPost">发布</el-button>
+            <el-button @click="togglePostForm">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-card>
 
       <!-- 动态列表 -->
       <el-row :gutter="20" class="post-list">
-        <el-col v-for="post in posts" :key="post.id" :span="24">
-          <el-card class="post-card">
+        <el-col v-for="post in sortedPosts" :key="post.id" :span="24">
+          <el-card class="post-card" shadow="hover">
+            <!-- 动态内容 -->
             <div class="post-content">
-              <p class="content">{{ post.content }}</p>
-              <img
+              <p>{{ post.content }}</p>
+              <el-image
                 v-if="post.mediaUrl"
                 :src="post.mediaUrl"
+                fit="cover"
                 alt="动态图片"
                 class="post-image"
               />
             </div>
+            <!-- 动态元信息 -->
             <div class="post-meta">
-              <el-button type="text" size="small">
-                点赞：{{ post.likeCount }}
-              </el-button>
+              <span>
+                <el-icon><Star /></el-icon> {{ post.likeCount }}
+              </span>
+              <span>
+                <el-icon><ChatLineRound /></el-icon> {{ post.commentCount }}
+              </span>
+              <!-- 跳转详情页面的按钮 -->
               <el-button
-                type="text"
+                type="primary"
                 size="small"
-                @click="viewComments(post.id)"
+                @click="viewPostDetail(post.id)"
               >
-                评论：{{ post.commentCount }}
+                查看详情
               </el-button>
             </div>
             <div class="post-date">
@@ -72,12 +80,22 @@ import AppSideBar from "@/components/AppSideBar.vue";
 import UserAPI from "@/api/userAPI";
 import PostAPI from "@/api/postAPI";
 import { mapActions, mapState } from "vuex";
+import { ElMessage } from "element-plus";
+import { ChatLineRound, Star } from "@element-plus/icons-vue";
 
 export default {
   name: "userPostPage",
-  components: { AppSideBar },
+  components: { ChatLineRound, Star, AppSideBar },
   computed: {
     ...mapState("user", ["userInfo"]), // 映射 Vuex 的 userInfo 状态
+    // 对动态进行排序的计算属性
+    sortedPosts() {
+      return [...this.posts].sort(
+        (a, b) =>
+          this.getDateFromCreatedAt(b.createdAt) -
+          this.getDateFromCreatedAt(a.createdAt)
+      );
+    },
   },
   data() {
     return {
@@ -123,37 +141,15 @@ export default {
     // 加载动态
     async loadPosts() {
       if (!this.userInfo || !this.userInfo.id) {
-        console.warn("用户信息未加载，无法加载动态");
+        ElMessage.warning("用户信息未加载，无法加载动态");
         return;
       }
-
+      // 使用 Vuex 的 getters 获取当前用户的 ID
       try {
         const res = await PostAPI.getPostByUserId(this.userInfo.id);
         this.posts = res.data.data || [];
-
-        // 按照 createdAt 排序，最新的动态排在最前面
-        this.posts.sort((a, b) => {
-          // 手动构造 Date 对象
-          const dateA = new Date(
-            a.createdAt.year,
-            a.createdAt.monthValue - 1, // 月份从 0 开始
-            a.createdAt.dayOfMonth,
-            a.createdAt.hour,
-            a.createdAt.minute,
-            a.createdAt.second
-          );
-
-          const dateB = new Date(
-            b.createdAt.year,
-            b.createdAt.monthValue - 1, // 月份从 0 开始
-            b.createdAt.dayOfMonth,
-            b.createdAt.hour,
-            b.createdAt.minute,
-            b.createdAt.second
-          );
-          return dateB - dateA; // 降序排列，最新的在前
-        });
       } catch (error) {
+        ElMessage.error("加载动态失败");
         console.error("加载动态失败:", error);
       }
     },
@@ -208,9 +204,22 @@ export default {
       return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
     },
 
-    // 查看评论
-    viewComments(postId) {
-      window.location.href = `/post/${postId}/comments`;
+    // 查看详情
+    viewPostDetail(postId) {
+      // 使用 Vue Router 跳转到动态详情页面
+      this.$router.push(`/post/${postId}`);
+    },
+
+    // 从 createdAt 对象创建 Date 对象
+    getDateFromCreatedAt(createdAt) {
+      return new Date(
+        createdAt.year,
+        createdAt.monthValue - 1,
+        createdAt.dayOfMonth,
+        createdAt.hour,
+        createdAt.minute,
+        createdAt.second
+      );
     },
   },
 };
