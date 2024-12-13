@@ -70,6 +70,10 @@
               <span>
                 <el-icon><ChatLineRound /></el-icon> {{ post.commentCount }}
               </span>
+              <!-- 修改按钮 -->
+              <el-button type="primary" size="small" @click="editPost(post)"
+                >修改
+              </el-button>
               <!-- 删除按钮 -->
               <el-button
                 type="danger"
@@ -87,11 +91,33 @@
               </el-button>
             </div>
             <div class="post-date">
-              发布于：{{ formatDate(post.createdAt) }}
+              发布于：{{ formatDate(post.updatedAt) }}
             </div>
           </el-card>
         </el-col>
       </el-row>
+
+      <!-- 修改动态表单 -->
+      <el-dialog v-model="showEditForm" title="修改动态">
+        <el-form :model="editPostData">
+          <el-form-item label="动态内容">
+            <el-input
+              v-model="editPostData.content"
+              type="textarea"
+              placeholder="请输入新的动态内容"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="上传图片">
+            <el-upload action="上传图片的后端地址" list-type="picture-card">
+              <el-button>上传图片</el-button>
+            </el-upload>
+          </el-form-item>
+          <div class="dialog-footer">
+            <el-button @click="showEditForm = false">取消</el-button>
+            <el-button type="primary" @click="confirmEdit">提交</el-button>
+          </div>
+        </el-form>
+      </el-dialog>
     </el-main>
   </div>
 </template>
@@ -112,17 +138,36 @@ export default {
     },
     // 对动态进行排序的计算属性
     sortedPosts() {
-      return [...this.posts].sort(
-        (a, b) =>
-          this.getDateFromCreatedAt(b.createdAt) -
-          this.getDateFromCreatedAt(a.createdAt)
-      );
+      return [...this.posts].sort((a, b) => {
+        const dateA = new Date(
+          Date.UTC(
+            a.updatedAt[0],
+            a.updatedAt[1] - 1,
+            a.updatedAt[2],
+            a.updatedAt[3],
+            a.updatedAt[4],
+            a.updatedAt[5]
+          )
+        );
+        const dateB = new Date(
+          Date.UTC(
+            b.updatedAt[0],
+            b.updatedAt[1] - 1,
+            b.updatedAt[2],
+            b.updatedAt[3],
+            b.updatedAt[4],
+            b.updatedAt[5]
+          )
+        );
+        return dateB - dateA; // 降序排列，最新的动态排在最前面
+      });
     },
   },
   data() {
     return {
       posts: [], // 动态列表
-      showPostForm: false, // 控制表单显示与隐藏
+      showPostForm: false, // 显示发布动态表单
+      showEditForm: false, // 显示修改动态表单
       newPost: {
         userId: null, // 用户 ID
         content: "", // 动态内容
@@ -130,6 +175,11 @@ export default {
         likeCount: 0, // 点赞数
         commentCount: 0, // 评论数
         status: 1, // 状态（默认为 1: 公开）
+      },
+      editPostData: {
+        id: null,
+        content: "",
+        mediaUrl: "",
       },
     };
   },
@@ -212,21 +262,25 @@ export default {
       }
     },
 
-    // 删除动态确认
-    confirmDelete(postId) {
-      ElMessageBox.confirm("您确定要删除这条动态吗?", "删除确认", {
-        confirmButtonText: "删除",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
-          this.deletePost(postId); // 确认删除
-        })
-        .catch(() => {
-          ElMessage.info("删除操作已取消");
-        });
+    // 修改动态
+    editPost(post) {
+      this.editPostData = { ...post }; // 初始化表单数据
+      this.showEditForm = true;
     },
-
+    async confirmEdit() {
+      try {
+        const res = await PostAPI.updatePost(this.editPostData);
+        if (res.data.status_code === 1) {
+          ElMessage.success("动态修改成功！");
+          this.showEditForm = false;
+          this.loadPosts(); // 重新加载动态
+        } else {
+          this.showError(res.data.msg || "修改动态失败！");
+        }
+      } catch (error) {
+        this.showError("动态修改失败，请稍后再试！");
+      }
+    },
     // 删除动态
     async deletePost(postId) {
       try {
@@ -242,6 +296,19 @@ export default {
         ElMessage.error("删除动态失败，请稍后再试！");
       }
     },
+    confirmDelete(postId) {
+      ElMessageBox.confirm("您确定要删除这条动态吗?", "删除确认", {
+        confirmButtonText: "删除",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.deletePost(postId); // 确认删除
+        })
+        .catch(() => {
+          ElMessage.info("删除操作已取消");
+        });
+    },
 
     // 获取 Cookie 的方法
     getCookie(name) {
@@ -253,35 +320,37 @@ export default {
     },
 
     // 格式化日期
-    formatDate(date) {
-      // 提取日期时间信息
-      const year = date.year;
-      const month = String(date.monthValue).padStart(2, "0"); // 补全两位
-      const day = String(date.dayOfMonth).padStart(2, "0");
-      const hour = String(date.hour).padStart(2, "0");
-      const minute = String(date.minute).padStart(2, "0");
-      const second = String(date.second).padStart(2, "0");
+    formatDate(dateArray) {
+      // 将 [2024, 12, 13, 15, 46, 29] 转换为 JavaScript Date 对象
+      const date = new Date(
+        Date.UTC(
+          dateArray[0], // 年份
+          dateArray[1] - 1, // 月份（JavaScript 中月份从 0 开始）
+          dateArray[2], // 日期
+          dateArray[3], // 小时
+          dateArray[4], // 分钟
+          dateArray[5] // 秒
+        )
+      );
 
-      // 拼接成标准格式
-      return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+      // 使用 toLocaleString 方法格式化日期，并确保使用 UTC 时区
+      return date.toLocaleString("zh-CN", {
+        weekday: "long", // 星期几
+        year: "numeric", // 年份
+        month: "long", // 月份（完整）
+        day: "numeric", // 日期
+        hour: "2-digit", // 小时
+        minute: "2-digit", // 分钟
+        second: "2-digit", // 秒
+        hour12: false, // 24小时制
+        timeZone: "UTC", // 指定时区为 UTC
+      });
     },
 
     // 查看详情
     viewPostDetail(postId) {
       // 使用 Vue Router 跳转到动态详情页面
       this.$router.push(`/post/${postId}`);
-    },
-
-    // 从 createdAt 对象创建 Date 对象
-    getDateFromCreatedAt(createdAt) {
-      return new Date(
-        createdAt.year,
-        createdAt.monthValue - 1,
-        createdAt.dayOfMonth,
-        createdAt.hour,
-        createdAt.minute,
-        createdAt.second
-      );
     },
 
     // 根据状态获取动态状态标签
@@ -300,6 +369,11 @@ export default {
         0: "warning", // 私密状态
       };
       return statusTypes[status] || "info"; // 默认"info"类型
+    },
+
+    // 工具方法：显示错误消息
+    showError(message) {
+      ElMessage.error(message);
     },
   },
 };
