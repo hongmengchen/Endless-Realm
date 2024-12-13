@@ -57,4 +57,7 @@ public interface PostService extends IService<Post> {
 
     // 根据动态状态获取所有动态
     List<Post> getPostByStatus(Integer status);
+
+    // 修改动态状态
+    boolean updatePostStatus(Integer id, Integer status);
 }
