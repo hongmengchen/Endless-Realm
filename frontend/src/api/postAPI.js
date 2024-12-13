@@ -1,5 +1,4 @@
-import { get } from "@/utils/request";
-import { post } from "@/utils/request";
+import { _delete, get, post } from "@/utils/request";
 
 export default class postAPI {
   // 获取用户动态
@@ -31,5 +30,11 @@ export default class postAPI {
   // 更新动态状态
   static async updatePostStatus(id, status) {
     return post("/post/updatePostStatus", id, status);
+  }
+  // 删除动态
+  static async deletePost(id) {
+    return _delete("/post/deletePostById", {
+      id: id,
+    });
   }
 }
