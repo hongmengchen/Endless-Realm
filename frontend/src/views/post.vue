@@ -7,12 +7,15 @@
 
     <!-- 右侧内容 -->
     <el-main class="container-body">
-      <!-- 顶部导航栏 -->
+      <!-- 动态发布 -->
       <div class="post-header">
         <h2>我的动态</h2>
       </div>
 
+      <!-- 发布动态按钮 -->
       <el-button type="primary" @click="togglePostForm">发布动态</el-button>
+
+      <!-- 发布动态表单 -->
       <el-card v-if="showPostForm" class="post-form">
         <el-form :model="newPost">
           <el-form-item label="动态内容">
@@ -49,6 +52,16 @@
                 class="post-image"
               />
             </div>
+
+            <!-- 动态状态 -->
+            <div class="post-status">
+              <el-tag :type="getStatusTagType(post.status)" class="status-tag">
+                <span class="status-text">{{
+                  getStatusLabel(post.status)
+                }}</span>
+              </el-tag>
+            </div>
+
             <!-- 动态元信息 -->
             <div class="post-meta">
               <span>
@@ -57,6 +70,13 @@
               <span>
                 <el-icon><ChatLineRound /></el-icon> {{ post.commentCount }}
               </span>
+              <!-- 删除按钮 -->
+              <el-button
+                type="danger"
+                size="small"
+                @click="confirmDelete(post.id)"
+                >删除</el-button
+              >
               <!-- 跳转详情页面的按钮 -->
               <el-button
                 type="primary"
@@ -80,7 +100,7 @@ import AppSideBar from "@/components/AppSideBar.vue";
 import UserAPI from "@/api/userAPI";
 import PostAPI from "@/api/postAPI";
 import { mapActions } from "vuex";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 import { ChatLineRound, Star } from "@element-plus/icons-vue";
 
 export default {
@@ -160,6 +180,7 @@ export default {
     togglePostForm() {
       this.showPostForm = !this.showPostForm;
     },
+
     // 发布动态
     async publishPost() {
       if (!this.newPost.content) {
@@ -188,6 +209,37 @@ export default {
       } catch (error) {
         console.error("动态发布失败:", error);
         ElMessage.error("动态发布失败，请稍后再试！");
+      }
+    },
+
+    // 删除动态确认
+    confirmDelete(postId) {
+      ElMessageBox.confirm("您确定要删除这条动态吗?", "删除确认", {
+        confirmButtonText: "删除",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.deletePost(postId); // 确认删除
+        })
+        .catch(() => {
+          ElMessage.info("删除操作已取消");
+        });
+    },
+
+    // 删除动态
+    async deletePost(postId) {
+      try {
+        const res = await PostAPI.deletePost(postId);
+        if (res.data.status_code === 1) {
+          ElMessage.success("动态删除成功！");
+          this.loadPosts(); // 重新加载动态
+        } else {
+          ElMessage.error("删除动态失败！");
+        }
+      } catch (error) {
+        console.error("删除动态失败:", error);
+        ElMessage.error("删除动态失败，请稍后再试！");
       }
     },
 
@@ -231,6 +283,24 @@ export default {
         createdAt.second
       );
     },
+
+    // 根据状态获取动态状态标签
+    getStatusLabel(status) {
+      const statusLabels = {
+        1: "公开", // 公开状态
+        0: "私密", // 私密状态
+      };
+      return statusLabels[status] || "未知状态";
+    },
+
+    // 根据状态获取对应的标签类型
+    getStatusTagType(status) {
+      const statusTypes = {
+        1: "success", // 公开状态
+        0: "warning", // 私密状态
+      };
+      return statusTypes[status] || "info"; // 默认"info"类型
+    },
   },
 };
 </script>
@@ -261,6 +331,24 @@ export default {
   max-width: 100%;
   border-radius: 5px;
   margin-top: 10px;
+}
+
+/* 动态状态样式 */
+.post-status {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  color: #888;
+}
+
+.status-tag {
+  font-size: 14px;
+  padding: 5px 10px;
+}
+
+.status-text {
+  font-weight: bold;
+  text-transform: capitalize;
 }
 
 /* 动态元信息样式 */
