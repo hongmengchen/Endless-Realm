@@ -187,17 +187,12 @@ export default {
 
 /* 动态内容样式 */
 .post-content {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
-.post-content .content {
-  font-size: 16px;
-  margin-bottom: 10px;
-}
-
-.post-content .post-image {
+.post-image {
   max-width: 100%;
-  border-radius: 5px;
+  border-radius: 4px;
   margin-top: 10px;
 }
 
@@ -205,6 +200,7 @@ export default {
 .post-meta {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-top: 10px;
 }
 
