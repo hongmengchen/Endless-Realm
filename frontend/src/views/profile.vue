@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <!-- 左侧侧边栏 -->
+    <!-- 左侧边栏 -->
     <el-aside class="container-aside">
       <AppSideBar />
     </el-aside>
@@ -37,7 +37,7 @@
 
         <!-- 操作按钮 -->
         <div class="action-section">
-          <el-button type="primary" @click="editProfile">编辑资料</el-button>
+          <el-button type="primary" @click="openEditDialog">编辑资料</el-button>
           <el-button type="danger" @click="logout">退出登录</el-button>
         </div>
       </div>
@@ -46,6 +46,32 @@
       <div v-else>
         <p>请先登录以查看个人信息。</p>
       </div>
+
+      <!-- 编辑资料的弹窗 -->
+      <el-dialog v-model="editDialogVisible" title="编辑资料" width="400px">
+        <el-form :model="editForm" ref="editForm" label-width="100px">
+          <!-- 用户名输入框 -->
+          <el-form-item label="用户名">
+            <el-input v-model="editForm.username" placeholder="请输入用户名" />
+          </el-form-item>
+
+          <!-- 邮箱输入框 -->
+          <el-form-item label="邮箱">
+            <el-input v-model="editForm.email" placeholder="请输入邮箱" />
+          </el-form-item>
+
+          <!-- 手机号输入框 -->
+          <el-form-item label="手机号">
+            <el-input v-model="editForm.phone" placeholder="请输入手机号" />
+          </el-form-item>
+        </el-form>
+
+        <!-- 弹窗底部操作 -->
+        <span class="dialog-footer">
+          <el-button @click="editDialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="submitEditProfile">保存</el-button>
+        </span>
+      </el-dialog>
     </el-main>
   </div>
 </template>
@@ -62,7 +88,16 @@ export default {
     ...mapState("user", ["userInfo"]), // 映射 Vuex 的 userInfo 状态
   },
   data() {
-    return {};
+    return {
+      // 控制弹窗显示的变量
+      editDialogVisible: false,
+      // 编辑资料的表单数据
+      editForm: {
+        username: this.userInfo ? this.userInfo.username : "", // 默认填充用户名
+        email: this.userInfo ? this.userInfo.email : "", // 默认填充邮箱
+        phone: this.userInfo ? this.userInfo.phone : "", // 默认填充手机号
+      },
+    };
   },
   created() {
     // 如果用户信息不存在，则尝试加载
@@ -101,10 +136,37 @@ export default {
       });
     },
 
-    // 编辑资料
-    editProfile() {
-      console.log("编辑资料");
-      // 在这里可以跳转到编辑页面或者打开弹窗
+    // 打开编辑资料弹窗
+    openEditDialog() {
+      console.log("打开编辑资料弹窗");
+      // 填充当前用户信息到表单
+      this.editForm.username = this.userInfo.username;
+      this.editForm.email = this.userInfo.email;
+      this.editForm.phone = this.userInfo.phone;
+
+      // 显示弹窗
+      this.editDialogVisible = true;
+    },
+
+    // 提交编辑资料
+    async submitEditProfile() {
+      try {
+        const updatedUserInfo = { ...this.userInfo, ...this.editForm }; // 合并原用户信息和修改后的信息
+        // 发送请求到后端更新用户信息
+        const res = await UserAPI.updateUserInfo(updatedUserInfo);
+
+        if (res.data.status_code === 1) {
+          // 如果返回成功，更新 Vuex 中的用户信息
+          this.updateUserInfo(updatedUserInfo);
+          this.$message.success("资料更新成功"); // 提示更新成功
+          this.editDialogVisible = false; // 关闭弹窗
+        } else {
+          this.$message.error("更新失败，请重试"); // 提示更新失败
+        }
+      } catch (error) {
+        console.error("Error updating profile:", error);
+        this.$message.error("更新失败，请重试"); // 捕获错误并提示
+      }
     },
 
     // 退出登录
@@ -166,5 +228,9 @@ export default {
 .action-section {
   display: flex;
   gap: 10px;
+}
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>
