@@ -146,8 +146,8 @@
       <el-table-column prop="createdAt" label="创建时间">
         <template v-slot="scope">
           {{ formatDate(scope.row.createdAt) || "未知" }}
-        </template></el-table-column
-      >
+        </template>
+      </el-table-column>
     </el-table>
     <div class="block">
       <el-pagination

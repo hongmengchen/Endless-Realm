@@ -23,6 +23,9 @@
         width="200"
         show-overflow-tooltip
       >
+        <template v-slot="scope">
+          {{ formatDate(scope.row.createdAt) || "未知" }}
+        </template>
       </el-table-column>
       <el-table-column
         prop="userId"
@@ -80,6 +83,9 @@
         width="200"
         show-overflow-tooltip
       >
+        <template v-slot="scope">
+          {{ formatDate(scope.row.createdAt) || "未知" }}
+        </template>
       </el-table-column>
       <el-table-column
         prop="userId"
@@ -136,8 +142,8 @@ export default {
   data() {
     return {
       mode: 1,
-      onlinePosts: [],
-      OfflinePosts: [],
+      onlinePosts: [], // 正常动态
+      OfflinePosts: [], // 违规动态
       status: 1,
     };
   },
@@ -167,7 +173,7 @@ export default {
         await this.getOnlinePosts();
         ElMessage.success("下架成功");
       } else {
-        this.$message.error(res.msg);
+        ElMessage.error(res.msg);
       }
     },
     // 删除动态
@@ -177,7 +183,7 @@ export default {
         await this.getOfflinePosts();
         ElMessage.success("删除成功");
       } else {
-        this.$message.error(res.msg);
+        ElMessage.error(res.msg);
       }
     },
     // 获取正常动态列表
@@ -189,7 +195,7 @@ export default {
           // 确保 DOM 更新已完成
         });
       } else {
-        this.$message.error(res.msg);
+        ElMessage.error(res.msg);
       }
     },
     // 获取违规动态列表
@@ -201,8 +207,21 @@ export default {
           // 确保 DOM 更新已完成
         });
       } else {
-        this.$message.error(res.msg);
+        ElMessage.error(res.msg);
       }
+    },
+    // 格式化日期
+    formatDate(date) {
+      // 提取日期时间信息
+      const year = date.year;
+      const month = String(date.monthValue).padStart(2, "0"); // 补全两位
+      const day = String(date.dayOfMonth).padStart(2, "0");
+      const hour = String(date.hour).padStart(2, "0");
+      const minute = String(date.minute).padStart(2, "0");
+      const second = String(date.second).padStart(2, "0");
+
+      // 拼接成标准格式
+      return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
     },
   },
 };
