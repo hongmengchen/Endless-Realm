@@ -76,4 +76,17 @@ public class PostController {
         }
         return Result.fail(ErrorMsg.UPDATE_ERROR);
     }
+
+    // 删除动态
+    @DeleteMapping("/deletePostById")
+    public Result<?> deletePostById(@RequestParam("id") Integer id ) {
+        System.out.println("删除动态：" + id);
+        if (id == null) {
+            return Result.fail(ErrorMsg.PARAM_ERROR);
+        }
+        if (postService.deletePostById(id)) {
+            return Result.success();
+        }
+        return Result.fail(ErrorMsg.DELETE_ERROR);
+    }
 }
