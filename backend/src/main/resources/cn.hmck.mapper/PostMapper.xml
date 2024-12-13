@@ -35,6 +35,8 @@
         <set>
             <if test="content != null">content = #{content},</if>
             <if test="mediaUrl != null">media_url = #{mediaUrl},</if>
+            <if test="likeCount != null">like_count = #{likeCount},</if>
+            <if test="commentCount != null">comment_count = #{commentCount},</if>
         </set>
         WHERE id = #{id}
     </update>
