@@ -79,7 +79,7 @@
 import AppSideBar from "@/components/AppSideBar.vue";
 import UserAPI from "@/api/userAPI";
 import PostAPI from "@/api/postAPI";
-import { mapActions, mapState } from "vuex";
+import { mapActions } from "vuex";
 import { ElMessage } from "element-plus";
 import { ChatLineRound, Star } from "@element-plus/icons-vue";
 
@@ -87,7 +87,9 @@ export default {
   name: "userPostPage",
   components: { ChatLineRound, Star, AppSideBar },
   computed: {
-    ...mapState("user", ["userInfo"]), // 映射 Vuex 的 userInfo 状态
+    userInfo() {
+      return this.$store.state.user?.userInfo;
+    },
     // 对动态进行排序的计算属性
     sortedPosts() {
       return [...this.posts].sort(
@@ -161,23 +163,31 @@ export default {
     // 发布动态
     async publishPost() {
       if (!this.newPost.content) {
-        this.$message.error("动态内容不能为空！");
+        ElMessage.warning("动态内容不能为空！");
+        return;
+      }
+      if (!this.userInfo) {
+        ElMessage.error("请先登录！");
+        return;
+      }
+      if (this.userInfo.status === 0) {
+        ElMessage.error("您的账号已被封禁，暂时无法发布动态！");
         return;
       }
       try {
         this.newPost.userId = this.userInfo.id;
         const res = await PostAPI.addPost(this.newPost);
         if (res.data.status_code === 1) {
-          this.$message.success("动态发布成功！");
+          ElMessage.success("动态发布成功！");
           this.showPostForm = false;
           this.newPost = { content: "", mediaUrl: "" }; // 重置表单
           this.loadPosts(); // 重新加载动态
         } else {
-          this.$message.error(res.data.msg);
+          ElMessage.error(res.data.msg);
         }
       } catch (error) {
         console.error("动态发布失败:", error);
-        this.$message.error("动态发布失败，请稍后再试！");
+        ElMessage.error("动态发布失败，请稍后再试！");
       }
     },
 
