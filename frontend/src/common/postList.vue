@@ -168,23 +168,14 @@ export default {
         this.$message.error(res.msg);
       }
     },
-    // 删除
+    // 删除动态
     async deletePost(i) {
-      this.$api
-        .updateGoods({
-          id: this.OfflineGoods[i].id,
-          status: 0,
-        })
-        .then((res) => {
-          if (res.status_code == 1) {
-            this.getOfflineGoods();
-          } else {
-            this.$message.error(res.msg);
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+      const res = await PostAPI.deletePost(this.OfflinePosts[i].id);
+      if (res.data.status_code === 1) {
+        await this.getOfflinePosts();
+      } else {
+        this.$message.error(res.msg);
+      }
     },
     // 获取正常动态列表
     async getOnlinePosts() {
