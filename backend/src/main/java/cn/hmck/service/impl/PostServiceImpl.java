@@ -107,4 +107,10 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     public List<Post> getPostByStatus(Integer status) {
         return postMapper.getPostByStatus(status);
     }
+
+    // 修改动态状态
+    @Override
+    public boolean updatePostStatus(Integer id, Integer status) {
+        return postMapper.updatePostStatus(id, status) > 0;
+    }
 }
