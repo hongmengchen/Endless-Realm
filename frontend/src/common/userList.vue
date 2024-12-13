@@ -170,7 +170,6 @@ export default {
   data() {
     return {
       mode: 1,
-      nowPage: 1,
       adminRegVisible: false, // 是否显示注册对话框
       userData: [], // 正常用户数据
       badUserData: [], // 违规用户数据
@@ -186,30 +185,14 @@ export default {
       if (this.mode !== val) {
         this.mode = val;
         if (val == 1) {
-          this.nowPage = 1;
           this.getUserData();
         }
         if (val == 2) {
-          this.nowPage = 1;
           this.getBadUserData();
         }
         if (val == 3) {
-          this.nowPage = 1;
           this.getAdminData();
         }
-      }
-    },
-    // 分页切换
-    handleCurrentChange(val) {
-      this.nowPage = val;
-      if (this.mode == 1) {
-        this.getUserData();
-      }
-      if (this.mode == 2) {
-        this.getBadUserData();
-      }
-      if (this.mode == 3) {
-        this.getAdminData();
       }
     },
     // 获取用户数据--正常用户
