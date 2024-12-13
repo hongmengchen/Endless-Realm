@@ -28,4 +28,8 @@ export default class postAPI {
       status: status,
     });
   }
+  // 更新动态状态
+  static async updatePostStatus(id, status) {
+    return post("/post/updatePostStatus", id, status);
+  }
 }
