@@ -62,6 +62,16 @@
           <template #header>
             <div class="comment-header">
               <span>{{ comment.author }}</span>
+              <!-- 判断是否为当前用户的评论 -->
+              <el-button
+                v-if="comment.userId === userInfo.id"
+                type="text"
+                icon="el-icon-delete"
+                @click="deleteComment(comment.id)"
+                style="color: red"
+              >
+                删除
+              </el-button>
             </div>
           </template>
           <p>{{ comment.content }}</p>
@@ -111,6 +121,35 @@ export default {
     }
   },
   methods: {
+    // 删除评论
+    async deleteComment(commentId) {
+      // 判断是否是自己的评论
+      if (
+        this.userInfo.id !==
+        this.comments.find((c) => c.id === commentId).userId
+      ) {
+        ElMessage.error("你不能删除别人的评论");
+        return;
+      }
+
+      // 提交删除请求
+      try {
+        const res = await commentAPI.deleteComment(commentId);
+        if (res.data.status_code === 1) {
+          ElMessage.success("评论删除成功");
+          // 删除成功后更新评论列表
+          this.comments = this.comments.filter(
+            (comment) => comment.id !== commentId
+          );
+          this.post.commentCount--;
+        } else {
+          ElMessage.error("评论删除失败");
+        }
+      } catch (error) {
+        ElMessage.error("网络错误，请稍后再试");
+      }
+    },
+
     // 格式化日期
     formatDate(dateArray) {
       // 将 [2024, 12, 13, 15, 46, 29] 转换为 JavaScript Date 对象
