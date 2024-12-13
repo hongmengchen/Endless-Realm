@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 动态控制器
@@ -57,5 +58,22 @@ public class PostController {
     @GetMapping("/getPostByStatus")
     public Result<List<Post>> getPostByStatus(@RequestParam("status") Integer status) {
         return Result.success(postService.getPostByStatus(status));
+    }
+
+    // 更新动态状态
+    @PostMapping("/updatePostStatus")
+    public Result<?> updatePostStatus(@RequestBody Map<String, Object> map) {
+        Integer id = (Integer) map.get("id");
+        Integer status = (Integer) map.get("status");
+
+        System.out.println("修改动态状态：" + id + "   " + status);
+
+        if (id == null || status == null) {
+            return Result.fail(ErrorMsg.PARAM_ERROR);
+        }
+        if (postService.updatePostStatus(id, status)) {
+            return Result.success();
+        }
+        return Result.fail(ErrorMsg.UPDATE_ERROR);
     }
 }
