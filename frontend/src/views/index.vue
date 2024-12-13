@@ -5,34 +5,37 @@
       <AppSideBar />
     </el-aside>
 
-    <!-- 右侧内容 -->
+    <!-- 右侧主要内容区域 -->
     <el-main class="container-body">
-      <!-- 顶部导航栏 -->
+      <!-- 页面标题 -->
       <div class="post-header">
         <h2>首页</h2>
       </div>
 
       <!-- 动态列表 -->
       <el-row :gutter="20" class="post-list">
-        <el-col v-for="post in posts" :key="post.id" :span="24">
-          <el-card class="post-card">
+        <el-col v-for="post in sortedPosts" :key="post.id" :span="24">
+          <el-card class="post-card" shadow="hover">
+            <!-- 动态内容 -->
             <div class="post-content">
-              <p class="content">{{ post.content }}</p>
-              <img
+              <p>{{ post.content }}</p>
+              <el-image
                 v-if="post.mediaUrl"
                 :src="post.mediaUrl"
+                fit="cover"
                 alt="动态图片"
                 class="post-image"
               />
             </div>
+            <!-- 动态元信息 -->
             <div class="post-meta">
-              <el-button type="text" size="small">
-                点赞：{{ post.likeCount }}
-              </el-button>
-              <el-button type="text" size="small">
-                评论：{{ post.commentCount }}
-              </el-button>
-              <!-- 新增跳转详情页面的按钮 -->
+              <span>
+                <el-icon><Star /></el-icon> {{ post.likeCount }}
+              </span>
+              <span>
+                <el-icon><ChatLineRound /></el-icon> {{ post.commentCount }}
+              </span>
+              <!-- 跳转详情页面的按钮 -->
               <el-button
                 type="primary"
                 size="small"
@@ -41,6 +44,7 @@
                 查看详情
               </el-button>
             </div>
+            <!-- 发布日期 -->
             <div class="post-date">
               发布于：{{ formatDate(post.createdAt) }}
             </div>
@@ -56,14 +60,26 @@ import AppSideBar from "@/components/AppSideBar.vue";
 import UserAPI from "@/api/userAPI";
 import PostAPI from "@/api/postAPI";
 import { mapActions, mapState } from "vuex";
+import { ElMessage } from "element-plus";
+import { ChatLineRound, Star } from "@element-plus/icons-vue";
 
 export default {
   name: "HomeIndex",
   components: {
+    ChatLineRound,
+    Star,
     AppSideBar,
   },
   computed: {
     ...mapState("user", ["userInfo"]), // 映射 Vuex 的 userInfo 状态
+    // 对动态进行排序的计算属性
+    sortedPosts() {
+      return [...this.posts].sort(
+        (a, b) =>
+          this.getDateFromCreatedAt(b.createdAt) -
+          this.getDateFromCreatedAt(a.createdAt)
+      );
+    },
   },
   data() {
     return {
@@ -92,6 +108,7 @@ export default {
           this.loadPosts(); // 加载动态
         }
       } catch (error) {
+        ElMessage.error("加载用户信息失败");
         console.error("Error loading user info:", error);
       }
     },
@@ -99,37 +116,15 @@ export default {
     // 加载动态
     async loadPosts() {
       if (!this.userInfo || !this.userInfo.id) {
-        console.warn("用户信息未加载，无法加载动态");
+        ElMessage.warning("用户信息未加载，无法加载动态");
         return;
       }
 
       try {
         const res = await PostAPI.getAllPost();
         this.posts = res.data.data || [];
-
-        // 按照 createdAt 排序，最新的动态排在最前面
-        this.posts.sort((a, b) => {
-          // 手动构造 Date 对象
-          const dateA = new Date(
-            a.createdAt.year,
-            a.createdAt.monthValue - 1, // 月份从 0 开始
-            a.createdAt.dayOfMonth,
-            a.createdAt.hour,
-            a.createdAt.minute,
-            a.createdAt.second
-          );
-
-          const dateB = new Date(
-            b.createdAt.year,
-            b.createdAt.monthValue - 1, // 月份从 0 开始
-            b.createdAt.dayOfMonth,
-            b.createdAt.hour,
-            b.createdAt.minute,
-            b.createdAt.second
-          );
-          return dateB - dateA; // 降序排列，最新的在前
-        });
       } catch (error) {
+        ElMessage.error("加载动态失败");
         console.error("加载动态失败:", error);
       }
     },
@@ -161,6 +156,18 @@ export default {
 
       // 拼接成标准格式
       return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+    },
+
+    // 从 createdAt 对象创建 Date 对象
+    getDateFromCreatedAt(createdAt) {
+      return new Date(
+        createdAt.year,
+        createdAt.monthValue - 1,
+        createdAt.dayOfMonth,
+        createdAt.hour,
+        createdAt.minute,
+        createdAt.second
+      );
     },
   },
 };
