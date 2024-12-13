@@ -121,7 +121,7 @@ export default {
       }
       // 使用 Vuex 的 getters 获取所有动态
       try {
-        const res = await PostAPI.getAllPost();
+        const res = await PostAPI.getPostByStatus(1);
         this.posts = res.data.data || [];
       } catch (error) {
         ElMessage.error("加载动态失败");
