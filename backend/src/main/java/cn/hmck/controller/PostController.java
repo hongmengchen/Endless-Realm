@@ -77,6 +77,16 @@ public class PostController {
         return Result.fail(ErrorMsg.UPDATE_ERROR);
     }
 
+    // 更新动态内容
+    @PostMapping("/updatePost")
+    public Result<?> updatePost(@RequestBody Post post) {
+        System.out.println("修改动态：" + post);
+        if (postService.updatePost(post)) {
+            return Result.success();
+        }
+        return Result.fail(ErrorMsg.UPDATE_ERROR);
+    }
+
     // 删除动态
     @DeleteMapping("/deletePostById")
     public Result<?> deletePostById(@RequestParam("id") Integer id ) {
