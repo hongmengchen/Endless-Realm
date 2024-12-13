@@ -135,7 +135,6 @@ export default {
   data() {
     return {
       mode: 1,
-      nowPage: 1,
       onlinePosts: [],
       OfflinePosts: [],
       status: 1,
@@ -150,35 +149,27 @@ export default {
       if (this.mode !== val) {
         this.mode = val;
         if (val == 1) {
-          this.nowPage = 1;
           this.getOnlinePosts();
         }
         if (val == 2) {
-          this.nowPage = 1;
           this.getOfflinePosts();
         }
       }
     },
     // 违规下架
-    makeOfflinePost(i) {
-      this.$api
-        .updateGoods({
-          id: this.onlineGoods[i].id,
-          status: "inactive",
-        })
-        .then((res) => {
-          if (res.status_code == 1) {
-            this.getOnlineGoods();
-          } else {
-            this.$message.error(res.msg);
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+    async makeOfflinePost(i) {
+      const res = await PostAPI.updatePostStatus({
+        id: this.onlinePosts[i].id,
+        status: 0,
+      });
+      if (res.data.status_code === 1) {
+        await this.getOnlinePosts();
+      } else {
+        this.$message.error(res.msg);
+      }
     },
     // 删除
-    deletePost(i) {
+    async deletePost(i) {
       this.$api
         .updateGoods({
           id: this.OfflineGoods[i].id,
