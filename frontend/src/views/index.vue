@@ -50,8 +50,8 @@
             </div>
           </el-card>
         </el-col>
-      </el-row></el-main
-    >
+      </el-row>
+    </el-main>
   </div>
 </template>
 
@@ -119,7 +119,7 @@ export default {
         ElMessage.warning("用户信息未加载，无法加载动态");
         return;
       }
-
+      // 使用 Vuex 的 getters 获取所有动态
       try {
         const res = await PostAPI.getAllPost();
         this.posts = res.data.data || [];
