@@ -24,6 +24,8 @@ public class Comment implements Serializable {
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;  // 创建时间
 
+    private String author;  // 作者
+
     // 序列化版本号
     @Serial
     private static final long serialVersionUID = 1L;
