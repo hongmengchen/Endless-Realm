@@ -28,4 +28,8 @@ export default class userAPI {
   static async register(user) {
     return post("/user/register", user);
   }
+  /*更新用户信息*/
+  static async updateUserInfo(user) {
+    return post("/user/updateUserInfo", user);
+  }
 }
