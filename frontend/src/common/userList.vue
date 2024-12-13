@@ -55,7 +55,7 @@
         prop="createdAt"
         label="注册时间"
         show-overflow-tooltip
-        width="200"
+        width="250"
       >
         <template v-slot="scope">
           {{ formatDate(scope.row.createdAt) || "未知" }}
@@ -114,7 +114,7 @@
         prop="createdAt"
         label="注册时间"
         show-overflow-tooltip
-        width="200"
+        width="250"
       >
         <template v-slot="scope">
           {{ formatDate(scope.row.createdAt) || "未知" }}
@@ -248,17 +248,31 @@ export default {
       }
     },
     // 格式化日期
-    formatDate(date) {
-      // 提取日期时间信息
-      const year = date.year;
-      const month = String(date.monthValue).padStart(2, "0"); // 补全两位
-      const day = String(date.dayOfMonth).padStart(2, "0");
-      const hour = String(date.hour).padStart(2, "0");
-      const minute = String(date.minute).padStart(2, "0");
-      const second = String(date.second).padStart(2, "0");
+    formatDate(dateArray) {
+      // 将 [2024, 12, 13, 15, 46, 29] 转换为 JavaScript Date 对象
+      const date = new Date(
+        Date.UTC(
+          dateArray[0], // 年份
+          dateArray[1] - 1, // 月份（JavaScript 中月份从 0 开始）
+          dateArray[2], // 日期
+          dateArray[3], // 小时
+          dateArray[4], // 分钟
+          dateArray[5] // 秒
+        )
+      );
 
-      // 拼接成标准格式
-      return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+      // 使用 toLocaleString 方法格式化日期，并确保使用 UTC 时区
+      return date.toLocaleString("zh-CN", {
+        weekday: "long", // 星期几
+        year: "numeric", // 年份
+        month: "long", // 月份（完整）
+        day: "numeric", // 日期
+        hour: "2-digit", // 小时
+        minute: "2-digit", // 分钟
+        second: "2-digit", // 秒
+        hour12: false, // 24小时制
+        timeZone: "UTC", // 指定时区为 UTC
+      });
     },
   },
 };
