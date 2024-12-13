@@ -514,17 +514,4 @@ export default {
   display: flex;
   justify-content: flex-end;
 }
-
-.container-body {
-  margin-left: 20px;
-}
-
-.container-aside {
-  width: 20%;
-}
-
-.container {
-  display: flex;
-  min-height: 100vh;
-}
 </style>
