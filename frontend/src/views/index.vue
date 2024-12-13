@@ -46,7 +46,7 @@
             </div>
             <!-- 发布日期 -->
             <div class="post-date">
-              发布于：{{ formatDate(post.createdAt) }}
+              发布于：{{ formatDate(post.updatedAt) }}
             </div>
           </el-card>
         </el-col>
@@ -73,12 +73,31 @@ export default {
   computed: {
     ...mapState("user", ["userInfo"]), // 映射 Vuex 的 userInfo 状态
     // 对动态进行排序的计算属性
+    // 对动态进行排序的计算属性
     sortedPosts() {
-      return [...this.posts].sort(
-        (a, b) =>
-          this.getDateFromCreatedAt(b.createdAt) -
-          this.getDateFromCreatedAt(a.createdAt)
-      );
+      return [...this.posts].sort((a, b) => {
+        const dateA = new Date(
+          Date.UTC(
+            a.updatedAt[0],
+            a.updatedAt[1] - 1,
+            a.updatedAt[2],
+            a.updatedAt[3],
+            a.updatedAt[4],
+            a.updatedAt[5]
+          )
+        );
+        const dateB = new Date(
+          Date.UTC(
+            b.updatedAt[0],
+            b.updatedAt[1] - 1,
+            b.updatedAt[2],
+            b.updatedAt[3],
+            b.updatedAt[4],
+            b.updatedAt[5]
+          )
+        );
+        return dateB - dateA; // 降序排列，最新的动态排在最前面
+      });
     },
   },
   data() {
@@ -145,29 +164,31 @@ export default {
     },
 
     // 格式化日期
-    formatDate(date) {
-      // 提取日期时间信息
-      const year = date.year;
-      const month = String(date.monthValue).padStart(2, "0"); // 补全两位
-      const day = String(date.dayOfMonth).padStart(2, "0");
-      const hour = String(date.hour).padStart(2, "0");
-      const minute = String(date.minute).padStart(2, "0");
-      const second = String(date.second).padStart(2, "0");
-
-      // 拼接成标准格式
-      return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
-    },
-
-    // 从 createdAt 对象创建 Date 对象
-    getDateFromCreatedAt(createdAt) {
-      return new Date(
-        createdAt.year,
-        createdAt.monthValue - 1,
-        createdAt.dayOfMonth,
-        createdAt.hour,
-        createdAt.minute,
-        createdAt.second
+    formatDate(dateArray) {
+      // 将 [2024, 12, 13, 15, 46, 29] 转换为 JavaScript Date 对象
+      const date = new Date(
+        Date.UTC(
+          dateArray[0], // 年份
+          dateArray[1] - 1, // 月份（JavaScript 中月份从 0 开始）
+          dateArray[2], // 日期
+          dateArray[3], // 小时
+          dateArray[4], // 分钟
+          dateArray[5] // 秒
+        )
       );
+
+      // 使用 toLocaleString 方法格式化日期，并确保使用 UTC 时区
+      return date.toLocaleString("zh-CN", {
+        weekday: "long", // 星期几
+        year: "numeric", // 年份
+        month: "long", // 月份（完整）
+        day: "numeric", // 日期
+        hour: "2-digit", // 小时
+        minute: "2-digit", // 分钟
+        second: "2-digit", // 秒
+        hour12: false, // 24小时制
+        timeZone: "UTC", // 指定时区为 UTC
+      });
     },
   },
 };
