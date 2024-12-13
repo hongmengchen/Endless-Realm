@@ -31,6 +31,10 @@ export default class postAPI {
   static async updatePostStatus(id, status) {
     return post("/post/updatePostStatus", id, status);
   }
+  // 更新动态内容
+  static async updatePost(newPost) {
+    return post("/post/updatePost", newPost);
+  }
   // 删除动态
   static async deletePost(id) {
     return _delete("/post/deletePostById", {
