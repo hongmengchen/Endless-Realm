@@ -149,16 +149,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="block">
-      <el-pagination
-        @current-change="handleCurrentChange"
-        :modelValue="nowPage"
-        background
-        layout="prev, pager, next,jumper"
-        @update:modelValue="nowPage = $event"
-      >
-      </el-pagination>
-    </div>
   </div>
 </template>
 
