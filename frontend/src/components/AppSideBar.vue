@@ -23,7 +23,7 @@
       :collapse="isCollapse"
       @select="handleSelect"
       :collapse-transition="false"
-      background-color="#3a7bd5"
+      background-color="#linear-gradient(to bottom, #3a7bd5, #00d2ff)"
       text-color="#fff"
       active-text-color="#1abc9c"
     >
