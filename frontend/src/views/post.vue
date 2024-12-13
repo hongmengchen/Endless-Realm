@@ -13,7 +13,15 @@
       </div>
 
       <!-- 发布动态按钮 -->
-      <el-button type="primary" @click="togglePostForm">发布动态</el-button>
+      <el-button
+        class="publish-button"
+        type="primary"
+        size="large"
+        @click="togglePostForm"
+      >
+        <el-icon><Plus /></el-icon>
+        发布动态
+      </el-button>
 
       <!-- 发布动态表单 -->
       <el-card v-if="showPostForm" class="post-form">
@@ -22,17 +30,32 @@
             <el-input
               v-model="newPost.content"
               type="textarea"
+              rows="4"
+              show-word-limit
               placeholder="请输入动态内容"
             ></el-input>
           </el-form-item>
-          <el-form-item label="上传图片">
+          <el-form-item label="上传图片" label-width="90px">
             <el-upload action="上传图片的后端地址" list-type="picture-card">
               <el-button>上传图片</el-button>
             </el-upload>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="publishPost">发布</el-button>
-            <el-button @click="togglePostForm">取消</el-button>
+            <el-button
+              class="button-submit"
+              type="primary"
+              @click="publishPost"
+              size="large"
+            >
+              发布
+            </el-button>
+            <el-button
+              class="button-cancel"
+              @click="togglePostForm"
+              size="large"
+            >
+              取消
+            </el-button>
           </el-form-item>
         </el-form>
       </el-card>
@@ -71,7 +94,11 @@
                 <el-icon><ChatLineRound /></el-icon> {{ post.commentCount }}
               </span>
               <!-- 修改按钮 -->
-              <el-button type="primary" size="small" @click="editPost(post)"
+              <el-button
+                type="primary"
+                size="small"
+                @click="editPost(post)"
+                class="action-button"
                 >修改
               </el-button>
               <!-- 删除按钮 -->
@@ -79,6 +106,7 @@
                 type="danger"
                 size="small"
                 @click="confirmDelete(post.id)"
+                class="action-button"
                 >删除</el-button
               >
               <!-- 跳转详情页面的按钮 -->
@@ -86,6 +114,7 @@
                 type="primary"
                 size="small"
                 @click="viewPostDetail(post.id)"
+                class="action-button"
               >
                 查看详情
               </el-button>
@@ -104,17 +133,24 @@
             <el-input
               v-model="editPostData.content"
               type="textarea"
+              rows="4"
               placeholder="请输入新的动态内容"
             ></el-input>
           </el-form-item>
-          <el-form-item label="上传图片">
+          <el-form-item label="上传图片" label-width="90px">
             <el-upload action="上传图片的后端地址" list-type="picture-card">
               <el-button>上传图片</el-button>
             </el-upload>
           </el-form-item>
           <div class="dialog-footer">
             <el-button @click="showEditForm = false">取消</el-button>
-            <el-button type="primary" @click="confirmEdit">提交</el-button>
+            <el-button
+              type="primary"
+              @click="confirmEdit"
+              class="button-submit"
+            >
+              提交</el-button
+            >
           </div>
         </el-form>
       </el-dialog>
@@ -127,11 +163,11 @@ import UserAPI from "@/api/userAPI";
 import PostAPI from "@/api/postAPI";
 import { mapActions } from "vuex";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { ChatLineRound, Star } from "@element-plus/icons-vue";
+import { ChatLineRound, Plus, Star } from "@element-plus/icons-vue";
 
 export default {
   name: "userPostPage",
-  components: { ChatLineRound, Star, AppSideBar },
+  components: { Plus, ChatLineRound, Star, AppSideBar },
   computed: {
     userInfo() {
       return this.$store.state.user?.userInfo;
@@ -178,8 +214,8 @@ export default {
       },
       editPostData: {
         id: null,
-        content: "",
-        mediaUrl: "",
+        content: "", // 动态内容
+        mediaUrl: "", // 上传成功后的图片地址
       },
     };
   },
@@ -382,28 +418,44 @@ export default {
 <style scoped>
 /* 动态列表样式 */
 .post-list {
-  width: 100%;
-  max-width: 800px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* 发布按钮 */
+.publish-button {
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 /* 单个动态卡片样式 */
 .post-card {
-  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 悬浮效果 */
+.post-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 /* 动态内容样式 */
 .post-content {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
-.post-content .content {
+.content-text {
   font-size: 16px;
-  margin-bottom: 10px;
+  line-height: 1.5;
 }
 
-.post-content .post-image {
+.post-image {
   max-width: 100%;
-  border-radius: 5px;
+  border-radius: 8px;
   margin-top: 10px;
 }
 
@@ -412,7 +464,6 @@ export default {
   margin-top: 10px;
   display: flex;
   align-items: center;
-  color: #888;
 }
 
 .status-tag {
@@ -438,5 +489,42 @@ export default {
   color: #888;
   margin-top: 10px;
   text-align: right;
+}
+
+/* 按钮样式 */
+.action-button {
+  margin-left: 10px;
+}
+
+.button-submit {
+  background-color: #409eff;
+}
+
+.button-cancel {
+  background-color: #f56c6c;
+}
+
+/* 发布动态表单 */
+.post-form {
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.container-body {
+  margin-left: 20px;
+}
+
+.container-aside {
+  width: 20%;
+}
+
+.container {
+  display: flex;
+  min-height: 100vh;
 }
 </style>
