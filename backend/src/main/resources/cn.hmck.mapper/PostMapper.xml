@@ -53,4 +53,8 @@
     <select id="getPostById" parameterType="Integer" resultMap="postResultMap">
         SELECT * FROM er_post WHERE id = #{id}
     </select>
+    <!--根据动态状态获取所有动态-->
+    <select id="getPostByStatus" parameterType="Integer" resultMap="postResultMap">
+        SELECT * FROM er_post WHERE status = #{status}
+    </select>
 </mapper>
