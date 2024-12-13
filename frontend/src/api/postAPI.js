@@ -22,4 +22,10 @@ export default class postAPI {
       id: id,
     });
   }
+  // 根据动态状态获取所有动态
+  static async getPostByStatus(status) {
+    return get("/post/getPostByStatus", {
+      status: status,
+    });
+  }
 }
