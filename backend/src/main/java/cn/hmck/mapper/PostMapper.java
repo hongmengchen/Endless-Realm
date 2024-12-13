@@ -53,4 +53,6 @@ public interface PostMapper extends BaseMapper<Post> {
 
     // 根据动态状态获取所有动态
     List<Post> getPostByStatus(@Param("status") Integer status);
+    // 修改动态状态
+    int updatePostStatus(@Param("id") Integer id, @Param("status") Integer status);
 }
