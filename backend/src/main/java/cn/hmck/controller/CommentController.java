@@ -59,4 +59,18 @@ public class CommentController {
             return Result.success(newComment);
         }
     }
+
+    // 删除评论
+    @DeleteMapping("/deleteComment")
+    public Result<?> deleteComment(@RequestParam("id") Integer id) {
+        System.out.println("===================================");
+        System.out.println("删除评论：" + id);
+        System.out.println("===================================");
+        if(id == null){
+            return Result.fail(ErrorMsg.PARAM_ERROR);
+        }else {
+            boolean result = commentService.deleteCommentById(id);
+            return result ? Result.success() : Result.fail(ErrorMsg.DELETE_ERROR);
+        }
+    }
 }
