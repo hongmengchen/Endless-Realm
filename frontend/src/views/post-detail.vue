@@ -17,58 +17,73 @@
         />
       </div>
       <div class="post-meta">
-        <el-button link size="small" class="post-like" @click="likePost">
+        <el-button link @click="likePost">
+          <el-icon><Star /></el-icon>
           点赞：{{ post.likeCount }}
         </el-button>
-        <el-button
-          link
-          size="small"
-          class="post-comment"
-          @click="toggleCommentForm"
-        >
+        <el-button link @click="handleCommentClick">
+          <el-icon><ChatLineRound /></el-icon>
           评论：{{ post.commentCount }}
         </el-button>
       </div>
     </el-card>
 
-    <!-- 显示评论列表 -->
-    <div v-if="comments.length > 0">
-      <h3>评论</h3>
-      <el-card
+    <!-- 评论表单 -->
+    <el-collapse-transition>
+      <div v-if="showCommentForm" class="comment-form">
+        <el-input
+          v-model="newComment.content"
+          type="textarea"
+          :rows="4"
+          placeholder="请输入评论内容"
+        />
+        <div class="form-actions">
+          <el-button type="primary" @click="submitComment">提交评论</el-button>
+          <el-button @click="cancelComment">取消</el-button>
+        </div>
+      </div>
+    </el-collapse-transition>
+
+    <!-- 评论列表 -->
+    <el-divider content-position="left">评论</el-divider>
+
+    <!-- 评论为空时显示 -->
+    <el-empty v-if="!comments.length" description="暂无评论" />
+
+    <!-- 评论列表 -->
+    <el-timeline v-else>
+      <el-timeline-item
         v-for="comment in comments"
         :key="comment.id"
-        class="comment-card"
+        :timestamp="formatDate(comment.createdAt)"
+        placement="top"
       >
-        <p>
-          <strong>{{ comment.author }}:</strong> {{ comment.content }}
-        </p>
-        <p class="comment-time">{{ formatDate(comment.createdAt) }}</p>
-      </el-card>
-    </div>
-    <div v-else>
-      <p>暂无评论</p>
-    </div>
-
-    <!-- 评论表单 -->
-    <div v-if="showCommentForm" class="comment-form">
-      <el-input
-        type="textarea"
-        v-model="newComment.content"
-        placeholder="请输入评论内容"
-        rows="4"
-      ></el-input>
-      <el-button type="primary" @click="submitComment">提交评论</el-button>
-      <el-button @click="cancelComment">取消</el-button>
-    </div>
+        <el-card class="comment-card">
+          <template #header>
+            <div class="comment-header">
+              <span>{{ comment.author }}</span>
+            </div>
+          </template>
+          <p>{{ comment.content }}</p>
+        </el-card>
+      </el-timeline-item>
+    </el-timeline>
   </div>
 </template>
 
 <script>
 import PostAPI from "@/api/postAPI";
 import commentAPI from "@/api/commentAPI";
+import { ChatLineRound, Star } from "@element-plus/icons-vue";
 
 export default {
-  name: "post-detail",
+  name: "postDetailPage",
+  components: { ChatLineRound, Star },
+  computed: {
+    userInfo() {
+      return this.$store.state.user?.userInfo;
+    },
+  },
   data() {
     return {
       post: null,
@@ -83,14 +98,16 @@ export default {
     };
   },
   async created() {
-    // 获取动态详情
-    const postId = this.$route.params.postId;
-    const res = await PostAPI.getPostDetail(postId);
-    this.post = res.data.data;
-
-    // 获取评论列表
-    const commentRes = await commentAPI.getAllComment(postId); // 使用 commentAPI 获取评论
-    this.comments = commentRes.data.data || [];
+    try {
+      const [postRes, commentRes] = await Promise.all([
+        PostAPI.getPostDetail(this.$route.params.postId),
+        commentAPI.getAllComment(this.$route.params.postId),
+      ]);
+      this.post = postRes.data.data;
+      this.comments = commentRes.data.data || [];
+    } catch (error) {
+      this.$message.error("加载数据失败，请稍后再试");
+    }
   },
   methods: {
     // 格式化日期为 "年 月 日 时间"
@@ -112,61 +129,77 @@ export default {
 
     // 点赞
     async likePost() {
+      // 检查是否已登录
+      if (!this.userInfo) {
+        this.$message.error("请先登录");
+        return;
+      }
+      // 提交点赞请求
       try {
-        // 检查 userInfo 是否存在
-        if (!this.$store.state.user || !this.$store.state.user.userInfo) {
-          this.$message.error("用户信息未加载，请登录后再试！");
-          return;
-        }
-        this.newComment.userId = this.$store.state.user.userInfo.id;
-        this.newComment.type = 2;
-        const res = await commentAPI.likeComment(this.newComment);
+        const res = await commentAPI.likeComment({
+          ...this.newComment,
+          userId: this.userInfo.id,
+          type: 2,
+        });
         if (res.data.status_code === 1) {
-          console.log("点赞成功！");
-          // 点赞成功后刷新页面
-          // this.$router.go(0);
-          // location.reload();
+          this.$message.success("点赞成功");
+          this.post.likeCount++;
         } else {
-          this.$message.error("点赞失败！");
+          this.$message.error("点赞失败");
         }
       } catch (error) {
-        this.$message.error("网络错误，请稍后再试！");
+        this.$message.error("网络错误，请稍后再试");
       }
     },
 
-    // 切换评论表单的显示与隐藏
-    toggleCommentForm() {
+    // 打开评论表单
+    handleCommentClick() {
+      if (!this.userInfo) {
+        this.$message.error("请先登录");
+        return;
+      }
+      if (this.userInfo.status === 0) {
+        this.$message.error("您的账号已被封禁，暂时无法评论");
+        return;
+      }
       this.showCommentForm = !this.showCommentForm;
     },
 
     // 提交评论
     async submitComment() {
       if (!this.newComment.content.trim()) {
-        this.$message.warning("评论内容不能为空！");
+        this.$message.warning("评论内容不能为空");
+        return;
+      }
+      if (!this.userInfo) {
+        this.$message.error("请先登录");
+        return;
+      }
+      if (this.userInfo.status === 0) {
+        this.$message.error("您的账号已被封禁，暂时无法评论");
         return;
       }
       try {
-        // 检查 userInfo 是否存在
-        if (!this.$store.state.user || !this.$store.state.user.userInfo) {
-          this.$message.error("用户信息未加载，请登录后再试！");
-          return;
-        }
-
-        this.newComment.userId = this.$store.state.user.userInfo.id;
-        this.newComment.type = 1;
-        const res = await commentAPI.likeComment(this.newComment);
+        const res = await commentAPI.likeComment({
+          ...this.newComment,
+          userId: this.userInfo.id,
+          type: 1,
+        });
         if (res.data.status_code === 1) {
-          this.showCommentForm = false; // 隐藏评论表单
-          this.newComment.content = ""; // 清空评论内容
-          console.log("评论成功！");
-          // 评论成功后刷新页面
-          // this.$router.go(0); // 使用Vue Router重新加载当前页面
+          this.$message.success("评论成功");
+          this.showCommentForm = false;
+          this.newComment.content = "";
+          // 刷新评论
+          const commentRes = await commentAPI.getAllComment(
+            this.$route.params.postId
+          );
+          this.comments = commentRes.data.data || [];
+          this.post.commentCount++;
         } else {
-          this.$message.error("评论提交失败！");
+          this.$message.error("评论提交失败");
         }
       } catch (error) {
-        this.$message.error("网络错误，请稍后再试！");
-        console.error(error); // 打印错误信息
+        this.$message.error("网络错误，请稍后再试");
       }
     },
 
@@ -181,67 +214,58 @@ export default {
 
 <style scoped>
 .post-detail {
+  max-width: 800px;
+  margin: 0 auto;
   padding: 20px;
 }
 
-/* 返回主页按钮 */
 .back-button {
   margin-bottom: 20px;
 }
 
-/* 动态卡片样式 */
 .post-card {
   margin-bottom: 20px;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* 动态文本样式 */
+.post-content {
+  margin-bottom: 15px;
+}
+
 .post-text {
   font-size: 16px;
-  line-height: 1.5;
-  margin-bottom: 10px;
+  line-height: 1.6;
 }
 
-/* 图片样式 */
 .post-image {
   max-width: 100%;
-  border-radius: 8px;
+  border-radius: 4px;
   margin-top: 10px;
 }
 
-/* 动态元信息样式 */
 .post-meta {
   display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
+  justify-content: flex-start;
+  gap: 20px;
 }
 
-.post-like,
-.post-comment {
-  font-size: 14px;
-  color: #666;
-}
-
-/* 评论卡片样式 */
-.comment-card {
-  margin-bottom: 15px;
-  padding: 15px;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-/* 评论时间样式 */
-.comment-time {
-  font-size: 12px;
-  color: #888;
-  margin-top: 5px;
-}
-
-/* 评论表单样式 */
 .comment-form {
   margin-top: 20px;
+}
+
+.form-actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.comment-card {
+  margin-bottom: 15px;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>
