@@ -5,7 +5,7 @@
       <AppSideBar />
     </el-aside>
 
-    <!-- 右侧主要内容区域 -->
+    <!-- 右侧主要内容 -->
     <el-main class="container-body">
       <!-- 页面标题 -->
       <div class="post-header">
@@ -29,10 +29,10 @@
             </div>
             <!-- 动态元信息 -->
             <div class="post-meta">
-              <span>
+              <span class="like-count">
                 <el-icon><Star /></el-icon> {{ post.likeCount }}
               </span>
-              <span>
+              <span class="comment-count">
                 <el-icon><ChatLineRound /></el-icon> {{ post.commentCount }}
               </span>
               <!-- 跳转详情页面的按钮 -->
@@ -40,6 +40,7 @@
                 type="primary"
                 size="small"
                 @click="viewPostDetail(post.id)"
+                class="view-detail-btn"
               >
                 查看详情
               </el-button>
@@ -72,7 +73,6 @@ export default {
   },
   computed: {
     ...mapState("user", ["userInfo"]), // 映射 Vuex 的 userInfo 状态
-    // 对动态进行排序的计算属性
     // 对动态进行排序的计算属性
     sortedPosts() {
       return [...this.posts].sort((a, b) => {
@@ -128,7 +128,6 @@ export default {
         }
       } catch (error) {
         ElMessage.error("加载用户信息失败");
-        console.error("Error loading user info:", error);
       }
     },
 
@@ -144,7 +143,6 @@ export default {
         this.posts = res.data.data || [];
       } catch (error) {
         ElMessage.error("加载动态失败");
-        console.error("加载动态失败:", error);
       }
     },
 
@@ -195,26 +193,67 @@ export default {
 </script>
 
 <style scoped>
+/* 整体布局 */
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.container-aside {
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+
+.container-body {
+  flex: 1;
+  padding: 20px;
+  background-color: #fafafa;
+}
+
+/* 页面标题 */
+.post-header h2 {
+  font-size: 24px;
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
 /* 动态列表样式 */
 .post-list {
-  width: 100%;
-  max-width: 800px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 /* 单个动态卡片样式 */
 .post-card {
-  margin-bottom: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* 动态内容样式 */
+.post-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* 动态内容 */
 .post-content {
   margin-bottom: 15px;
+}
+
+.post-text {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.6;
 }
 
 .post-image {
   max-width: 100%;
   border-radius: 4px;
   margin-top: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* 动态元信息样式 */
@@ -225,7 +264,27 @@ export default {
   margin-top: 10px;
 }
 
-/* 动态日期样式 */
+.like-count,
+.comment-count {
+  display: flex;
+  align-items: center;
+  color: #999;
+}
+
+.view-detail-btn {
+  background-color: #409eff;
+  color: white;
+  border-color: #409eff;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.view-detail-btn:hover {
+  background-color: #66b1ff;
+  border-color: #66b1ff;
+}
+
+/* 发布日期 */
 .post-date {
   font-size: 14px;
   color: #888;
