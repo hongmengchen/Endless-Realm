@@ -193,31 +193,6 @@ export default {
 </script>
 
 <style scoped>
-/* 整体布局 */
-.container {
-  display: flex;
-  height: 100vh;
-}
-
-.container-aside {
-  background-color: #f5f5f5;
-  padding: 20px;
-}
-
-.container-body {
-  flex: 1;
-  padding: 20px;
-  background-color: #fafafa;
-}
-
-/* 页面标题 */
-.post-header h2 {
-  font-size: 24px;
-  color: #333;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
 /* 动态列表样式 */
 .post-list {
   display: flex;
@@ -227,12 +202,13 @@ export default {
 
 /* 单个动态卡片样式 */
 .post-card {
-  background-color: #ffffff;
-  border-radius: 8px;
+  border-radius: 10px;
+  overflow: hidden;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* 悬浮效果 */
 .post-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
