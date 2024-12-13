@@ -43,12 +43,17 @@
       </div>
 
       <!-- 如果未登录，显示提示信息 -->
-      <div v-else>
+      <div v-else class="login-prompt">
         <p>请先登录以查看个人信息。</p>
       </div>
 
       <!-- 编辑资料的弹窗 -->
-      <el-dialog v-model="editDialogVisible" title="编辑资料" width="400px">
+      <el-dialog
+        v-model="editDialogVisible"
+        title="编辑资料"
+        width="400px"
+        :close-on-click-modal="false"
+      >
         <el-form :model="editForm" ref="editForm" label-width="100px">
           <!-- 用户名输入框 -->
           <el-form-item label="用户名">
@@ -104,37 +109,9 @@ export default {
     if (!this.userInfo) {
       this.loadUserInfo();
     }
-    this.loadUserInfo();
   },
   methods: {
     ...mapActions("user", ["updateUserInfo"]), // 从 Vuex 注册 actions
-
-    // 格式化日期
-    formatDate(dateArray) {
-      // 将 [2024, 12, 13, 15, 46, 29] 转换为 JavaScript Date 对象
-      const date = new Date(
-        Date.UTC(
-          dateArray[0],
-          dateArray[1] - 1,
-          dateArray[2],
-          dateArray[3],
-          dateArray[4],
-          dateArray[5]
-        )
-      );
-
-      // 使用 toLocaleString 方法格式化日期
-      return date.toLocaleString("zh-CN", {
-        weekday: "long", // 星期几
-        year: "numeric", // 年份
-        month: "long", // 月份（完整）
-        day: "numeric", // 日期
-        hour: "2-digit", // 小时
-        minute: "2-digit", // 分钟
-        second: "2-digit", // 秒
-        hour12: false, // 24小时制
-      });
-    },
 
     // 打开编辑资料弹窗
     openEditDialog() {
@@ -164,7 +141,6 @@ export default {
           this.$message.error("更新失败，请重试"); // 提示更新失败
         }
       } catch (error) {
-        console.error("Error updating profile:", error);
         this.$message.error("更新失败，请重试"); // 捕获错误并提示
       }
     },
@@ -182,7 +158,6 @@ export default {
       try {
         // 获取 Cookie 中的 shUserId
         const shUserId = this.getCookie("shUserId");
-        console.log("User ID from cookie:", shUserId);
 
         // 使用获取到的 shUserId 发送请求获取用户信息
         const res = await UserAPI.getUserInfo(shUserId);
@@ -190,7 +165,6 @@ export default {
         if (res.data.status_code === 1) {
           // 更新用户信息到 Vuex
           this.updateUserInfo(res.data.data);
-          console.log("profile-获取cookie：" + this.userInfo.username); // 打印更新后的用户信息
         }
       } catch (error) {
         console.error("Error loading user info:", error);
@@ -204,6 +178,33 @@ export default {
       if (parts.length === 2) return parts.pop().split(";").shift();
       return null;
     },
+
+    // 格式化日期
+    formatDate(dateArray) {
+      // 将 [2024, 12, 13, 15, 46, 29] 转换为 JavaScript Date 对象
+      const date = new Date(
+        Date.UTC(
+          dateArray[0],
+          dateArray[1] - 1,
+          dateArray[2],
+          dateArray[3],
+          dateArray[4],
+          dateArray[5]
+        )
+      );
+
+      // 使用 toLocaleString 方法格式化日期
+      return date.toLocaleString("zh-CN", {
+        weekday: "long", // 星期几
+        year: "numeric", // 年份
+        month: "long", // 月份（完整）
+        day: "numeric", // 日期
+        hour: "2-digit", // 小时
+        minute: "2-digit", // 分钟
+        second: "2-digit", // 秒
+        hour12: false, // 24小时制
+      });
+    },
   },
 };
 </script>
@@ -214,6 +215,10 @@ export default {
   flex-direction: column;
   align-items: center;
   text-align: center;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .avatar-section {
@@ -222,15 +227,30 @@ export default {
 
 .info-section {
   margin-bottom: 30px;
-  line-height: 2; /* 提高行距 */
+  line-height: 1.8;
+  color: #333;
 }
 
 .action-section {
   display: flex;
   gap: 10px;
 }
+
+.login-prompt {
+  text-align: center;
+  color: #888;
+}
+
 .dialog-footer {
   display: flex;
   justify-content: flex-end;
+}
+
+.el-button {
+  border-radius: 20px;
+}
+
+.el-avatar {
+  border: 2px solid #85b7ee;
 }
 </style>
