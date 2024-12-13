@@ -63,15 +63,18 @@
             <div class="comment-header">
               <span>{{ comment.author }}</span>
               <!-- 判断是否为当前用户的评论 -->
-              <el-button
-                v-if="comment.userId === userInfo.id"
-                type="text"
-                icon="el-icon-delete"
-                @click="deleteComment(comment.id)"
-                style="color: red"
-              >
-                删除
-              </el-button>
+              <el-tooltip content="删除评论" placement="top">
+                <el-button
+                  v-if="comment.userId === userInfo.id"
+                  type="text"
+                  icon="el-icon-delete"
+                  @click="deleteComment(comment.id)"
+                  style="color: red; font-size: 16px; padding: 0"
+                  class="delete-button"
+                >
+                  删除
+                </el-button>
+              </el-tooltip>
             </div>
           </template>
           <p>{{ comment.content }}</p>
@@ -323,5 +326,13 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.delete-button {
+  transition: all 0.3s ease; /* 增加动画效果 */
+}
+
+.delete-button:hover {
+  color: darkred; /* 悬停时改变颜色 */
+  transform: scale(1.1); /* 悬停时放大按钮 */
 }
 </style>
