@@ -132,7 +132,7 @@ export default {
     async likePost() {
       // 检查是否已登录
       if (!this.userInfo) {
-        this.$message.error("请先登录");
+        ElMessage.error("请先登录");
         return;
       }
       // 提交点赞请求
