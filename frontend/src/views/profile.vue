@@ -75,17 +75,30 @@ export default {
     ...mapActions("user", ["updateUserInfo"]), // 从 Vuex 注册 actions
 
     // 格式化日期
-    formatDate(date) {
-      // 提取日期时间信息
-      const year = date.year;
-      const month = String(date.monthValue).padStart(2, "0"); // 补全两位
-      const day = String(date.dayOfMonth).padStart(2, "0");
-      const hour = String(date.hour).padStart(2, "0");
-      const minute = String(date.minute).padStart(2, "0");
-      const second = String(date.second).padStart(2, "0");
+    formatDate(dateArray) {
+      // 将 [2024, 12, 13, 15, 46, 29] 转换为 JavaScript Date 对象
+      const date = new Date(
+        Date.UTC(
+          dateArray[0],
+          dateArray[1] - 1,
+          dateArray[2],
+          dateArray[3],
+          dateArray[4],
+          dateArray[5]
+        )
+      );
 
-      // 拼接成标准格式
-      return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+      // 使用 toLocaleString 方法格式化日期
+      return date.toLocaleString("zh-CN", {
+        weekday: "long", // 星期几
+        year: "numeric", // 年份
+        month: "long", // 月份（完整）
+        day: "numeric", // 日期
+        hour: "2-digit", // 小时
+        minute: "2-digit", // 分钟
+        second: "2-digit", // 秒
+        hour12: false, // 24小时制
+      });
     },
 
     // 编辑资料
