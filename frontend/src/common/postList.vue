@@ -2,20 +2,26 @@
   <div class="postList">
     <el-menu
       default-active="1"
-      class="el-menu-demo"
       mode="horizontal"
       @select="handleSelect"
+      background-color="#f7f7f7"
+      text-color="#666"
+      active-text-color="#409EFF"
+      class="menu-bar"
     >
       <el-menu-item index="1">正常动态</el-menu-item>
       <el-menu-item index="2">违规动态</el-menu-item>
     </el-menu>
 
-    <!--正常动态列表-->
+    <!-- 正常动态列表 -->
     <el-table
       v-if="mode == 1"
       :data="onlinePosts"
       stripe
       style="width: 100%; color: #5a5c61"
+      border
+      size="medium"
+      class="post-table"
     >
       <el-table-column
         prop="createdAt"
@@ -59,18 +65,27 @@
       </el-table-column>
       <el-table-column label="操作">
         <template v-slot="scope">
-          <el-button type="danger" @click="makeOfflinePost(scope.$index)"
-            >违规下架
+          <el-button
+            type="danger"
+            @click="makeOfflinePost(scope.$index)"
+            size="small"
+            round
+          >
+            违规下架
           </el-button>
         </template>
       </el-table-column>
     </el-table>
 
+    <!-- 违规动态列表 -->
     <el-table
       v-show="mode == 2"
       :data="OfflinePosts"
       stripe
       style="width: 100%; color: #5a5c61"
+      border
+      size="medium"
+      class="post-table"
     >
       <el-table-column
         prop="createdAt"
@@ -114,8 +129,13 @@
       </el-table-column>
       <el-table-column label="操作">
         <template v-slot="scope">
-          <el-button type="danger" @click="deletePost(scope.$index)"
-            >永久删除
+          <el-button
+            type="danger"
+            @click="deletePost(scope.$index)"
+            size="small"
+            round
+          >
+            永久删除
           </el-button>
         </template>
       </el-table-column>
@@ -141,7 +161,6 @@ export default {
     this.getOnlinePosts();
   },
   methods: {
-    // 菜单切换
     handleSelect(val) {
       if (this.mode !== val) {
         this.mode = val;
@@ -153,7 +172,6 @@ export default {
         }
       }
     },
-    // 违规下架
     async makeOfflinePost(i) {
       const res = await PostAPI.updatePostStatus({
         id: this.onlinePosts[i].id,
@@ -166,7 +184,6 @@ export default {
         ElMessage.error(res.msg);
       }
     },
-    // 删除动态
     async deletePost(i) {
       const res = await PostAPI.deletePost(this.OfflinePosts[i].id);
       if (res.data.status_code === 1) {
@@ -176,55 +193,45 @@ export default {
         ElMessage.error(res.msg);
       }
     },
-    // 获取正常动态列表
     async getOnlinePosts() {
       const res = await PostAPI.getPostByStatus(1);
       if (res.data.status_code === 1) {
         this.onlinePosts = res.data.data;
-        this.$nextTick(() => {
-          // 确保 DOM 更新已完成
-        });
+        this.$nextTick(() => {});
       } else {
         ElMessage.error(res.msg);
       }
     },
-    // 获取违规动态列表
     async getOfflinePosts() {
       const res = await PostAPI.getPostByStatus(0);
       if (res.data.status_code === 1) {
         this.OfflinePosts = res.data.data;
-        this.$nextTick(() => {
-          // 确保 DOM 更新已完成
-        });
+        this.$nextTick(() => {});
       } else {
         ElMessage.error(res.msg);
       }
     },
-    // 格式化日期
     formatDate(dateArray) {
-      // 将 [2024, 12, 13, 15, 46, 29] 转换为 JavaScript Date 对象
       const date = new Date(
         Date.UTC(
-          dateArray[0], // 年份
-          dateArray[1] - 1, // 月份（JavaScript 中月份从 0 开始）
-          dateArray[2], // 日期
-          dateArray[3], // 小时
-          dateArray[4], // 分钟
-          dateArray[5] // 秒
+          dateArray[0],
+          dateArray[1] - 1,
+          dateArray[2],
+          dateArray[3],
+          dateArray[4],
+          dateArray[5]
         )
       );
-
-      // 使用 toLocaleString 方法格式化日期，并确保使用 UTC 时区
       return date.toLocaleString("zh-CN", {
-        weekday: "long", // 星期几
-        year: "numeric", // 年份
-        month: "long", // 月份（完整）
-        day: "numeric", // 日期
-        hour: "2-digit", // 小时
-        minute: "2-digit", // 分钟
-        second: "2-digit", // 秒
-        hour12: false, // 24小时制
-        timeZone: "UTC", // 指定时区为 UTC
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+        timeZone: "UTC",
       });
     },
   },
@@ -234,16 +241,28 @@ export default {
 <style scoped>
 .postList {
   background-color: #fff;
-  padding: 10px 30px;
-  box-shadow: 0 1px 15px -6px rgba(0, 0, 0, 0.5);
-  border-radius: 5px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
 }
 
-.block {
-  display: flex;
-  justify-content: center;
-  padding-top: 15px;
-  padding-bottom: 10px;
-  width: 100%;
+.menu-bar {
+  border-bottom: 2px solid #f1f1f1;
+  margin-bottom: 20px;
+}
+
+.post-table {
+  margin-top: 20px;
+  border-radius: 8px;
+}
+
+.el-button {
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.el-button:hover {
+  background-color: #f56c6c;
+  border-color: #f56c6c;
 }
 </style>

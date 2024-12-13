@@ -5,6 +5,10 @@
       class="el-menu-demo"
       mode="horizontal"
       @select="handleSelect"
+      background-color="#f7f7f7"
+      text-color="#666"
+      active-text-color="#ffd04b"
+      border="none"
     >
       <el-menu-item index="1">正常用户</el-menu-item>
       <el-menu-item index="2">违规用户</el-menu-item>
@@ -17,12 +21,13 @@
       :data="userData"
       stripe
       style="width: 100%; color: #5a5c61"
+      size="medium"
     >
       <el-table-column label="头像" width="100">
         <template v-slot="scope">
           <el-avatar
             shape="square"
-            :size="23"
+            :size="50"
             :src="scope.row.avatar"
           ></el-avatar>
         </template>
@@ -33,24 +38,21 @@
         show-overflow-tooltip
         min-width="150"
         width="150"
-      >
-      </el-table-column>
+      />
       <el-table-column
         prop="email"
         label="用户邮箱"
         show-overflow-tooltip
         min-width="200"
         width="200"
-      >
-      </el-table-column>
+      />
       <el-table-column
         prop="phone"
         label="用户电话"
         show-overflow-tooltip
         min-width="150"
         width="150"
-      >
-      </el-table-column>
+      />
       <el-table-column
         prop="createdAt"
         label="注册时间"
@@ -63,7 +65,7 @@
       </el-table-column>
       <el-table-column label="操作">
         <template v-slot="scope">
-          <el-button type="danger" @click="sealUser(scope.$index)"
+          <el-button type="danger" size="small" @click="sealUser(scope.$index)"
             >封号
           </el-button>
         </template>
@@ -76,12 +78,13 @@
       :data="badUserData"
       stripe
       style="width: 100%; color: #5a5c61"
+      size="medium"
     >
       <el-table-column label="头像" width="100px">
         <template v-slot="scope">
           <el-avatar
             shape="square"
-            :size="23"
+            :size="50"
             :src="scope.row.avatar"
           ></el-avatar>
         </template>
@@ -92,24 +95,21 @@
         show-overflow-tooltip
         min-width="150"
         width="150"
-      >
-      </el-table-column>
+      />
       <el-table-column
         prop="email"
         label="用户邮箱"
         show-overflow-tooltip
         min-width="200"
         width="200"
-      >
-      </el-table-column>
+      />
       <el-table-column
         prop="phone"
         label="用户电话"
         show-overflow-tooltip
         min-width="150"
         width="150"
-      >
-      </el-table-column>
+      />
       <el-table-column
         prop="createdAt"
         label="注册时间"
@@ -122,7 +122,10 @@
       </el-table-column>
       <el-table-column label="操作">
         <template v-slot="scope">
-          <el-button type="success" @click="unsealUser(scope.$index)"
+          <el-button
+            type="success"
+            size="small"
+            @click="unsealUser(scope.$index)"
             >解封
           </el-button>
         </template>
@@ -135,14 +138,14 @@
       :data="adminData"
       stripe
       style="width: 100%; color: #5a5c61"
+      size="medium"
     >
       <el-table-column
         prop="username"
         label="管理员账号"
         show-overflow-tooltip
         width="200"
-      >
-      </el-table-column>
+      />
       <el-table-column prop="createdAt" label="创建时间">
         <template v-slot="scope">
           {{ formatDate(scope.row.createdAt) || "未知" }}
@@ -160,7 +163,6 @@ export default {
   data() {
     return {
       mode: 1,
-      adminRegVisible: false, // 是否显示注册对话框
       userData: [], // 正常用户数据
       badUserData: [], // 违规用户数据
       adminData: [], // 管理员数据
@@ -281,24 +283,52 @@ export default {
 <style scoped>
 .main-border {
   background-color: #fff;
-  padding: 10px 30px;
-  box-shadow: 0 1px 15px -6px rgba(0, 0, 0, 0.5);
-  border-radius: 5px;
+  padding: 20px 30px;
+  box-shadow: 0 1px 15px -6px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  margin-top: 20px;
 }
 
-.block {
-  display: flex;
-  justify-content: center;
-  padding-top: 15px;
-  padding-bottom: 10px;
-  width: 100%;
+.el-menu-demo {
+  border-radius: 8px;
+  margin-bottom: 20px;
 }
 
-.addAdminButton {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  height: 60px;
-  outline: none;
+.el-table {
+  margin-top: 20px;
+}
+
+.el-table-column {
+  text-align: center;
+}
+
+.el-button {
+  border-radius: 4px;
+  font-size: 14px;
+  padding: 6px 16px;
+}
+
+.el-avatar {
+  border-radius: 8px;
+}
+
+.el-table-column .cell {
+  padding: 10px;
+  text-align: center;
+}
+
+.el-button:hover {
+  opacity: 0.8;
+}
+
+.el-menu-item {
+  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 6px;
+}
+
+.el-menu-item:hover {
+  background-color: #4081ff;
+  color: #fff;
 }
 </style>
