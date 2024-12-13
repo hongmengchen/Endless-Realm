@@ -13,6 +13,9 @@
         <result property="type" column="type"/>
         <result property="content" column="content"/>
         <result property="createdAt" column="created_at"/>
+
+        <!-- 添加子查询获取用户姓名并命名为 author -->
+        <result property="author" column="author"/>
     </resultMap>
 
     <!-- 插入评论或点赞 -->
@@ -22,9 +25,10 @@
     </insert>
     <!-- 根据动态ID查询评论 -->
     <select id="selectCommentsByPostId" parameterType="Integer" resultMap="commentResultMap">
-        SELECT *
-        FROM er_comment
-        WHERE post_id = #{postId} AND type = 1
+        SELECT c.*,
+               (SELECT u.username FROM er_user u WHERE u.id = c.user_id) AS author
+        FROM er_comment c
+        WHERE c.post_id = #{postId} AND c.type = 1
     </select>
     <!-- 修改评论内容 -->
     <update id="updateCommentContent" parameterType="cn.hmck.entity.Comment">
