@@ -129,6 +129,7 @@
 
 <script>
 import PostAPI from "@/api/postAPI";
+import { ElMessage } from "element-plus";
 
 export default {
   name: "postList",
@@ -164,6 +165,7 @@ export default {
       });
       if (res.data.status_code === 1) {
         await this.getOnlinePosts();
+        ElMessage.success("下架成功");
       } else {
         this.$message.error(res.msg);
       }
@@ -173,6 +175,7 @@ export default {
       const res = await PostAPI.deletePost(this.OfflinePosts[i].id);
       if (res.data.status_code === 1) {
         await this.getOfflinePosts();
+        ElMessage.success("删除成功");
       } else {
         this.$message.error(res.msg);
       }

@@ -75,6 +75,7 @@
 import PostAPI from "@/api/postAPI";
 import commentAPI from "@/api/commentAPI";
 import { ChatLineRound, Star } from "@element-plus/icons-vue";
+import { ElMessage } from "element-plus";
 
 export default {
   name: "postDetailPage",
@@ -142,24 +143,24 @@ export default {
           type: 2,
         });
         if (res.data.status_code === 1) {
-          this.$message.success("点赞成功");
+          ElMessage.success("点赞成功");
           this.post.likeCount++;
         } else {
-          this.$message.error("点赞失败");
+          ElMessage.error("点赞失败");
         }
       } catch (error) {
-        this.$message.error("网络错误，请稍后再试");
+        ElMessage.error("网络错误，请稍后再试");
       }
     },
 
     // 打开评论表单
     handleCommentClick() {
       if (!this.userInfo) {
-        this.$message.error("请先登录");
+        ElMessage.error("请先登录");
         return;
       }
       if (this.userInfo.status === 0) {
-        this.$message.error("您的账号已被封禁，暂时无法评论");
+        ElMessage.error("您的账号已被封禁，暂时无法评论");
         return;
       }
       this.showCommentForm = !this.showCommentForm;
@@ -168,15 +169,15 @@ export default {
     // 提交评论
     async submitComment() {
       if (!this.newComment.content.trim()) {
-        this.$message.warning("评论内容不能为空");
+        ElMessage.warning("评论内容不能为空");
         return;
       }
       if (!this.userInfo) {
-        this.$message.error("请先登录");
+        ElMessage.error("请先登录");
         return;
       }
       if (this.userInfo.status === 0) {
-        this.$message.error("您的账号已被封禁，暂时无法评论");
+        ElMessage.error("您的账号已被封禁，暂时无法评论");
         return;
       }
       try {
@@ -186,7 +187,7 @@ export default {
           type: 1,
         });
         if (res.data.status_code === 1) {
-          this.$message.success("评论成功");
+          ElMessage.success("评论成功");
           this.showCommentForm = false;
           this.newComment.content = "";
           // 刷新评论
@@ -196,10 +197,10 @@ export default {
           this.comments = commentRes.data.data || [];
           this.post.commentCount++;
         } else {
-          this.$message.error("评论提交失败");
+          ElMessage.error("评论提交失败");
         }
       } catch (error) {
-        this.$message.error("网络错误，请稍后再试");
+        ElMessage.error("网络错误，请稍后再试");
       }
     },
 
