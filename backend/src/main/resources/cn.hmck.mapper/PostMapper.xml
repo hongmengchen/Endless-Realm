@@ -37,7 +37,6 @@
             <if test="mediaUrl != null">media_url = #{mediaUrl},</if>
             <if test="likeCount != null">like_count = #{likeCount},</if>
             <if test="commentCount != null">comment_count = #{commentCount},</if>
-            <if test="status != null">status = #{status},</if>
         </set>
         WHERE id = #{id}
     </update>
@@ -57,4 +56,8 @@
     <select id="getPostByStatus" parameterType="Integer" resultMap="postResultMap">
         SELECT * FROM er_post WHERE status = #{status}
     </select>
+    <!--修改动态状态-->
+    <update id="updatePostStatus" parameterType="cn.hmck.entity.Post">
+        UPDATE er_post SET status = #{status} WHERE id = #{id}
+    </update>
 </mapper>
