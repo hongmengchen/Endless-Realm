@@ -1,83 +1,65 @@
 <template>
-  <div class="sidebar-container">
+  <div class="sidebar-container" :class="{ 'is-collapsed': isCollapse }">
     <!-- Logo 部分 -->
     <div class="sidebar-container-logo">
       <img src="../assets/logo.png" alt="logo" class="logo" />
-      <span class="title">Endless Realm</span>
+      <span class="title" v-if="!isCollapse">Endless Realm</span>
     </div>
+
     <!-- 收缩/扩展按钮 -->
-    <div class="sidebar-container-collapse">
-      <el-button type="primary" @click="toggleCollapse(false)">
-        收缩
-      </el-button>
-      <el-button type="primary" @click="toggleCollapse(true)"> 扩展 </el-button>
-    </div>
+    <el-button
+      type="primary"
+      :icon="isCollapse ? Expand : Fold"
+      @click="toggleCollapse"
+      class="collapse-button"
+    >
+      {{ isCollapse ? "展开" : "收起" }}
+    </el-button>
+
     <!-- 侧边菜单 -->
-    <div class="sidebar-container-menu">
-      <el-menu
-        default-active="1"
-        class="el-menu"
-        :collapse="isCollapse"
-        @open="handleOpen"
-        @close="handleClose"
-        @select="handleSelect"
-        background-color="#3a7bd5"
-        text-color="#fff"
-        active-text-color="#1abc9c"
+    <el-menu
+      :default-active="activeIndex"
+      class="el-menu-vertical"
+      :collapse="isCollapse"
+      @select="handleSelect"
+      :collapse-transition="false"
+      background-color="#3a7bd5"
+      text-color="#fff"
+      active-text-color="#1abc9c"
+    >
+      <el-menu-item
+        v-for="item in menuItems"
+        :key="item.index"
+        :index="item.index"
       >
-        <el-menu-item index="1">
-          <el-icon :style="{ fontSize: iconSize }"><House /></el-icon>
-          <template #title>首页</template>
-        </el-menu-item>
-
-        <el-menu-item index="2">
-          <el-icon :style="{ fontSize: iconSize }"><Aim /></el-icon>
-          <template #title>搜索</template>
-        </el-menu-item>
-
-        <el-menu-item index="3">
-          <el-icon :style="{ fontSize: iconSize }"><PictureRounded /></el-icon>
-          <template #title>动态</template>
-        </el-menu-item>
-
-        <el-menu-item index="4">
-          <el-icon :style="{ fontSize: iconSize }"><ChatLineRound /></el-icon>
-          <template #title>消息</template>
-        </el-menu-item>
-
-        <el-menu-item index="5">
-          <el-icon :style="{ fontSize: iconSize }"><Bell /></el-icon>
-          <template #title>通知</template>
-        </el-menu-item>
-
-        <el-menu-item index="6">
-          <el-icon :style="{ fontSize: iconSize }"><User /></el-icon>
-          <template #title>
-            <el-dropdown @command="handleCommand">
-              <span class="el-dropdown-link"> 我的 </span>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item command="login">登录</el-dropdown-item>
-                  <el-dropdown-item command="register">注册</el-dropdown-item>
-                  <el-dropdown-item command="logout">注销</el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          </template>
-        </el-menu-item>
-
-        <el-menu-item index="7">
-          <el-icon :style="{ fontSize: iconSize }"><Setting /></el-icon>
-          <template #title>设置</template>
-        </el-menu-item>
-      </el-menu>
-    </div>
+        <el-icon :style="{ fontSize: iconSize }">
+          <component :is="item.icon" />
+        </el-icon>
+        <template #title>
+          {{ item.title }}
+          <el-dropdown v-if="item.dropdown" @command="handleCommand">
+            <span class="el-dropdown-link">
+              <el-icon><arrow-down /></el-icon>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item
+                  v-for="dropItem in item.dropdown"
+                  :key="dropItem.command"
+                  :command="dropItem.command"
+                >
+                  {{ dropItem.label }}
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </template>
+      </el-menu-item>
+    </el-menu>
   </div>
 </template>
 
 <script>
-import { computed, ref } from "vue";
-import { useRouter } from "vue-router";
 import {
   House,
   Setting,
@@ -86,12 +68,15 @@ import {
   ChatLineRound,
   Bell,
   Aim,
+  Expand,
+  Fold,
+  ArrowDown,
 } from "@element-plus/icons-vue";
 
 export default {
   name: "AppSideBar",
-
   components: {
+    ArrowDown,
     Aim,
     Bell,
     ChatLineRound,
@@ -100,68 +85,74 @@ export default {
     House,
     Setting,
   },
-  setup() {
-    const router = useRouter(); // 使用 Vue Router 进行路由导航
-    const isCollapse = ref(false);
-
+  computed: {
+    Fold() {
+      return Fold;
+    },
+    Expand() {
+      return Expand;
+    },
     // 动态计算图标大小
-    const iconSize = computed(() => (isCollapse.value ? "25px" : "20px"));
-
-    // 切换收缩/扩展状态
-    const toggleCollapse = (collapseState) => {
-      isCollapse.value = collapseState;
-    };
-
-    const handleOpen = (key, keyPath) => {
-      console.log(key, keyPath);
-    };
-
-    const handleClose = (key, keyPath) => {
-      console.log(key, keyPath);
-    };
-
-    // 处理菜单项选择，跳转到相应的页面
-    const handleSelect = (index) => {
-      if (index === "1") {
-        router.push("/"); // 首页
-      } else if (index === "2") {
-        router.push("/search"); // 搜索
-      } else if (index === "3") {
-        router.push("/post"); // 动态
-      } else if (index === "4") {
-        router.push("/message"); // 消息
-      } else if (index === "5") {
-        router.push("/notification"); // 通知
-      } else if (index === "6") {
-        router.push("/profile"); // 我的
-      } else if (index === "7") {
-        router.push("/setting"); // 设置
-      }
-    };
-
-    // 处理按钮点击事件
-    const handleCommand = (command) => {
-      if (command === "login") {
-        router.push("/login"); // 跳转到登录页面
-      } else if (command === "register") {
-        router.push("/register"); // 跳转到注册页面
-      } else if (command === "logout") {
-        console.log("退出登录");
-        document.cookie =
-          "shUserId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        location.reload();
-      }
-    };
-
+    iconSize() {
+      return this.isCollapse ? "35px" : "20px";
+    },
+  },
+  data() {
     return {
-      isCollapse,
-      iconSize,
-      toggleCollapse,
-      handleOpen,
-      handleClose,
-      handleSelect,
-      handleCommand,
+      isCollapse: false,
+      activeIndex: "1",
+      expandIcon: Expand,
+      foldIcon: Fold,
+      menuItems: [
+        { index: "1", title: "首页", icon: "House", route: "/" },
+        { index: "2", title: "搜索", icon: "Aim", route: "/search" },
+        { index: "3", title: "动态", icon: "PictureRounded", route: "/post" },
+        { index: "4", title: "消息", icon: "ChatLineRound", route: "/message" },
+        { index: "5", title: "通知", icon: "Bell", route: "/notification" },
+        {
+          index: "6",
+          title: "我的",
+          icon: "User",
+          route: "/profile",
+          dropdown: [
+            { label: "登录", command: "login" },
+            { label: "注册", command: "register" },
+            { label: "注销", command: "logout" },
+          ],
+        },
+        { index: "7", title: "设置", icon: "Setting", route: "/setting" },
+      ],
     };
+  },
+  methods: {
+    // 切换收缩/扩展状态
+    toggleCollapse() {
+      this.isCollapse = !this.isCollapse;
+    },
+    // 处理菜单项选择，跳转到相应的页面
+    handleSelect(index) {
+      const selectedItem = this.menuItems.find((item) => item.index === index);
+      if (selectedItem) {
+        this.$router.push(selectedItem.route);
+      }
+    },
+    // 处理下拉菜单命令
+    handleCommand(command) {
+      switch (command) {
+        case "login":
+          this.$router.push("/login");
+          break;
+        case "register":
+          this.$router.push("/register");
+          break;
+        case "logout":
+          console.log("退出登录");
+          document.cookie =
+            "shUserId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          location.reload();
+          break;
+      }
+    },
   },
 };
 </script>
@@ -170,51 +161,70 @@ export default {
 /* 主容器布局 */
 .sidebar-container {
   width: 200px;
-  background: linear-gradient(to bottom, #3a7bd5, #00d2ff); /* 蓝白渐变背景 */
+  background: linear-gradient(to bottom, #3a7bd5, #00d2ff);
   color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
   padding: 20px 0;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: width 0.3s;
 }
+
+/* 收起状态的宽度 */
+.sidebar-container.is-collapsed {
+  width: 64px;
+}
+
 /* Logo 部分 */
 .sidebar-container-logo {
   display: flex;
-  flex-direction: column; /* 垂直排列子元素 */
-  align-items: center; /* 水平居中 */
+  flex-direction: column;
+  align-items: center;
   margin-bottom: 20px;
 }
+
 .logo {
-  width: 100px;
+  width: 64px;
   height: auto;
   margin-bottom: 10px;
 }
+
 .title {
   font-size: 18px;
   font-weight: bold;
   letter-spacing: 1px;
 }
+
 /* 收缩/扩展按钮 */
-.sidebar-container-collapse {
+.collapse-button {
   margin-bottom: 20px;
+  background-color: transparent;
+  border: none;
 }
+
 /* 菜单样式 */
-.el-menu {
-  width: 100%;
+.el-menu-vertical:not(.el-menu--collapse) {
+  width: 200px;
 }
+
 .el-menu-item {
-  border-radius: 5px; /* 菜单项圆角 */
+  border-radius: 5px;
+  text-align: center;
 }
+
 .el-menu-item:hover {
-  background: rgba(255, 255, 255, 0.2); /* 鼠标悬停效果 */
+  background: rgba(255, 255, 255, 0.2);
 }
-.el-menu-item .el-icon {
-  font-size: 18px;
-}
+
 .el-dropdown-link {
   color: #fff;
-  outline: none; /* 取消悬浮时的轮廓线 */
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+/* 适配折叠状态 */
+.el-menu--collapse .el-dropdown-link {
+  display: none;
 }
 </style>
