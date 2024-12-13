@@ -21,7 +21,6 @@
       :data="userData"
       stripe
       style="width: 100%; color: #5a5c61"
-      size="medium"
     >
       <el-table-column label="头像" width="100">
         <template v-slot="scope">
@@ -78,7 +77,6 @@
       :data="badUserData"
       stripe
       style="width: 100%; color: #5a5c61"
-      size="medium"
     >
       <el-table-column label="头像" width="100px">
         <template v-slot="scope">
@@ -138,7 +136,6 @@
       :data="adminData"
       stripe
       style="width: 100%; color: #5a5c61"
-      size="medium"
     >
       <el-table-column
         prop="username"
