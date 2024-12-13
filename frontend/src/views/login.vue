@@ -53,8 +53,8 @@ export default {
   data() {
     return {
       userForm: {
-        username: "张三",
-        password: "123456",
+        username: "陈亮",
+        password: "123",
       },
     };
   },
