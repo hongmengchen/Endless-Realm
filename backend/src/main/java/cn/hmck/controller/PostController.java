@@ -52,4 +52,10 @@ public class PostController {
     public Result<Post> getPostById(@RequestParam("id") Integer id) {
         return Result.success(postService.getPostById(id));
     }
+
+    // 根据动态状态获取所有动态
+    @GetMapping("/getPostByStatus")
+    public Result<List<Post>> getPostByStatus(@RequestParam("status") Integer status) {
+        return Result.success(postService.getPostByStatus(status));
+    }
 }
