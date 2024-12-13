@@ -77,4 +77,14 @@ public class UserController {
         User user = userService.getUserInfo(id);
         return Result.success(user);
     }
+
+    // 更新用户信息
+    @PostMapping("/updateUserInfo")
+    public Result<?> updateUserInfo(@RequestBody User user) {
+        boolean result = userService.updateUserInfo(user);
+        if (result) {
+            return Result.success();
+        }
+        return Result.fail(ErrorMsg.UPDATE_ERROR);
+    }
 }
