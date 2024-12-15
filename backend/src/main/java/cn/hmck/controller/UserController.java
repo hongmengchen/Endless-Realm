@@ -11,6 +11,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Map;
 
 /**
  * 用户控制器
@@ -87,5 +88,18 @@ public class UserController {
             return Result.success();
         }
         return Result.fail(ErrorMsg.UPDATE_ERROR);
+    }
+
+    // 更新用户密码
+    @PostMapping("/updateUserPassword")
+    public Result<?> updateUserPassword(@RequestBody Map<String, Object> map) {
+        Integer id = (Integer) map.get("id");
+        String oldPassword = (String) map.get("oldPassword");
+        String newPassword = (String) map.get("newPassword");
+        boolean result = userService.updateUserPassword(id, oldPassword, newPassword);
+        if (result) {
+            return Result.success();
+        }
+        return Result.fail(ErrorMsg.PASSWORD_RESET_ERROR);
     }
 }
