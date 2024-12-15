@@ -32,4 +32,8 @@ export default class userAPI {
   static async updateUserInfo(user) {
     return post("/user/updateUserInfo", user);
   }
+  /*更新用户密码*/
+  static async updateUserPassword(user) {
+    return post("/user/updateUserPassword", user);
+  }
 }
