@@ -32,6 +32,8 @@
     <!-- 能支持 SpringMVC 高级功能，比如 JSR303 校验，映射动态请求-->
     <mvc:annotation-driven/>
 
+    <!-- 配置静态资源处理 -->
+       <mvc:resources mapping="/files/**" location="/files/**" />
     <!-- 文件上传配置 -->
     <bean id="multipartResolver" class=
             "org.springframework.web.multipart.commons.CommonsMultipartResolver">
