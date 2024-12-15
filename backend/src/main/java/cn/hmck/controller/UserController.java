@@ -81,6 +81,7 @@ public class UserController {
     // 更新用户信息
     @PostMapping("/updateUserInfo")
     public Result<?> updateUserInfo(@RequestBody User user) {
+        System.out.println("更新用户信息：" + user);
         boolean result = userService.updateUserInfo(user);
         if (result) {
             return Result.success();
