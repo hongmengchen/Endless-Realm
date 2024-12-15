@@ -41,4 +41,8 @@ export default class postAPI {
       id: id,
     });
   }
+  // 上传动态照片
+  static async uploadPostPhoto(file) {
+    return post("/file/upload", file);
+  }
 }
