@@ -18,8 +18,15 @@
         <!-- 应用加载时创建-->
         <load-on-startup>1</load-on-startup>
     </servlet>
+
     <servlet-mapping>
         <servlet-name>DispatcherServlet</servlet-name>
         <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <!-- 静态资源映射 -->
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/files/*</url-pattern>
     </servlet-mapping>
 </web-app>
