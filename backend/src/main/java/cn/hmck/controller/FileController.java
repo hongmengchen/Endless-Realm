@@ -26,11 +26,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/file")
 public class FileController {
-    // 跳转到文件上传页面
-    @RequestMapping("/uploadPage")
-    public String uploadPage() {
-        return "fileload";
-    }
 
     // 文件上传接口
     @CrossOrigin(origins = "http://localhost:8081")  // 允许指定前端地址跨域访问
