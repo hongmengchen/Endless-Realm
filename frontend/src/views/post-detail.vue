@@ -11,7 +11,7 @@
         <p class="post-text">{{ post.content }}</p>
         <img
           v-if="post.mediaUrl"
-          :src="post.mediaUrl"
+          :src="'http://localhost:8080/backend_war_exploded' + post.mediaUrl"
           alt="动态图片"
           class="post-image"
         />
@@ -299,6 +299,8 @@ export default {
   max-width: 100%;
   border-radius: 4px;
   margin-top: 10px;
+  height: 300px;
+  object-fit: cover;
 }
 
 .post-meta {
