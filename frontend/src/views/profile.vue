@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <!-- 左侧边栏 -->
+    <!-- 左侧侧边栏 -->
     <el-aside class="container-aside">
       <AppSideBar />
     </el-aside>
@@ -41,6 +41,9 @@
         <!-- 操作按钮 -->
         <div class="action-section">
           <el-button type="primary" @click="openEditDialog">编辑资料</el-button>
+          <el-button type="warning" @click="openChangePasswordDialog"
+            >修改密码</el-button
+          >
           <el-button type="danger" @click="logout">退出登录</el-button>
         </div>
       </div>
@@ -71,27 +74,67 @@
               <el-button size="small" type="primary">点击上传新头像</el-button>
             </el-upload>
           </el-form-item>
-
           <!-- 用户名输入框 -->
           <el-form-item label="用户名">
             <el-input v-model="editForm.username" placeholder="请输入用户名" />
           </el-form-item>
-
           <!-- 邮箱输入框 -->
           <el-form-item label="邮箱">
             <el-input v-model="editForm.email" placeholder="请输入邮箱" />
           </el-form-item>
-
           <!-- 手机号输入框 -->
           <el-form-item label="手机号">
             <el-input v-model="editForm.phone" placeholder="请输入手机号" />
           </el-form-item>
         </el-form>
-
         <!-- 弹窗底部操作 -->
         <span class="dialog-footer">
           <el-button @click="editDialogVisible = false">取消</el-button>
           <el-button type="primary" @click="submitEditProfile">保存</el-button>
+        </span>
+      </el-dialog>
+
+      <!-- 修改密码的弹窗 -->
+      <el-dialog
+        v-model="changePasswordDialogVisible"
+        title="修改密码"
+        width="400px"
+        :close-on-click-modal="false"
+      >
+        <el-form :model="passwordForm" ref="passwordForm" label-width="100px">
+          <!-- 旧密码输入框 -->
+          <el-form-item label="旧密码" prop="oldPassword">
+            <el-input
+              v-model="passwordForm.oldPassword"
+              type="password"
+              placeholder="请输入旧密码"
+            />
+          </el-form-item>
+          <!-- 新密码输入框 -->
+          <el-form-item label="新密码" prop="newPassword">
+            <el-input
+              v-model="passwordForm.newPassword"
+              type="password"
+              placeholder="请输入新密码"
+            />
+          </el-form-item>
+          <!-- 确认新密码输入框 -->
+          <el-form-item label="确认新密码" prop="confirmPassword">
+            <el-input
+              v-model="passwordForm.confirmPassword"
+              type="password"
+              placeholder="确认新密码"
+            />
+          </el-form-item>
+        </el-form>
+        <!-- 弹窗底部操作 -->
+        <span class="dialog-footer">
+          <el-button @click="changePasswordDialogVisible = false"
+            >取消</el-button
+          >
+          <el-button type="primary" @click="submitChangePassword"
+            >保存</el-button
+          >
         </span>
       </el-dialog>
     </el-main>
@@ -111,15 +154,21 @@ export default {
   },
   data() {
     return {
-      // 控制弹窗显示的变量
+      // 显示编辑资料的弹窗
       editDialogVisible: false,
-
+      // 显示修改密码的弹窗
+      changePasswordDialogVisible: false,
       // 编辑资料的表单数据
       editForm: {
         username: this.userInfo ? this.userInfo.username : "", // 默认填充用户名
         email: this.userInfo ? this.userInfo.email : "", // 默认填充邮箱
         phone: this.userInfo ? this.userInfo.phone : "", // 默认填充手机号
         avatar: this.userInfo ? this.userInfo.avatar : null,
+      },
+      passwordForm: {
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: "",
       },
     };
   },
@@ -139,7 +188,6 @@ export default {
       this.editForm.username = this.userInfo.username;
       this.editForm.email = this.userInfo.email;
       this.editForm.phone = this.userInfo.phone;
-
       // 显示弹窗
       this.editDialogVisible = true;
     },
@@ -165,6 +213,36 @@ export default {
         this.$message.error("更新失败，请重试"); // 捕获错误并提示
       }
     },
+
+    // 打开修改密码弹窗
+    openChangePasswordDialog() {
+      this.changePasswordDialogVisible = true;
+    },
+    // 提交修改密码
+    async submitChangePassword() {
+      try {
+        // 验证新密码和确认密码是否相同
+        if (
+          this.passwordForm.newPassword !== this.passwordForm.confirmPassword
+        ) {
+          this.$message.error("新密码和确认密码不一致，请重新输入");
+          return; // 如果不一致，停止执行后续代码
+        }
+
+        const updatedUserPassword = { ...this.passwordForm };
+        updatedUserPassword.id = this.userInfo.id;
+        const res = await UserAPI.updateUserPassword(updatedUserPassword);
+        if (res.data.status_code === 1) {
+          this.$message.success("密码修改成功");
+          this.changePasswordDialogVisible = false;
+        } else {
+          this.$message.error("密码修改失败，请重试");
+        }
+      } catch (error) {
+        this.$message.error("密码修改失败，请重试");
+      }
+    },
+
     // 上传头像前的验证
     beforeUpload(file) {
       const isImage = file.type.startsWith("image/");
