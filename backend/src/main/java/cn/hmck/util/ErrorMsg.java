@@ -22,7 +22,6 @@ public enum ErrorMsg {
     SYSTEM_ERROR("系统错误"),
     REGISTER_ERROR("注册失败"),
     FILE_TYPE_ERROR("文件类型错误 请选择.jpg或.png"),
-    FILE_UPLOAD_ERROR("文件上传失败"),
     FILE_NOT_EXIT("文件不存在"),
     FILE_DOWNLOAD_ERROR("文件下载异常"),
     FILE_SIZE_ERROR("文件过大"),
@@ -39,7 +38,9 @@ public enum ErrorMsg {
     PUBLISH_POST_ERROR("动态发布失败"),
     GET_USER_LIST_ERROR("获取用户列表失败"),
     UPDATE_ERROR("更新失败"),
-    DELETE_ERROR("删除失败");
+    DELETE_ERROR("删除失败"),
+    FILE_EMPTY_ERROR("文件上传失败，文件不能为空"),
+    FILE_UPLOAD_ERROR("文件上传失败");
 
     private final String msg;
 
