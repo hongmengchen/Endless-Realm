@@ -31,6 +31,9 @@
             </div>
             <!-- 动态元信息 -->
             <div class="post-meta">
+              <span class="author-name">
+                <strong>发布者：</strong> {{ post.author }}
+              </span>
               <span class="like-count">
                 <el-icon><Star /></el-icon> {{ post.likeCount }}
               </span>
@@ -243,7 +246,10 @@ export default {
   align-items: center;
   margin-top: 10px;
 }
-
+.author-name {
+  font-size: 14px;
+  color: #0066cc;
+}
 .like-count,
 .comment-count {
   display: flex;
