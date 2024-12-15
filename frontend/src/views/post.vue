@@ -24,7 +24,7 @@
       </el-button>
 
       <!-- 发布动态表单 -->
-      <el-card v-if="showPostForm" class="post-form">
+      <el-card v-if="showPostForm" class="post-form" title="发布动态">
         <el-form :model="newPost">
           <el-form-item label="动态内容">
             <el-input
@@ -36,8 +36,16 @@
             ></el-input>
           </el-form-item>
           <el-form-item label="上传图片" label-width="90px">
-            <el-upload action="上传图片的后端地址" list-type="picture-card">
-              <el-button>上传图片</el-button>
+            <el-upload
+              ref="upload"
+              :file-list="fileList"
+              :limit="1"
+              list-type="picture-card"
+              action="http://localhost:8080/backend_war_exploded/file/upload"
+              :on-success="handleUploadSuccess"
+              :on-remove="handleUploadRemove"
+            >
+              <el-button>选择图片</el-button>
             </el-upload>
           </el-form-item>
           <el-form-item>
@@ -69,7 +77,9 @@
               <p>{{ post.content }}</p>
               <el-image
                 v-if="post.mediaUrl"
-                :src="post.mediaUrl"
+                :src="
+                  'http://localhost:8080/backend_war_exploded' + post.mediaUrl
+                "
                 fit="cover"
                 alt="动态图片"
                 class="post-image"
@@ -204,6 +214,7 @@ export default {
       posts: [], // 动态列表
       showPostForm: false, // 显示发布动态表单
       showEditForm: false, // 显示修改动态表单
+      fileList: [], // 上传文件列表
       newPost: {
         userId: null, // 用户 ID
         content: "", // 动态内容
@@ -282,12 +293,15 @@ export default {
         return;
       }
       try {
+        // 设置用户 ID 后提交动态
         this.newPost.userId = this.userInfo.id;
-        const res = await PostAPI.addPost(this.newPost);
+        console.log("发布动态的数据：", this.newPost);
+        const res = await PostAPI.addPost(this.newPost); // 发布动态
         if (res.data.status_code === 1) {
           ElMessage.success("动态发布成功！");
           this.showPostForm = false;
           this.newPost = { content: "", mediaUrl: "" }; // 重置表单
+          this.imageUploaded = false; // 重置上传状态
           this.loadPosts(); // 重新加载动态
         } else {
           ElMessage.error(res.data.msg);
@@ -297,7 +311,22 @@ export default {
         ElMessage.error("动态发布失败，请稍后再试！");
       }
     },
-
+    handleUploadSuccess(response) {
+      console.log("上传成功", response);
+      // 这里可以获取上传成功后的返回信息
+      if (response.status_code === 1) {
+        // 更新上传图片的 URL
+        this.newPost.mediaUrl = response.data;
+        ElMessage.success("图片上传成功！");
+      } else {
+        ElMessage.error("图片上传失败！");
+      }
+    },
+    handleUploadRemove() {
+      // 清空新动态中的 mediaUrl
+      this.newPost.mediaUrl = "";
+      ElMessage.success("图片已移除");
+    },
     // 修改动态
     editPost(post) {
       this.editPostData = { ...post }; // 初始化表单数据
@@ -457,6 +486,8 @@ export default {
   max-width: 100%;
   border-radius: 8px;
   margin-top: 10px;
+  height: 300px; /* 设置容器高度 */
+  object-fit: cover;
 }
 
 /* 动态状态样式 */
