@@ -98,4 +98,14 @@ public class AdminController {
         }
         return Result.fail(ErrorMsg.UPDATE_ERROR);
     }
+
+    // 删除用户
+    @DeleteMapping("/deleteUserById")
+    public Result<?> deleteUserById(@RequestParam("id") Integer id) {
+        System.out.println("删除用户：" + id);
+        if (userService.deleteUserById(id)) {
+            return Result.success();
+        }
+        return Result.fail(ErrorMsg.DELETE_ERROR);
+    }
 }
