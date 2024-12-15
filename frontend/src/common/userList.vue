@@ -27,7 +27,9 @@
           <el-avatar
             shape="square"
             :size="50"
-            :src="scope.row.avatar"
+            :src="
+              'http://localhost:8080/backend_war_exploded' + scope.row.avatar
+            "
           ></el-avatar>
         </template>
       </el-table-column>
