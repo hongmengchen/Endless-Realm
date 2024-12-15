@@ -21,7 +21,9 @@
               <p>{{ post.content }}</p>
               <el-image
                 v-if="post.mediaUrl"
-                :src="post.mediaUrl"
+                :src="
+                  'http://localhost:8080/backend_war_exploded' + post.mediaUrl
+                "
                 fit="cover"
                 alt="动态图片"
                 class="post-image"
@@ -230,6 +232,8 @@ export default {
   border-radius: 4px;
   margin-top: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  height: 300px;
+  object-fit: cover;
 }
 
 /* 动态元信息样式 */
