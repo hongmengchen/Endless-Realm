@@ -13,7 +13,10 @@
         <div class="avatar-section">
           <el-avatar
             :size="100"
-            :src="userInfo.avatar || 'https://via.placeholder.com/100'"
+            :src="
+              'http://localhost:8080/backend_war_exploded' + userInfo.avatar ||
+              'https://via.placeholder.com/100'
+            "
             alt="用户头像"
           />
         </div>
@@ -55,6 +58,20 @@
         :close-on-click-modal="false"
       >
         <el-form :model="editForm" ref="editForm" label-width="100px">
+          <!-- 头像上传 -->
+          <el-form-item label="头像">
+            <el-upload
+              class="avatar-uploader"
+              action="http://localhost:8080/backend_war_exploded/file/upload"
+              :show-file-list="false"
+              :before-upload="beforeUpload"
+              :on-success="handleAvatarSuccess"
+              accept="image/*"
+            >
+              <el-button size="small" type="primary">点击上传新头像</el-button>
+            </el-upload>
+          </el-form-item>
+
           <!-- 用户名输入框 -->
           <el-form-item label="用户名">
             <el-input v-model="editForm.username" placeholder="请输入用户名" />
@@ -96,11 +113,13 @@ export default {
     return {
       // 控制弹窗显示的变量
       editDialogVisible: false,
+
       // 编辑资料的表单数据
       editForm: {
         username: this.userInfo ? this.userInfo.username : "", // 默认填充用户名
         email: this.userInfo ? this.userInfo.email : "", // 默认填充邮箱
         phone: this.userInfo ? this.userInfo.phone : "", // 默认填充手机号
+        avatar: this.userInfo ? this.userInfo.avatar : null,
       },
     };
   },
@@ -129,6 +148,8 @@ export default {
     async submitEditProfile() {
       try {
         const updatedUserInfo = { ...this.userInfo, ...this.editForm }; // 合并原用户信息和修改后的信息
+
+        console.log("编辑后的用户信息", updatedUserInfo);
         // 发送请求到后端更新用户信息
         const res = await UserAPI.updateUserInfo(updatedUserInfo);
 
@@ -143,6 +164,20 @@ export default {
       } catch (error) {
         this.$message.error("更新失败，请重试"); // 捕获错误并提示
       }
+    },
+    // 上传头像前的验证
+    beforeUpload(file) {
+      const isImage = file.type.startsWith("image/");
+      if (!isImage) {
+        this.$message.error("请上传图片文件");
+      }
+      return isImage;
+    },
+    // 上传头像成功后的处理
+    handleAvatarSuccess(response) {
+      console.log("头像上传成功", response);
+      this.editForm.avatar = response.data;
+      this.$message.success("头像上传成功");
     },
 
     // 退出登录
