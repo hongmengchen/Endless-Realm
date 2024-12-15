@@ -16,10 +16,13 @@
         <result property="status" column="status"/>
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
+
+        <!-- 添加子查询获取用户姓名并命名为 author -->
+        <result property="author" column="author"/>
     </resultMap>
 
     <!-- 插入动态 -->
-    <insert id="insertPost" parameterType="cn.hmck.entity.Post" >
+    <insert id="insertPost" parameterType="cn.hmck.entity.Post">
         INSERT INTO er_post (user_id, content, media_url, like_count, comment_count, status)
         VALUES (#{userId}, #{content}, #{mediaUrl}, #{likeCount}, #{commentCount}, #{status})
     </insert>
@@ -42,22 +45,32 @@
     </update>
     <!-- 根据动态ID删除动态 -->
     <delete id="deletePostById" parameterType="Integer">
-        DELETE FROM er_post WHERE id = #{id}
+        DELETE
+        FROM er_post
+        WHERE id = #{id}
     </delete>
     <!--获取所有动态-->
     <select id="getAllPost" resultMap="postResultMap">
-        SELECT * FROM er_post
+        SELECT *
+        FROM er_post
     </select>
     <!--获取动态详情-->
     <select id="getPostById" parameterType="Integer" resultMap="postResultMap">
-        SELECT * FROM er_post WHERE id = #{id}
+        SELECT *
+        FROM er_post
+        WHERE id = #{id}
     </select>
     <!--根据动态状态获取所有动态-->
     <select id="getPostByStatus" parameterType="Integer" resultMap="postResultMap">
-        SELECT * FROM er_post WHERE status = #{status}
+        SELECT p.*,
+               (SELECT u.username FROM er_user u WHERE u.id = p.user_id) AS author
+        FROM er_post p
+        WHERE p.status = #{status}
     </select>
     <!--修改动态状态-->
     <update id="updatePostStatus" parameterType="cn.hmck.entity.Post">
-        UPDATE er_post SET status = #{status} WHERE id = #{id}
+        UPDATE er_post
+        SET status = #{status}
+        WHERE id = #{id}
     </update>
 </mapper>
