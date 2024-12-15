@@ -1,5 +1,4 @@
-import { get } from "@/utils/request";
-import { post } from "@/utils/request";
+import { get, post, _delete } from "@/utils/request";
 
 export default class AdminAPI {
   // 管理员登录
@@ -22,5 +21,11 @@ export default class AdminAPI {
   // 修改用户状态
   static async updateUserStatus(id, status) {
     return post("/admin/updateUserStatus", id, status);
+  }
+  // 删除用户
+  static async deleteUser(id) {
+    return _delete("/admin/deleteUserById", {
+      id: id,
+    });
   }
 }
