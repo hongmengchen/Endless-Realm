@@ -58,4 +58,7 @@ public interface UserService extends IService<User> {
 
     // 根据账号状态获取所有用户
     List<User> getAllUserByStatus(Integer status);
+
+    // 删除用户
+    boolean deleteUserById(Integer id);
 }
