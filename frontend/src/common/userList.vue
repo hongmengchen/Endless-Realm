@@ -16,12 +16,7 @@
     </el-menu>
 
     <!-- 正常用户列表 -->
-    <el-table
-      v-if="mode == 1"
-      :data="userData"
-      stripe
-      style="width: 100%; color: #5a5c61"
-    >
+    <el-table v-if="mode == 1" :data="userData" stripe>
       <el-table-column label="头像" width="100">
         <template v-slot="scope">
           <el-avatar
@@ -74,18 +69,15 @@
     </el-table>
 
     <!-- 违规用户列表 -->
-    <el-table
-      v-if="mode == 2"
-      :data="badUserData"
-      stripe
-      style="width: 100%; color: #5a5c61"
-    >
+    <el-table v-if="mode == 2" :data="badUserData" stripe>
       <el-table-column label="头像" width="100px">
         <template v-slot="scope">
           <el-avatar
             shape="square"
             :size="50"
-            :src="scope.row.avatar"
+            :src="
+              'http://localhost:8080/backend_war_exploded' + scope.row.avatar
+            "
           ></el-avatar>
         </template>
       </el-table-column>
@@ -127,6 +119,13 @@
             size="small"
             @click="unsealUser(scope.$index)"
             >解封
+          </el-button>
+          <el-button
+            type="danger"
+            size="small"
+            @click="deleteUser(scope.row.id)"
+          >
+            删除
           </el-button>
         </template>
       </el-table-column>
@@ -244,6 +243,16 @@ export default {
       });
       if (res.data.status_code === 1) {
         await this.getBadUserData();
+      } else {
+        this.$message.error(res.msg);
+      }
+    },
+    // 删除
+    async deleteUser(id) {
+      const res = await AdminAPI.deleteUser(id);
+      if (res.data.status_code === 1) {
+        this.$message.success("用户已删除");
+        this.getBadUserData();
       } else {
         this.$message.error(res.msg);
       }
