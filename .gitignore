@@ -46,7 +46,7 @@ yarn-error.log
 /.nb-gradle/
 
 # 忽略 db.properties 文件
-backend/src/main/resources/db.properties
+/backend/src/main/resources/db.properties
 
 ### 忽略其他文件 ###
 # 忽略压缩文件
