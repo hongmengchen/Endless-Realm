@@ -31,6 +31,8 @@ public class Post implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedAt;  // 更新时间
 
+    private String author;  // 作者
+
     // 序列化版本号
     @Serial
     private static final long serialVersionUID = 1L;
