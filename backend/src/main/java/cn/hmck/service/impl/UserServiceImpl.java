@@ -102,4 +102,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public List<User> getAllUserByStatus(Integer status) {
         return userMapper.getAllUserByStatus(status);
     }
+
+    // 删除用户
+    @Override
+    public boolean deleteUserById(Integer id) {
+        return userMapper.deleteById(id) > 0;
+    }
 }
