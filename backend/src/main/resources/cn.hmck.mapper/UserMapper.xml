@@ -48,6 +48,9 @@
         SET username = #{username},
             email    = #{email},
             phone    = #{phone}
+        <if test="avatar != null">
+            , avatar = #{avatar}
+        </if>
         WHERE id = #{id}
     </update>
     <!-- 修改用户密码 -->
